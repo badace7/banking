@@ -9,12 +9,15 @@ class TimelineDomain {
   constructor({
     owner,
     messages = [],
+    followers = [],
   }: {
     owner: string;
     messages?: MessageDomain[];
+    followers?: UserDomain[];
   }) {
     this.owner = owner;
     this.messages = messages;
+    this.followers = followers;
   }
 
   public get getOwner(): string {

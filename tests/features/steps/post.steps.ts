@@ -84,14 +84,36 @@ Given(
   async function (table) {
     this.alice = new UserDomain({ name: table.rowsHash().user1 });
     this.bob = new UserDomain({ name: table.rowsHash().user2 });
-    this.aliceTimeline = await this.service(this.alice.getName);
-    this.bobTimeline = await this.service(this.bob.getName);
+    this.aliceTimeline = await this.service.postAmessageOnAtimeline(
+      new MessageDomain({
+        author: this.alice.getName,
+        message: "Hello I'm Alice !",
+      }),
+    );
+    this.bobTimeline = await this.service.postAmessageOnAtimeline(
+      new MessageDomain({
+        author: this.bob.getName,
+        message: "Hello world I'm Bob !",
+      }),
+    );
   },
 );
 
-When(/^Charlie subscribe to Alice and Bob timelines$/, async function () {
-  this.subscription = this.service.subscribeToATimeLine(
+Given(/^Charlie subscribe to Alice and Bob timelines$/, async function () {
+  this.subscription = await this.service.subscribeToATimeLine(
     this.user.getName,
     this.alice.getName,
   );
+  this.subscription = await this.service.subscribeToATimeLine(
+    this.user.getName,
+    this.bob.getName,
+  );
+});
+
+When(/^Charlie display all subscribed timelines$/, async function () {
+  this.timelines = this.service.getAllUserTimelines(this.user.getName);
+});
+
+Then(/^A timeline list is displayed as shown below$/, async function () {
+  //
 });

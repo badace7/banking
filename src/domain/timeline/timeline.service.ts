@@ -40,6 +40,8 @@ export class TimelineService implements ITimelineService {
 
     timeline.addFollowersToTimeline(user);
 
+    console.log(timeline);
+
     this.repository.save(timeline);
 
     return `${author} followed successfully.`;
