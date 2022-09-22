@@ -34,7 +34,6 @@ Then(
   /^The message is published on her timeline as shown below$/,
   async function (table) {
     this.value = new MessageDomain(table.rowsHash());
-
     expect(this.expect.getMessages[0]).to.eql(table.rowsHash());
   },
 );

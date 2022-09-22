@@ -12,7 +12,9 @@ export class TimelineService implements ITimelineService {
     this.repository = repository;
   }
 
-  async postAmessageOnAtimeline(message: MessageDomain): Promise<any> {
+  async postAmessageOnAtimeline(
+    message: MessageDomain,
+  ): Promise<TimelineDomain> {
     let timeline = await this.repository.findTimeline(message.getAuthor);
 
     if (!timeline) {
