@@ -44,7 +44,7 @@ class TimelineDomain {
     this.messages.push(message);
   }
 
-  public addFollowersToTimeline(follower: UserDomain) {
+  public addFollowerToTimeline(follower: UserDomain) {
     this.followers.push(follower);
   }
 }

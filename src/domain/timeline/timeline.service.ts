@@ -38,7 +38,7 @@ export class TimelineService implements ITimelineService {
       new Error('Timeline not found.');
     }
 
-    timeline.addFollowersToTimeline(user);
+    timeline.addFollowerToTimeline(user);
 
     this.repository.save(timeline);
 
