@@ -1,19 +1,9 @@
 const options = [
-  'tests/features/*', // feature filter
-  '--require tests/features/steps/*.ts',
+  'tests/cucumber/*', // feature filter
+  '--require tests/cucumber/steps/*.ts',
   '--require-module ts-node/register',
   'cucumber-js -f @cucumber/pretty-formatter',
   '--tags "not @wip and not @api"',
 ];
 
-exports.posting = options.join(' ');
-
-// const optionsApi = [
-//   'test/features/*', // feature filter
-//   '--require test/features/api/*.ts',
-//   '--require-module ts-node/register',
-//   'cucumber-js -f @cucumber/pretty-formatter',
-//   '--tags "@api and not @wip"',
-// ];
-
-// exports.profileApi = optionsApi.join(' ');
+exports.banking = options.join(' ');

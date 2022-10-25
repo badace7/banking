@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { TimelineService } from './domain/timeline/timeline.service';
-import FakeTimelineRepository from './infrastructure/FakeTimelineRepository';
+import { BankingController } from './infrastructure/primary/bank/banking.controller';
+import { BankingService } from './domain/usecases/banking.service';
+import FakeBankingRepository from './infrastructure/secondary/bank/fakebanking.repository';
 
 @Module({
   imports: [],
-  controllers: [AppController],
+  controllers: [BankingController],
   providers: [
-    TimelineService,
-    { provide: 'IPostingRepository', useClass: FakeTimelineRepository },
-    { provide: 'IPostingService', useClass: TimelineService },
+    BankingService,
+    { provide: 'IBankingRepository', useClass: FakeBankingRepository },
+    { provide: 'IBankingService', useClass: BankingService },
   ],
 })
 export class AppModule {}
