@@ -18,8 +18,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
-    "test:bdd:banking": "cucumber-js -p banking"
+    "test:e2e": "jest --config ./tests/jest-e2e.json",
+    "test:e2e:account": "cucumber-js -p account"
   },
   "dependencies": {
     "@cucumber/pretty-formatter": "^1.0.0",

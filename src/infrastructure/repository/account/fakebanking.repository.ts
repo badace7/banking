@@ -1,7 +1,6 @@
-import { IBankingRepository } from '../../../domain/_ports/banking.irepository';
 import AccountDomain from '../../../domain/account/account.domain';
 
-class FakeBankingRepository implements IBankingRepository {
+class FakeAccountRepository implements FakeAccountRepository {
   private accountDatas = new Map<string, AccountDomain>();
 
   findBankAccount(accountNumber: string): Promise<AccountDomain> {
@@ -9,4 +8,4 @@ class FakeBankingRepository implements IBankingRepository {
   }
 }
 
-export default FakeBankingRepository;
+export default FakeAccountRepository;
