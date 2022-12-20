@@ -1,15 +1,16 @@
 import { Module } from '@nestjs/common';
-import { AccountController } from '../../infrastructure/rest/account/banking.controller';
-import { AccountService } from '../../domain/account/account.service';
 import FakeAccountRepository from '../../infrastructure/repository/account/fakebanking.repository';
+import { AccountController } from '../../infrastructure/http/account/banking.controller';
+import { MoneyTransfer } from '../../domain/account/usecases/MoneyTransferFromAccount.usecase';
+
+const accountUsecasesToInject = [MoneyTransfer];
 
 @Module({
   imports: [],
   controllers: [AccountController],
   providers: [
-    AccountService,
+    ...accountUsecasesToInject,
     { provide: 'IAccountRepository', useClass: FakeAccountRepository },
-    { provide: 'IAccountService', useClass: AccountService },
   ],
 })
 export class AccountModule {}

@@ -1,4 +1,4 @@
-import AccountDomain from '../../../domain/account/account.domain';
+import AccountDomain from '../../../domain/account/domain/account.domain';
 
 class FakeAccountRepository implements FakeAccountRepository {
   private accountDatas = new Map<string, AccountDomain>();
