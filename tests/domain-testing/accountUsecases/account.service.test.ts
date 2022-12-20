@@ -1,11 +1,10 @@
 import FakeAccountRepository from '../../../src/infrastructure/repository/account/fakebanking.repository';
-import { MoneyTransfer } from '../../../src/domain/account/usecases/MoneyTransferFromAccount.usecase';
+import { MoneyTransfer } from '../../../src/domain/account/usecases/MoneyTransfer.usecase';
 import { IAccountRepository } from '../../../src/domain/account/_ports/account.irepository';
-import { IAccountService } from '../../../src/domain/account/_ports/account.iservice';
 
-describe('first', () => {
+describe('Account usecases testing', () => {
   let repository: IAccountRepository;
-  let service: IAccountService;
+  let service: MoneyTransfer;
   beforeAll(async () => {
     repository = new FakeAccountRepository();
     service = new MoneyTransfer(repository);

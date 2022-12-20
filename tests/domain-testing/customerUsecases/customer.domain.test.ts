@@ -1,6 +1,6 @@
 import CustomerDomain from '../../../src/domain/customer/customer.domain';
 
-describe('Customer', () => {
+describe('Customer usescases testing', () => {
   let customer: CustomerDomain;
 
   it('should create a customer and check his instance type', async () => {
