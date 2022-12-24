@@ -1,11 +1,11 @@
 import { UsecaseError } from '../../../core/helpers/usecase.error';
 import { Inject, Injectable } from '@nestjs/common';
-import { IAccountRepository } from '../_ports/account.irepository';
+import { IAccountRepository } from '../../account/_ports/account.irepository';
 import { ICustomerRepository } from '../../customer/_ports/customer.irepository';
-import { ITransactionRepository } from '../../transaction/_ports/transaction.irepository';
-import AccountDomain from '../domain/account.domain';
+import { ITransactionRepository } from '../_ports/transaction.irepository';
+import AccountDomain from '../../account/domain/account.domain';
 import CustomerDomain from 'src/domain/customer/domain/customer.domain';
-import TransferTransactionDomain from '../../transaction/domain/transaction.domain';
+import TransferTransactionDomain from '../domain/transaction.domain';
 
 @Injectable()
 export class MoneyTransferUsecase {
@@ -30,16 +30,17 @@ export class MoneyTransferUsecase {
     accountOriginOfTransfer.debitAmount(transferTransaction.getAmount());
     accountAtReceptionOfTransfer.creditAmount(transferTransaction.getAmount());
 
-    await this.updateAccountsAfterTransaction(
+    await this.updateAccountsAfterTransfer(
       accountOriginOfTransfer,
       accountAtReceptionOfTransfer,
     );
 
     this.TransactionRepository.saveTransaction(transferTransaction);
 
-    const customerAtReception = this.getCustomerAtReceptionOfTransferOrError(
-      transferTransaction.getTo(),
-    );
+    const customerAtReception =
+      await this.getCustomerAtReceptionOfTransferOrError(
+        transferTransaction.getTo(),
+      );
 
     return `You have successfully transfered ${transferTransaction.getAmount()}€ to ${(
       await customerAtReception
@@ -91,7 +92,7 @@ export class MoneyTransferUsecase {
     return isCustomerAtReceptionOfTransferFound;
   }
 
-  async updateAccountsAfterTransaction(
+  async updateAccountsAfterTransfer(
     accountOriginOfTransfer: AccountDomain,
     accountAtReceptionOfTransfer: AccountDomain,
   ): Promise<void> {

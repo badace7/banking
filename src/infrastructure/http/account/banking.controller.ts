@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { MoneyTransferUsecase } from '../../../domain/account/usecases/MoneyTransfer.usecase';
+import { MoneyTransferUsecase } from '../../../domain/transaction/usecases/MoneyTransfer.usecase';
 
 @Controller('account')
 export class AccountController {

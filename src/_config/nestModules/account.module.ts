@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import FakeAccountRepository from '../../infrastructure/repository/account/fakebanking.repository';
 import { AccountController } from '../../infrastructure/http/account/banking.controller';
-import { MoneyTransferUsecase } from '../../domain/account/usecases/MoneyTransfer.usecase';
+import { MoneyTransferUsecase } from '../../domain/transaction/usecases/MoneyTransfer.usecase';
 import FakeCustomerRepository from '../../infrastructure/repository/customer/fakecustomer.repository';
 
 const accountUsecasesToInject = [MoneyTransferUsecase];
