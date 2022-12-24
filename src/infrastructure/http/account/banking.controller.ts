@@ -1,9 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
-import { MoneyTransfer } from '../../../domain/account/usecases/MoneyTransfer.usecase';
+import { MoneyTransferUsecase } from '../../../domain/account/usecases/MoneyTransfer.usecase';
 
 @Controller('account')
 export class AccountController {
-  constructor(private readonly appService: MoneyTransfer) {}
+  constructor(private readonly appService: MoneyTransferUsecase) {}
 
   @Get()
   getHello(): string {
