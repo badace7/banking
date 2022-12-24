@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import FakeAccountRepository from '../../infrastructure/repository/account/fakebanking.repository';
 import { AccountController } from '../../infrastructure/http/account/banking.controller';
-import { MoneyTransfer } from '../../domain/account/usecases/MoneyTransfer.usecase';
+import { MoneyTransferUsecase } from '../../domain/account/usecases/MoneyTransfer.usecase';
+import FakeCustomerRepository from '../../infrastructure/repository/customer/fakecustomer.repository';
 
-const accountUsecasesToInject = [MoneyTransfer];
+const accountUsecasesToInject = [MoneyTransferUsecase];
 
 @Module({
   imports: [],
@@ -11,6 +12,7 @@ const accountUsecasesToInject = [MoneyTransfer];
   providers: [
     ...accountUsecasesToInject,
     { provide: 'IAccountRepository', useClass: FakeAccountRepository },
+    { provide: 'ICustomerRepository', useClass: FakeCustomerRepository },
   ],
 })
 export class AccountModule {}
