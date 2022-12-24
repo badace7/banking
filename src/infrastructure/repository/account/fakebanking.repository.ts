@@ -1,10 +1,28 @@
+import { IAccountRepository } from 'src/domain/account/_ports/account.irepository';
 import AccountDomain from '../../../domain/account/domain/account.domain';
 
-class FakeAccountRepository implements FakeAccountRepository {
-  private accountDatas = new Map<string, AccountDomain>();
+class FakeAccountRepository implements IAccountRepository {
+  private fakeAccountEntityManager;
 
-  findBankAccount(accountNumber: string): Promise<AccountDomain> {
-    throw new Error('Method not implemented.');
+  constructor(account?: AccountDomain) {
+    this.fakeAccountEntityManager = new Map<string, AccountDomain>([
+      [account?.getNumber(), account],
+    ]);
+  }
+  async updateBankAccount(
+    accountId: string,
+    account: AccountDomain,
+  ): Promise<void> {
+    this.fakeAccountEntityManager.delete(accountId);
+    this.fakeAccountEntityManager.set(accountId, account);
+  }
+
+  async findBankAccount(accountNumber: string): Promise<AccountDomain> {
+    return this.fakeAccountEntityManager.get(accountNumber);
+  }
+
+  async saveBankAccount(account: AccountDomain): Promise<void> {
+    this.fakeAccountEntityManager.set(account.getNumber(), account);
   }
 }
 
