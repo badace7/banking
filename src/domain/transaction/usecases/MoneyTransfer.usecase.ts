@@ -3,12 +3,15 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IAccountRepository } from '../../account/_ports/account.irepository';
 import { ICustomerRepository } from '../../customer/_ports/customer.irepository';
 import { ITransactionRepository } from '../_ports/transaction.irepository';
-import AccountDomain from '../../account/domain/account.domain';
-import CustomerDomain from 'src/domain/customer/domain/customer.domain';
-import TransferTransactionDomain from '../domain/transaction.domain';
+import AccountDomain from '../../account/entities/account.domain';
+import CustomerDomain from 'src/domain/customer/entities/customer.domain';
+import TransferTransactionDomain from '../entities/transaction.domain';
+import { IUseCase } from '@core/domain/UseCase';
 
 @Injectable()
-export class MoneyTransferUsecase {
+export class MoneyTransferUsecase
+  implements IUseCase<TransferTransactionDomain, string>
+{
   constructor(
     @Inject('IAccountRepository') private AccountRepository: IAccountRepository,
     @Inject('ICustomerRepository')
@@ -16,7 +19,9 @@ export class MoneyTransferUsecase {
     @Inject('ITransactionRepository')
     private TransactionRepository: ITransactionRepository,
   ) {}
-  async execute(transferTransaction: TransferTransactionDomain): Promise<any> {
+  async execute(
+    transferTransaction: TransferTransactionDomain,
+  ): Promise<string> {
     const accountOriginOfTransfer =
       await this.getAccountOriginOfTransferOrError(
         transferTransaction.getFrom(),
@@ -27,12 +32,10 @@ export class MoneyTransferUsecase {
         transferTransaction.getTo(),
       );
 
-    accountOriginOfTransfer.debitAmount(transferTransaction.getAmount());
-    accountAtReceptionOfTransfer.creditAmount(transferTransaction.getAmount());
-
-    await this.updateAccountsAfterTransfer(
+    await this.makeTransferBetweenAccounts(
       accountOriginOfTransfer,
       accountAtReceptionOfTransfer,
+      transferTransaction.getAmount(),
     );
 
     this.TransactionRepository.saveTransaction(transferTransaction);
@@ -42,9 +45,7 @@ export class MoneyTransferUsecase {
         transferTransaction.getTo(),
       );
 
-    return `You have successfully transfered ${transferTransaction.getAmount()}€ to ${(
-      await customerAtReception
-    ).getFirstName()}`;
+    return `You have successfully transfered ${transferTransaction.getAmount()}€ to ${customerAtReception.getFirstName()}`;
   }
 
   async getAccountOriginOfTransferOrError(
@@ -55,7 +56,6 @@ export class MoneyTransferUsecase {
 
     if (!isAccountOriginOfTransferFound) {
       throw new UsecaseError(
-        404,
         'The account from which the transfer originated was not found.',
       );
     }
@@ -70,7 +70,6 @@ export class MoneyTransferUsecase {
 
     if (!isAccountAtReceptionOfTransferFound) {
       throw new UsecaseError(
-        404,
         'The account at the reception of the transfer was not found.',
       );
     }
@@ -85,7 +84,6 @@ export class MoneyTransferUsecase {
 
     if (!isCustomerAtReceptionOfTransferFound) {
       throw new UsecaseError(
-        404,
         'The user at the reception of the transfer was not found.',
       );
     }
@@ -103,6 +101,20 @@ export class MoneyTransferUsecase {
 
     this.AccountRepository.updateBankAccount(
       accountAtReceptionOfTransfer.getId(),
+      accountAtReceptionOfTransfer,
+    );
+  }
+
+  async makeTransferBetweenAccounts(
+    accountOriginOfTransfer: AccountDomain,
+    accountAtReceptionOfTransfer: AccountDomain,
+    amount: number,
+  ): Promise<void> {
+    accountOriginOfTransfer.debitAmount(amount);
+    accountAtReceptionOfTransfer.creditAmount(amount);
+
+    await this.updateAccountsAfterTransfer(
+      accountOriginOfTransfer,
       accountAtReceptionOfTransfer,
     );
   }

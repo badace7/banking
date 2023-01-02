@@ -1,4 +1,4 @@
-import CustomerDomain from '../../customer/domain/customer.domain';
-import AccountDomain from '../domain/account.domain';
+import CustomerDomain from '../../customer/entities/customer.domain';
+import AccountDomain from '../entities/account.domain';
 
 export interface IAccountService {}

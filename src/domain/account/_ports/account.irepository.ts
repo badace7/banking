@@ -1,4 +1,4 @@
-import AccountDomain from '../domain/account.domain';
+import AccountDomain from '../entities/account.domain';
 
 export interface IAccountRepository {
   findBankAccount(accountNumber: string): Promise<AccountDomain>;

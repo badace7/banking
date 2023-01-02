@@ -1,4 +1,4 @@
-import CustomerDomain from '../domain/customer.domain';
+import CustomerDomain from '../entities/customer.domain';
 
 export interface ICustomerRepository {
   findCustomerByAccountNumber(accountNumber: string): Promise<CustomerDomain>;

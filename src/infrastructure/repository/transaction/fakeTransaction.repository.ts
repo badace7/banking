@@ -1,5 +1,5 @@
 import { ITransactionRepository } from '../../../domain/transaction/_ports/transaction.irepository';
-import TransferTransactionDomain from '../../../domain/transaction/domain/transaction.domain';
+import TransferTransactionDomain from '../../../domain/transaction/entities/transaction.domain';
 
 class FakeTransactionRepository implements ITransactionRepository {
   private fakeTransactionEntityManager: Map<string, TransferTransactionDomain>;

@@ -1,5 +1,5 @@
 import { IAccountRepository } from 'src/domain/account/_ports/account.irepository';
-import AccountDomain from '../../../domain/account/domain/account.domain';
+import AccountDomain from '../../../domain/account/entities/account.domain';
 
 class FakeAccountRepository implements IAccountRepository {
   private fakeAccountEntityManager;
