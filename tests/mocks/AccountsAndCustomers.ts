@@ -1,5 +1,5 @@
-import CustomerDomain from '../../src/domain/customer/domain/customer.domain';
-import AccountDomain from '../../src/domain/account/domain/account.domain';
+import CustomerDomain from '../../src/domain/customer/entities/customer.domain';
+import AccountDomain from '../../src/domain/account/entities/account.domain';
 const bob = CustomerDomain.create({
   firstName: 'Bob',
   lastName: 'Dylan',
