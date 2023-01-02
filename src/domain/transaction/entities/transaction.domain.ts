@@ -9,16 +9,20 @@ type TransferTransactionProperties = {
 };
 
 class TransferTransactionDomain extends Entity {
+  private type: string;
   private amount: number;
   private label: string;
+  private date: Date;
   private from: string;
   private to: string;
   constructor({ id, amount, label, from, to }: TransferTransactionProperties) {
     super(id);
+    this.type = 'TRANSFER';
     this.amount = amount;
     this.label = label;
     this.from = from;
     this.to = to;
+    this.date = new Date();
   }
 
   public getAmount(): number {
@@ -27,6 +31,10 @@ class TransferTransactionDomain extends Entity {
 
   public getLabel(): string {
     return this.label;
+  }
+
+  public getDate(): Date {
+    return this.date;
   }
 
   public getFrom(): string {
@@ -40,6 +48,11 @@ class TransferTransactionDomain extends Entity {
   static create(
     transaction: TransferTransactionProperties,
   ): TransferTransactionDomain {
+    if (transaction.amount <= 0) {
+      throw new Error(
+        'You cannot make this transfer because your entered incorrect amount',
+      );
+    }
     return new TransferTransactionDomain(transaction);
   }
 }
