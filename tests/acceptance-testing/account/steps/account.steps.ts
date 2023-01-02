@@ -4,7 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { expect } from 'chai';
 import { AccountModule } from '../../../../src/_config/modules/account.module';
-import CustomerDomain from '../../../../src/domain/customer/domain/customer.domain';
+import CustomerDomain from '../../../../src/domain/customer/entities/customer.domain';
 
 /**
  * Scenario: A customer wants to deposite 1000E
