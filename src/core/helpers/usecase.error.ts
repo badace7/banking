@@ -1,8 +1,6 @@
 export class UsecaseError extends Error {
-  public statusCode;
-  constructor(statusCode: number, message: string) {
+  constructor(message: string) {
     super();
-    this.statusCode = statusCode;
     this.message = message;
   }
 }
