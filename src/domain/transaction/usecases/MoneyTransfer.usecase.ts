@@ -1,4 +1,4 @@
-import { UsecaseError } from '../../../core/helpers/usecase.error';
+import { UsecaseError } from '../../../libs/exceptions/usecase.error';
 import { Inject, Injectable } from '@nestjs/common';
 import { IAccountRepository } from '../../account/_ports/account.irepository';
 import { ICustomerRepository } from '../../customer/_ports/customer.irepository';
@@ -6,12 +6,9 @@ import { ITransactionRepository } from '../_ports/transaction.irepository';
 import AccountDomain from '../../account/entities/account.domain';
 import CustomerDomain from 'src/domain/customer/entities/customer.domain';
 import TransferTransactionDomain from '../entities/transaction.domain';
-import { IUseCase } from '@core/domain/UseCase';
 
 @Injectable()
-export class MoneyTransferUsecase
-  implements IUseCase<TransferTransactionDomain, string>
-{
+export class MoneyTransferUsecase {
   constructor(
     @Inject('IAccountRepository') private AccountRepository: IAccountRepository,
     @Inject('ICustomerRepository')
