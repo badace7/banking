@@ -1,9 +1,7 @@
 import FakeAccountRepository from '../../../src/infrastructure/repository/account/fakebanking.repository';
 import { IAccountRepository } from '../../../src/domain/account/_ports/account.irepository';
 import { MoneyTransferUsecase } from '../../../src/domain/transaction/usecases/MoneyTransfer.usecase';
-import { accounts, customers } from '../../mocks/AccountsAndCustomers';
-import { ICustomerRepository } from '../../../src/domain/customer/_ports/customer.irepository';
-import FakeCustomerRepository from '../../../src/infrastructure/repository/customer/fakecustomer.repository';
+import { accounts } from '../../mocks/AccountsAndCustomers';
 import { ITransactionRepository } from 'src/domain/transaction/_ports/transaction.irepository';
 import FakeTransactionRepository from '../../../src/infrastructure/repository/transaction/fakeTransaction.repository';
 import TransferTransactionDomain from '../../../src/domain/transaction/entities/transaction.domain';
@@ -11,28 +9,22 @@ import TransferTransactionDomain from '../../../src/domain/transaction/entities/
 describe('Money transfer usecases testing', () => {
   let moneyTransferUsecase: MoneyTransferUsecase;
   let AccountRepository: IAccountRepository;
-  let CustomerRepository: ICustomerRepository;
   let TransactionRepository: ITransactionRepository;
   beforeAll(async () => {
     AccountRepository = new FakeAccountRepository();
-    CustomerRepository = new FakeCustomerRepository();
     TransactionRepository = new FakeTransactionRepository();
 
-    customers.forEach((customer) => {
-      CustomerRepository.saveCustomer(customer);
-    });
     accounts.forEach((account) => {
       AccountRepository.saveBankAccount(account);
     });
 
     moneyTransferUsecase = new MoneyTransferUsecase(
       AccountRepository,
-      CustomerRepository,
       TransactionRepository,
     );
   });
   describe('Success case', () => {
-    it('should transfer 100€ from one customer account to another and return "You have successfully transfered 100€ to [customer name]"', async () => {
+    it('should transfer 100€ from one customer account to another', async () => {
       //GIVEN customers named Jack and bob
       //AND They have a bank account with account numbers as shown below
       const jackAccount = {
@@ -67,7 +59,7 @@ describe('Money transfer usecases testing', () => {
       ).toBe(1100);
     });
 
-    it('should transfer 1100€ from one customer account to another and return "You have successfully transfered 1100€ to [customer name]"', async () => {
+    it('should transfer 1100€ from one customer account to another and return a notification "be careful your balance has reached 0"', async () => {
       //GIVEN customers named Jack and bob
       //AND They have a bank account with account numbers as shown below
       const jackAccount = {
@@ -87,11 +79,20 @@ describe('Money transfer usecases testing', () => {
       });
 
       //WHEN Bob does the money transfer
-      const message = await moneyTransferUsecase.execute(transferTransaction);
+      await moneyTransferUsecase.execute(transferTransaction);
 
       //THEN the message is displayed as shown below
-      expect(message).toBe('You have successfully transfered 1100€ to Jack');
-      // add feat notif 0
+      //THEN Jack's and Bob's balances should be as shown below after receiving the transfer
+      expect(
+        (
+          await AccountRepository.findBankAccount(jackAccount.number)
+        ).getBalance(),
+      ).toBe(2000);
+      expect(
+        (
+          await AccountRepository.findBankAccount(bobAccount.number)
+        ).getBalance(),
+      ).toBe(0);
     });
   });
 
@@ -116,10 +117,12 @@ describe('Money transfer usecases testing', () => {
       });
       //AND Bob does not have sufficient balance and does not have an overdraft authorization to make this transfer
       //WHEN Bob try to do the money transfer
-      const bobGivesATry = () =>
-        moneyTransferUsecase.execute(transferTransaction);
+      const bobGivesATry = await moneyTransferUsecase.execute(
+        transferTransaction,
+      );
+
       //THEN the message is displayed as shown below
-      await expect(bobGivesATry).rejects.toThrow(
+      expect(bobGivesATry.getError()).toBe(
         'You cannot make this transfer because your balance is insufficient',
       );
     });
@@ -144,10 +147,11 @@ describe('Money transfer usecases testing', () => {
       });
       //AND Jack does not have sufficient balance and does not have an overdraft authorization to make this transfer
       //WHEN Jack try to do the money transfer
-      const jackGivesATry = () =>
-        moneyTransferUsecase.execute(transferTransaction);
+      const jackGivesATry = await moneyTransferUsecase.execute(
+        transferTransaction,
+      );
       //THEN the message is displayed as shown below
-      await expect(jackGivesATry).rejects.toThrow(
+      expect(jackGivesATry.getError()).toBe(
         'You cannot make this transfer because your balance is insufficient',
       );
     });

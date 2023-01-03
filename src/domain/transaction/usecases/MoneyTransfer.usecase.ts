@@ -1,90 +1,87 @@
-import { UsecaseError } from '../../../libs/exceptions/usecase.error';
 import { Inject, Injectable } from '@nestjs/common';
 import { IAccountRepository } from '../../account/_ports/account.irepository';
-import { ICustomerRepository } from '../../customer/_ports/customer.irepository';
 import { ITransactionRepository } from '../_ports/transaction.irepository';
 import AccountDomain from '../../account/entities/account.domain';
-import CustomerDomain from 'src/domain/customer/entities/customer.domain';
 import TransferTransactionDomain from '../entities/transaction.domain';
+import { Result } from '../../../libs/exceptions/result';
 
 @Injectable()
 export class MoneyTransferUsecase {
   constructor(
     @Inject('IAccountRepository') private AccountRepository: IAccountRepository,
-    @Inject('ICustomerRepository')
-    private CustomerRepository: ICustomerRepository,
     @Inject('ITransactionRepository')
     private TransactionRepository: ITransactionRepository,
   ) {}
   async execute(
     transferTransaction: TransferTransactionDomain,
-  ): Promise<string> {
-    const accountOriginOfTransfer =
+  ): Promise<Result<void>> {
+    const accountOriginOfTransferOrError =
       await this.getAccountOriginOfTransferOrError(
         transferTransaction.getFrom(),
       );
 
-    const accountAtReceptionOfTransfer =
+    if (accountOriginOfTransferOrError.isFailure) {
+      return Result.fail<void>(accountOriginOfTransferOrError.error);
+    }
+
+    const accountOriginOfTransfer = accountOriginOfTransferOrError.getValue();
+
+    const accountAtReceptionOfTransferOrError =
       await this.getAccountAtReceptionOfTransferOrError(
         transferTransaction.getTo(),
       );
 
-    await this.makeTransferBetweenAccounts(
-      accountOriginOfTransfer,
-      accountAtReceptionOfTransfer,
-      transferTransaction.getAmount(),
-    );
+    if (accountAtReceptionOfTransferOrError.isFailure) {
+      return Result.fail<void>(accountAtReceptionOfTransferOrError.error);
+    }
 
-    this.TransactionRepository.saveTransaction(transferTransaction);
+    const accountAtReceptionOfTransfer =
+      accountAtReceptionOfTransferOrError.getValue();
 
-    const customerAtReception =
-      await this.getCustomerAtReceptionOfTransferOrError(
-        transferTransaction.getTo(),
+    const transferTransactionCompletedOrError =
+      transferTransaction.makeTransfer(
+        accountOriginOfTransfer,
+        accountAtReceptionOfTransfer,
       );
 
-    return `You have successfully transfered ${transferTransaction.getAmount()}€ to ${customerAtReception.getFirstName()}`;
+    if (transferTransactionCompletedOrError.isFailure) {
+      return Result.fail<void>(transferTransactionCompletedOrError.error);
+    }
+
+    const transferTransactionCompleted: AccountDomain[] =
+      transferTransactionCompletedOrError.getValue();
+
+    await this.makeTransferBetweenAccounts(transferTransactionCompleted);
+
+    this.TransactionRepository.saveTransaction(transferTransaction);
   }
 
   async getAccountOriginOfTransferOrError(
     accountNumber: string,
-  ): Promise<AccountDomain> {
+  ): Promise<Result<AccountDomain>> {
     const isAccountOriginOfTransferFound =
       await this.AccountRepository.findBankAccount(accountNumber);
 
     if (!isAccountOriginOfTransferFound) {
-      throw new UsecaseError(
+      return Result.fail<AccountDomain>(
         'The account from which the transfer originated was not found.',
       );
     }
-    return isAccountOriginOfTransferFound;
+    return Result.ok<AccountDomain>(isAccountOriginOfTransferFound);
   }
 
   async getAccountAtReceptionOfTransferOrError(
     accountNumber: string,
-  ): Promise<AccountDomain> {
+  ): Promise<Result<AccountDomain>> {
     const isAccountAtReceptionOfTransferFound =
       await this.AccountRepository.findBankAccount(accountNumber);
 
     if (!isAccountAtReceptionOfTransferFound) {
-      throw new UsecaseError(
+      return Result.fail<AccountDomain>(
         'The account at the reception of the transfer was not found.',
       );
     }
-    return isAccountAtReceptionOfTransferFound;
-  }
-
-  async getCustomerAtReceptionOfTransferOrError(
-    accountNumber: string,
-  ): Promise<CustomerDomain> {
-    const isCustomerAtReceptionOfTransferFound =
-      await this.CustomerRepository.findCustomerByAccountNumber(accountNumber);
-
-    if (!isCustomerAtReceptionOfTransferFound) {
-      throw new UsecaseError(
-        'The user at the reception of the transfer was not found.',
-      );
-    }
-    return isCustomerAtReceptionOfTransferFound;
+    return Result.ok<AccountDomain>(isAccountAtReceptionOfTransferFound);
   }
 
   async updateAccountsAfterTransfer(
@@ -103,12 +100,10 @@ export class MoneyTransferUsecase {
   }
 
   async makeTransferBetweenAccounts(
-    accountOriginOfTransfer: AccountDomain,
-    accountAtReceptionOfTransfer: AccountDomain,
-    amount: number,
+    transferTransactionCompleted: AccountDomain[],
   ): Promise<void> {
-    accountOriginOfTransfer.debitAmount(amount);
-    accountAtReceptionOfTransfer.creditAmount(amount);
+    const [accountOriginOfTransfer, accountAtReceptionOfTransfer] =
+      transferTransactionCompleted;
 
     await this.updateAccountsAfterTransfer(
       accountOriginOfTransfer,

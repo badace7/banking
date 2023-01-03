@@ -1,3 +1,5 @@
+import AccountDomain from '../../account/entities/account.domain';
+import { Result } from '../../../libs/exceptions/result';
 import { Entity } from '../../../libs/domain/Entity';
 
 type TransferTransactionProperties = {
@@ -15,7 +17,13 @@ class TransferTransactionDomain extends Entity {
   private date: Date;
   private from: string;
   private to: string;
-  constructor({ id, amount, label, from, to }: TransferTransactionProperties) {
+  private constructor({
+    id,
+    amount,
+    label,
+    from,
+    to,
+  }: TransferTransactionProperties) {
     super(id);
     this.type = 'TRANSFER';
     this.amount = amount;
@@ -23,6 +31,24 @@ class TransferTransactionDomain extends Entity {
     this.from = from;
     this.to = to;
     this.date = new Date();
+  }
+
+  public makeTransfer(
+    accountOriginOfTransfer: AccountDomain,
+    accountAtReceptionOfTransfer: AccountDomain,
+  ): Result<AccountDomain[]> {
+    const debitOriginAccountOrError = accountOriginOfTransfer.debitAmount(
+      this.amount,
+    );
+
+    if (debitOriginAccountOrError.isFailure) {
+      return Result.fail<AccountDomain[]>(debitOriginAccountOrError.error);
+    }
+    accountAtReceptionOfTransfer.creditAmount(this.amount);
+    return Result.ok<AccountDomain[]>([
+      accountOriginOfTransfer,
+      accountAtReceptionOfTransfer,
+    ]);
   }
 
   public getAmount(): number {
