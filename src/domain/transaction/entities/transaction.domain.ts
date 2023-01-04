@@ -1,6 +1,6 @@
 import AccountDomain from '../../account/entities/account.domain';
-import { Result } from '../../../libs/exceptions/result';
-import { Entity } from '../../../libs/domain/Entity';
+import { Result } from '../../../core/exceptions/result';
+import { Entity } from '../../../core/domain/Entity';
 
 type TransferTransactionProperties = {
   id?: string;
@@ -44,7 +44,9 @@ class TransferTransactionDomain extends Entity {
     if (debitOriginAccountOrError.isFailure) {
       return Result.fail<AccountDomain[]>(debitOriginAccountOrError.error);
     }
+
     accountAtReceptionOfTransfer.creditAmount(this.amount);
+
     return Result.ok<AccountDomain[]>([
       accountOriginOfTransfer,
       accountAtReceptionOfTransfer,

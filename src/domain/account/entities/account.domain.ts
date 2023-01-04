@@ -1,5 +1,5 @@
-import { Entity } from '../../../libs/domain/Entity';
-import { Result } from '../../../libs/exceptions/result';
+import { Entity } from '../../../core/domain/Entity';
+import { Result } from '../../../core/exceptions/result';
 
 type AccountProperties = {
   id?: string;
@@ -13,14 +13,19 @@ class AccountDomain extends Entity {
   private balance: number;
   private customer: string;
 
-  debitAmount(amount: number): Result<void> {
+  debitAmount(amount: number): Result<string> {
     if (this.balance === 0 || amount > this.balance) {
-      return Result.fail<void>(
+      return Result.fail<string>(
         `You cannot make this transfer because your balance is insufficient`,
       );
     }
     this.balance -= amount;
-    return Result.ok<void>();
+
+    if (this.balance === 0) {
+      return Result.ok<string>(`be careful your balance has reached 0`);
+    }
+
+    return Result.ok<string>(`Your Account has been debited successfully`);
   }
 
   creditAmount(amount: number): void {
