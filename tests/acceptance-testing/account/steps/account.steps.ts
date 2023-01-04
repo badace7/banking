@@ -3,7 +3,7 @@ import { Given, Then, When, Before } from '@cucumber/cucumber';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { expect } from 'chai';
-import { AccountModule } from '../../../../src/config/nestModules/account.module';
+import { TransactionModule } from '../../../../src/config/nestModules/transaction.module';
 import CustomerDomain from '../../../../src/domain/customer/entities/customer.domain';
 
 /**
@@ -14,7 +14,7 @@ let app: INestApplication;
 
 Before(async function () {
   const moduleFixture: TestingModule = await Test.createTestingModule({
-    imports: [AccountModule],
+    imports: [TransactionModule],
   }).compile();
 
   app = moduleFixture.createNestApplication();

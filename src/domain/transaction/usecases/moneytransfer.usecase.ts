@@ -1,12 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IAccountRepository } from '../domain/account/_ports/account.irepository';
-import { ITransactionRepository } from '../domain/transaction/_ports/transaction.irepository';
-import AccountDomain from '../domain/account/entities/account.domain';
-import TransferTransactionDomain from '../domain/transaction/entities/transaction.domain';
-import { Result } from '../core/exceptions/result';
+import { IAccountRepository } from '../../account/_ports/account.irepository';
+import { ITransactionRepository } from '../_ports/output/transaction.irepository';
+import AccountDomain from '../../account/entities/account.domain';
+import TransferTransactionDomain from '../entities/transaction.domain';
+import { Result } from '../../../core/exceptions/Result';
+import { ITransferRequest } from '../_ports/input/transfer.irequest';
 
 @Injectable()
-export class MoneyTransferUsecase {
+export class MoneyTransferUsecase implements ITransferRequest {
   constructor(
     @Inject('IAccountRepository') private AccountRepository: IAccountRepository,
     @Inject('ITransactionRepository')

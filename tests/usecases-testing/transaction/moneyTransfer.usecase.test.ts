@@ -1,8 +1,8 @@
 import FakeAccountRepository from '../../../src/infrastructure/repository/account/fakebanking.repository';
 import { IAccountRepository } from '../../../src/domain/account/_ports/account.irepository';
-import { MoneyTransferUsecase } from '../../../src/usecases/MoneyTransfer.usecase';
+import { MoneyTransferUsecase } from '../../../src/domain/transaction/usecases/moneytransfer.usecase';
 import { accounts } from '../../mocks/AccountsAndCustomers';
-import { ITransactionRepository } from 'src/domain/transaction/_ports/transaction.irepository';
+import { ITransactionRepository } from 'src/domain/transaction/_ports/output/transaction.irepository';
 import FakeTransactionRepository from '../../../src/infrastructure/repository/transaction/fakeTransaction.repository';
 import TransferTransactionDomain from '../../../src/domain/transaction/entities/transaction.domain';
 

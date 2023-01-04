@@ -1,4 +1,4 @@
-import { ITransactionRepository } from '../../../domain/transaction/_ports/transaction.irepository';
+import { ITransactionRepository } from '../../../domain/transaction/_ports/output/transaction.irepository';
 import TransferTransactionDomain from '../../../domain/transaction/entities/transaction.domain';
 
 class FakeTransactionRepository implements ITransactionRepository {

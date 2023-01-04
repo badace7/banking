@@ -1,5 +1,5 @@
 import AccountDomain from '../../account/entities/account.domain';
-import { Result } from '../../../core/exceptions/result';
+import { Result } from '../../../core/exceptions/Result';
 import { Entity } from '../../../core/domain/Entity';
 
 type TransferTransactionProperties = {
@@ -25,7 +25,6 @@ class TransferTransactionDomain extends Entity {
     to,
   }: TransferTransactionProperties) {
     super(id);
-    this.type = 'TRANSFER';
     this.amount = amount;
     this.label = label;
     this.from = from;

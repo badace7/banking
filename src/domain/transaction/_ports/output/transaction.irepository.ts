@@ -1,4 +1,4 @@
-import TransferTransactionDomain from '../entities/transaction.domain';
+import TransferTransactionDomain from '../../entities/transaction.domain';
 
 export interface ITransactionRepository {
   findTransaction(transactionId: string): Promise<TransferTransactionDomain>;
