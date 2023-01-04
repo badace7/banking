@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IAccountRepository } from '../../account/_ports/account.irepository';
-import { ITransactionRepository } from '../_ports/transaction.irepository';
-import AccountDomain from '../../account/entities/account.domain';
-import TransferTransactionDomain from '../entities/transaction.domain';
-import { Result } from '../../../libs/exceptions/result';
+import { IAccountRepository } from '../domain/account/_ports/account.irepository';
+import { ITransactionRepository } from '../domain/transaction/_ports/transaction.irepository';
+import AccountDomain from '../domain/account/entities/account.domain';
+import TransferTransactionDomain from '../domain/transaction/entities/transaction.domain';
+import { Result } from '../core/exceptions/result';
 
 @Injectable()
 export class MoneyTransferUsecase {
@@ -20,21 +20,21 @@ export class MoneyTransferUsecase {
         transferTransaction.getFrom(),
       );
 
-    if (accountOriginOfTransferOrError.isFailure) {
-      return Result.fail<void>(accountOriginOfTransferOrError.error);
-    }
-
-    const accountOriginOfTransfer = accountOriginOfTransferOrError.getValue();
-
     const accountAtReceptionOfTransferOrError =
       await this.getAccountAtReceptionOfTransferOrError(
         transferTransaction.getTo(),
       );
 
-    if (accountAtReceptionOfTransferOrError.isFailure) {
-      return Result.fail<void>(accountAtReceptionOfTransferOrError.error);
+    const gettingAccounts = Result.combine([
+      accountOriginOfTransferOrError,
+      accountAtReceptionOfTransferOrError,
+    ]);
+
+    if (gettingAccounts.isFailure) {
+      return Result.fail<void>(gettingAccounts.error);
     }
 
+    const accountOriginOfTransfer = accountOriginOfTransferOrError.getValue();
     const accountAtReceptionOfTransfer =
       accountAtReceptionOfTransferOrError.getValue();
 
@@ -51,9 +51,9 @@ export class MoneyTransferUsecase {
     const transferTransactionCompleted: AccountDomain[] =
       transferTransactionCompletedOrError.getValue();
 
-    await this.makeTransferBetweenAccounts(transferTransactionCompleted);
+    await this.updateAccountsAfterTransfer(transferTransactionCompleted);
 
-    this.TransactionRepository.saveTransaction(transferTransaction);
+    await this.TransactionRepository.saveTransaction(transferTransaction);
   }
 
   async getAccountOriginOfTransferOrError(
@@ -85,29 +85,13 @@ export class MoneyTransferUsecase {
   }
 
   async updateAccountsAfterTransfer(
-    accountOriginOfTransfer: AccountDomain,
-    accountAtReceptionOfTransfer: AccountDomain,
+    accountsAfterTransfer: AccountDomain[],
   ): Promise<void> {
-    this.AccountRepository.updateBankAccount(
-      accountOriginOfTransfer.getId(),
-      accountOriginOfTransfer,
-    );
-
-    this.AccountRepository.updateBankAccount(
-      accountAtReceptionOfTransfer.getId(),
-      accountAtReceptionOfTransfer,
-    );
-  }
-
-  async makeTransferBetweenAccounts(
-    transferTransactionCompleted: AccountDomain[],
-  ): Promise<void> {
-    const [accountOriginOfTransfer, accountAtReceptionOfTransfer] =
-      transferTransactionCompleted;
-
-    await this.updateAccountsAfterTransfer(
-      accountOriginOfTransfer,
-      accountAtReceptionOfTransfer,
-    );
+    for (const account of accountsAfterTransfer) {
+      await this.AccountRepository.updateBankAccount(
+        account.getNumber(),
+        account,
+      );
+    }
   }
 }

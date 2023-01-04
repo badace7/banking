@@ -10,11 +10,18 @@ class FakeAccountRepository implements IAccountRepository {
     ]);
   }
   async updateBankAccount(
-    accountId: string,
+    number: string,
     account: AccountDomain,
-  ): Promise<void> {
-    this.fakeAccountEntityManager.delete(accountId);
-    this.fakeAccountEntityManager.set(accountId, account);
+  ): Promise<AccountDomain> {
+    const isAccountExist = this.fakeAccountEntityManager.has(number);
+
+    if (!isAccountExist) {
+      return;
+    }
+    this.fakeAccountEntityManager.delete(number);
+    this.fakeAccountEntityManager.set(number, account);
+
+    this.fakeAccountEntityManager.get(number);
   }
 
   async findBankAccount(accountNumber: string): Promise<AccountDomain> {

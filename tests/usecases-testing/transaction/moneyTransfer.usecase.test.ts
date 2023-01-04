@@ -1,6 +1,6 @@
 import FakeAccountRepository from '../../../src/infrastructure/repository/account/fakebanking.repository';
 import { IAccountRepository } from '../../../src/domain/account/_ports/account.irepository';
-import { MoneyTransferUsecase } from '../../../src/domain/transaction/usecases/MoneyTransfer.usecase';
+import { MoneyTransferUsecase } from '../../../src/usecases/MoneyTransfer.usecase';
 import { accounts } from '../../mocks/AccountsAndCustomers';
 import { ITransactionRepository } from 'src/domain/transaction/_ports/transaction.irepository';
 import FakeTransactionRepository from '../../../src/infrastructure/repository/transaction/fakeTransaction.repository';
@@ -45,7 +45,6 @@ describe('Money transfer usecases testing', () => {
 
       //WHEN Jack does the money transfer
       await moneyTransferUsecase.execute(transferTransaction);
-
       //THEN Jack's and Bob's balances should be as shown below after receiving the transfer
       expect(
         (
