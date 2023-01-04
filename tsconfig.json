@@ -20,7 +20,7 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@core/*": ["src/helpers/*"],
-      "@config/*": ["src/_config/*"]
+      "@config/*": ["src/config/*"]
     }
   }
 }
