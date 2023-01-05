@@ -15,8 +15,12 @@ class FakeTransactionRepository implements ITransactionRepository {
   ): Promise<TransferTransactionDomain> {
     return this.fakeTransactionEntityManager.get(transactionId);
   }
-  async saveTransaction(transaction: TransferTransactionDomain): Promise<void> {
+  async saveTransaction(
+    transaction: TransferTransactionDomain,
+  ): Promise<TransferTransactionDomain> {
     this.fakeTransactionEntityManager.set(transaction.getId(), transaction);
+
+    return this.fakeTransactionEntityManager.get(transaction.getId());
   }
 }
 export default FakeTransactionRepository;

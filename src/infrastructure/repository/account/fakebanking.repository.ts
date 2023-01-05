@@ -21,7 +21,7 @@ class FakeAccountRepository implements IAccountRepository {
     this.fakeAccountEntityManager.delete(number);
     this.fakeAccountEntityManager.set(number, account);
 
-    this.fakeAccountEntityManager.get(number);
+    return this.fakeAccountEntityManager.get(number);
   }
 
   async findBankAccount(accountNumber: string): Promise<AccountDomain> {

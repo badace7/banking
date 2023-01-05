@@ -39,22 +39,24 @@ export class MoneyTransferUsecase implements ITransferRequest {
     const accountAtReceptionOfTransfer =
       accountAtReceptionOfTransferOrError.getValue();
 
-    const transferTransactionCompletedOrError =
-      transferTransaction.makeTransfer(
-        accountOriginOfTransfer,
-        accountAtReceptionOfTransfer,
-      );
+    const transferCompletedOrError = await this.makeTransferBetweenAccounts(
+      accountOriginOfTransfer,
+      accountAtReceptionOfTransfer,
+      transferTransaction.getAmount(),
+    );
 
-    if (transferTransactionCompletedOrError.isFailure) {
-      return Result.fail<void>(transferTransactionCompletedOrError.error);
+    if (transferCompletedOrError.isFailure) {
+      return Result.fail<void>(transferCompletedOrError.error);
+    }
+    const transactionSavedOrError = await this.saveTransactionAfterTransfer(
+      transferTransaction,
+    );
+
+    if (transactionSavedOrError.isFailure) {
+      return Result.fail<void>(transactionSavedOrError.error);
     }
 
-    const transferTransactionCompleted: AccountDomain[] =
-      transferTransactionCompletedOrError.getValue();
-
-    await this.updateAccountsAfterTransfer(transferTransactionCompleted);
-
-    await this.TransactionRepository.saveTransaction(transferTransaction);
+    return Result.ok<void>();
   }
 
   async getAccountOriginOfTransferOrError(
@@ -85,14 +87,74 @@ export class MoneyTransferUsecase implements ITransferRequest {
     return Result.ok<AccountDomain>(isAccountAtReceptionOfTransferFound);
   }
 
-  async updateAccountsAfterTransfer(
-    accountsAfterTransfer: AccountDomain[],
-  ): Promise<void> {
-    for (const account of accountsAfterTransfer) {
-      await this.AccountRepository.updateBankAccount(
-        account.getNumber(),
-        account,
+  async makeTransferBetweenAccounts(
+    accountOriginOfTransfer: AccountDomain,
+    accountAtReceptionOfTransfer: AccountDomain,
+    amount: number,
+  ): Promise<Result<void>> {
+    const debitOriginAccountOrError =
+      accountOriginOfTransfer.debitAmount(amount);
+
+    if (debitOriginAccountOrError.isFailure) {
+      return Result.fail<void>(debitOriginAccountOrError.error);
+    }
+
+    accountAtReceptionOfTransfer.creditAmount(amount);
+
+    const accountHaveBeenUpdated = await this.updateAccountsAfterTransfer(
+      accountOriginOfTransfer,
+      accountAtReceptionOfTransfer,
+    );
+
+    if (accountHaveBeenUpdated.isFailure) {
+      return Result.fail<void>(accountHaveBeenUpdated.error);
+    }
+
+    return Result.ok<void>();
+  }
+  async saveTransactionAfterTransfer(
+    transferTransaction: TransferTransactionDomain,
+  ): Promise<Result<void>> {
+    const isTransactionSaved = await this.TransactionRepository.saveTransaction(
+      transferTransaction,
+    );
+
+    if (!isTransactionSaved) {
+      return Result.fail<void>(
+        'Something gone wrong, we failed to save the transaction.',
       );
     }
+
+    return Result.ok<void>();
+  }
+  async updateAccountsAfterTransfer(
+    accountOriginOfTransfer: AccountDomain,
+    accountAtReceptionOfTransfer: AccountDomain,
+  ): Promise<Result<void>> {
+    const isAccountOriginOfTransferUpdated =
+      await this.AccountRepository.updateBankAccount(
+        accountOriginOfTransfer.getNumber(),
+        accountOriginOfTransfer,
+      );
+
+    if (!isAccountOriginOfTransferUpdated) {
+      return Result.fail<void>(
+        'Cannot update the account at origin of transfer',
+      );
+    }
+
+    const isAccountAtReceptionOfTransferUpdated =
+      await this.AccountRepository.updateBankAccount(
+        accountAtReceptionOfTransfer.getNumber(),
+        accountAtReceptionOfTransfer,
+      );
+
+    if (!isAccountAtReceptionOfTransferUpdated) {
+      return Result.fail<void>(
+        'Cannot update the account at reception of transfer',
+      );
+    }
+
+    return Result.ok<void>();
   }
 }

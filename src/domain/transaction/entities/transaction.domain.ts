@@ -32,26 +32,6 @@ class TransferTransactionDomain extends Entity {
     this.date = new Date();
   }
 
-  public makeTransfer(
-    accountOriginOfTransfer: AccountDomain,
-    accountAtReceptionOfTransfer: AccountDomain,
-  ): Result<AccountDomain[]> {
-    const debitOriginAccountOrError = accountOriginOfTransfer.debitAmount(
-      this.amount,
-    );
-
-    if (debitOriginAccountOrError.isFailure) {
-      return Result.fail<AccountDomain[]>(debitOriginAccountOrError.error);
-    }
-
-    accountAtReceptionOfTransfer.creditAmount(this.amount);
-
-    return Result.ok<AccountDomain[]>([
-      accountOriginOfTransfer,
-      accountAtReceptionOfTransfer,
-    ]);
-  }
-
   public getAmount(): number {
     return this.amount;
   }
