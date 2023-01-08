@@ -44,11 +44,9 @@ describe('Money transfer usecases testing', () => {
       });
 
       //WHEN Jack does the money transfer
-      const result = await moneyTransferUsecase.execute(transferTransaction);
+      await moneyTransferUsecase.execute(transferTransaction);
 
-      //THEN the transfer was successful
-      expect(result.isSuccess).toBeTruthy();
-      //AND Jack's and Bob's balances should be as shown below after receiving the transfer
+      //THEN Jack's and Bob's balances should be as shown below after receiving the transfer
       expect(
         (
           await AccountRepository.findBankAccount(jackAccount.number)
@@ -83,11 +81,10 @@ describe('Money transfer usecases testing', () => {
       });
       //AND Jack does not have sufficient balance and does not have an overdraft authorization to make this transfer
       //WHEN Jack try to do the money transfer
-      const jackGivesATry = await moneyTransferUsecase.execute(
-        transferTransaction,
-      );
+      const jackGivesATry = () =>
+        moneyTransferUsecase.execute(transferTransaction);
       //THEN the message is displayed as shown below
-      expect(jackGivesATry.getError()).toBe(
+      await expect(jackGivesATry).rejects.toThrow(
         'You cannot make this transfer because your balance is insufficient',
       );
     });

@@ -4,7 +4,7 @@ import { ITransactionRepository } from '../_ports/output/transaction.irepository
 import TransferTransactionDomain from '../entities/transaction.domain';
 import { IAccountRepository } from 'src/domain/account/_ports/account.irepository';
 import AccountDomain from 'src/domain/account/entities/account.domain';
-import { Result } from 'src/core/exceptions/result';
+import { UsecaseError } from 'src/core/exceptions/usecase.error';
 
 @Injectable()
 export class MoneyTransferUsecase implements ITransferRequest {
@@ -13,124 +13,82 @@ export class MoneyTransferUsecase implements ITransferRequest {
     @Inject('ITransactionRepository')
     private TransactionRepository: ITransactionRepository,
   ) {}
-  async execute(
-    transferTransaction: TransferTransactionDomain,
-  ): Promise<Result<void>> {
-    const accountOriginOfTransferOrError =
-      await this.getAccountOriginOfTransferOrError(
-        transferTransaction.getFrom(),
-      );
+  async execute(transferTransaction: TransferTransactionDomain): Promise<void> {
+    const accountAtOrigin = await this.getAccountOriginOfTransfer(
+      transferTransaction.getFrom(),
+    );
 
-    const accountAtReceptionOfTransferOrError =
-      await this.getAccountAtReceptionOfTransferOrError(
-        transferTransaction.getTo(),
-      );
+    const accountAtReception = await this.getAccountAtReceptionOfTransfer(
+      transferTransaction.getTo(),
+    );
 
-    const gettingAccounts = Result.combine([
-      accountOriginOfTransferOrError,
-      accountAtReceptionOfTransferOrError,
-    ]);
-
-    if (gettingAccounts.isFailure) {
-      return Result.fail<void>(gettingAccounts.error);
-    }
-
-    const accountOriginOfTransfer = accountOriginOfTransferOrError.getValue();
-    const accountAtReceptionOfTransfer =
-      accountAtReceptionOfTransferOrError.getValue();
-
-    const transferCompletedOrError = await this.makeTransferBetweenAccounts(
-      accountOriginOfTransfer,
-      accountAtReceptionOfTransfer,
+    await this.makeTransferBetweenAccounts(
+      accountAtOrigin,
+      accountAtReception,
       transferTransaction.getAmount(),
     );
 
-    if (transferCompletedOrError.isFailure) {
-      return Result.fail<void>(transferCompletedOrError.error);
-    }
-    const transactionSavedOrError = await this.saveTransactionAfterTransfer(
-      transferTransaction,
-    );
-
-    if (transactionSavedOrError.isFailure) {
-      return Result.fail<void>(transactionSavedOrError.error);
-    }
-
-    return Result.ok<void>();
+    await this.saveTransferTransaction(transferTransaction);
   }
 
-  async getAccountOriginOfTransferOrError(
+  async getAccountOriginOfTransfer(
     accountNumber: string,
-  ): Promise<Result<AccountDomain>> {
+  ): Promise<AccountDomain> {
     const isAccountOriginOfTransferFound =
       await this.AccountRepository.findBankAccount(accountNumber);
 
     if (!isAccountOriginOfTransferFound) {
-      return Result.fail<AccountDomain>(
+      throw new UsecaseError(
         'The account from which the transfer originated was not found.',
       );
     }
-    return Result.ok<AccountDomain>(isAccountOriginOfTransferFound);
+    return isAccountOriginOfTransferFound;
   }
 
-  async getAccountAtReceptionOfTransferOrError(
+  async getAccountAtReceptionOfTransfer(
     accountNumber: string,
-  ): Promise<Result<AccountDomain>> {
+  ): Promise<AccountDomain> {
     const isAccountAtReceptionOfTransferFound =
       await this.AccountRepository.findBankAccount(accountNumber);
 
     if (!isAccountAtReceptionOfTransferFound) {
-      return Result.fail<AccountDomain>(
+      throw new UsecaseError(
         'The account at the reception of the transfer was not found.',
       );
     }
-    return Result.ok<AccountDomain>(isAccountAtReceptionOfTransferFound);
+    return isAccountAtReceptionOfTransferFound;
   }
 
   async makeTransferBetweenAccounts(
     accountOriginOfTransfer: AccountDomain,
     accountAtReceptionOfTransfer: AccountDomain,
     amount: number,
-  ): Promise<Result<void>> {
-    const debitOriginAccountOrError =
-      accountOriginOfTransfer.debitAmount(amount);
-
-    if (debitOriginAccountOrError.isFailure) {
-      return Result.fail<void>(debitOriginAccountOrError.error);
-    }
-
+  ): Promise<void> {
+    accountOriginOfTransfer.debitAmount(amount);
     accountAtReceptionOfTransfer.creditAmount(amount);
 
-    const accountHaveBeenUpdated = await this.updateAccountsAfterTransfer(
+    await this.saveAccountsChanges(
       accountOriginOfTransfer,
       accountAtReceptionOfTransfer,
     );
-
-    if (accountHaveBeenUpdated.isFailure) {
-      return Result.fail<void>(accountHaveBeenUpdated.error);
-    }
-
-    return Result.ok<void>();
   }
-  async saveTransactionAfterTransfer(
+  async saveTransferTransaction(
     transferTransaction: TransferTransactionDomain,
-  ): Promise<Result<void>> {
+  ): Promise<void> {
     const isTransactionSaved = await this.TransactionRepository.saveTransaction(
       transferTransaction,
     );
 
     if (!isTransactionSaved) {
-      return Result.fail<void>(
+      throw new UsecaseError(
         'Something gone wrong, we failed to save the transaction.',
       );
     }
-
-    return Result.ok<void>();
   }
-  async updateAccountsAfterTransfer(
+  async saveAccountsChanges(
     accountOriginOfTransfer: AccountDomain,
     accountAtReceptionOfTransfer: AccountDomain,
-  ): Promise<Result<void>> {
+  ): Promise<void> {
     const isAccountOriginOfTransferUpdated =
       await this.AccountRepository.updateBankAccount(
         accountOriginOfTransfer.getNumber(),
@@ -138,9 +96,7 @@ export class MoneyTransferUsecase implements ITransferRequest {
       );
 
     if (!isAccountOriginOfTransferUpdated) {
-      return Result.fail<void>(
-        'Cannot update the account at origin of transfer',
-      );
+      throw new UsecaseError('Cannot update the account at origin of transfer');
     }
 
     const isAccountAtReceptionOfTransferUpdated =
@@ -150,11 +106,9 @@ export class MoneyTransferUsecase implements ITransferRequest {
       );
 
     if (!isAccountAtReceptionOfTransferUpdated) {
-      return Result.fail<void>(
+      throw new UsecaseError(
         'Cannot update the account at reception of transfer',
       );
     }
-
-    return Result.ok<void>();
   }
 }
