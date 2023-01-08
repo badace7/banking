@@ -41,6 +41,12 @@ $ npm run start
 # watch mode
 $ npm run start:dev
 
+# watch mode
+$ npm run start:dev
+
+# watch mode in container with docker-compose
+$ docker-compose -f docker-compose.dev.yml up -d --build
+
 # production mode
 $ npm run start:prod
 ```
@@ -50,6 +56,13 @@ $ npm run start:prod
 ```bash
 # unit tests
 $ npm run test
+
+# tests in container with docker-compose
+$ docker-compose -f docker-compose.test.yml up
+
+# tests in container
+$ docker build -t banking-test --target test .
+$ docker run banking-test
 
 # e2e tests
 $ npm run test:e2e
@@ -71,4 +84,5 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
 # kata-social-network

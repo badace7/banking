@@ -1,0 +1,11 @@
+services:
+  banking-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - 8080:8080
+    volumes:
+      - ./src:/usr/app/src
+      

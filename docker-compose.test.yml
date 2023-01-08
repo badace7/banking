@@ -1,0 +1,10 @@
+services:
+  banking-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: test
+    ports:
+      - 8080:8080
+    volumes:
+      - ./src:/usr/app/src
