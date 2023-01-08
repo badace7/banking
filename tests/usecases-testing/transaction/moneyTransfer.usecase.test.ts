@@ -1,10 +1,10 @@
-import FakeAccountRepository from '../../../src/infrastructure/repository/account/fakebanking.repository';
-import { IAccountRepository } from '../../../src/domain/account/_ports/account.irepository';
-import { MoneyTransferUsecase } from '../../../src/domain/transaction/usecases/moneytransfer.usecase';
-import { accounts } from '../../mocks/AccountsAndCustomers';
+import { IAccountRepository } from 'src/domain/account/_ports/account.irepository';
+import TransferTransactionDomain from 'src/domain/transaction/entities/transaction.domain';
+import { MoneyTransferUsecase } from 'src/domain/transaction/usecases/moneytransfer.usecase';
 import { ITransactionRepository } from 'src/domain/transaction/_ports/output/transaction.irepository';
-import FakeTransactionRepository from '../../../src/infrastructure/repository/transaction/fakeTransaction.repository';
-import TransferTransactionDomain from '../../../src/domain/transaction/entities/transaction.domain';
+import FakeAccountRepository from 'src/infrastructure/repository/account/fakebanking.repository';
+import FakeTransactionRepository from 'src/infrastructure/repository/transaction/fakeTransaction.repository';
+import { accounts } from '../../mocks/AccountsAndCustomers';
 
 describe('Money transfer usecases testing', () => {
   let moneyTransferUsecase: MoneyTransferUsecase;
@@ -86,7 +86,6 @@ describe('Money transfer usecases testing', () => {
       const jackGivesATry = await moneyTransferUsecase.execute(
         transferTransaction,
       );
-
       //THEN the message is displayed as shown below
       expect(jackGivesATry.getError()).toBe(
         'You cannot make this transfer because your balance is insufficient',

@@ -1,4 +1,4 @@
-import { Entity } from '../../../core/domain/Entity';
+import { Entity } from 'src/core/domain/Entity';
 
 type CustomerProperties = {
   id?: string;

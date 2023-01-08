@@ -1,5 +1,5 @@
-import { ICustomerRepository } from '../../../domain/customer/_ports/customer.irepository';
-import CustomerDomain from '../../../domain/customer/entities/customer.domain';
+import CustomerDomain from 'src/domain/customer/entities/customer.domain';
+import { ICustomerRepository } from 'src/domain/customer/_ports/customer.irepository';
 
 class FakeCustomerRepository implements ICustomerRepository {
   private fakeCustomerEntityManager;

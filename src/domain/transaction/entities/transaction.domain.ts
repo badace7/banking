@@ -1,6 +1,4 @@
-import AccountDomain from '../../account/entities/account.domain';
-import { Result } from '../../../core/exceptions/Result';
-import { Entity } from '../../../core/domain/Entity';
+import { Entity } from 'src/core/domain/Entity';
 
 type TransferTransactionProperties = {
   id?: string;

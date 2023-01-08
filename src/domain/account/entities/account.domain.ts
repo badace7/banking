@@ -1,5 +1,5 @@
-import { Entity } from '../../../core/domain/Entity';
-import { Result } from '../../../core/exceptions/Result';
+import { Entity } from 'src/core/domain/Entity';
+import { Result } from 'src/core/exceptions/result';
 
 type AccountProperties = {
   id?: string;
