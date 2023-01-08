@@ -2,8 +2,8 @@ import { IAccountRepository } from 'src/domain/account/_ports/account.irepositor
 import TransferTransactionDomain from 'src/domain/transaction/entities/transaction.domain';
 import { MoneyTransferUsecase } from 'src/domain/transaction/usecases/moneytransfer.usecase';
 import { ITransactionRepository } from 'src/domain/transaction/_ports/output/transaction.irepository';
-import FakeAccountRepository from 'src/infrastructure/repository/account/fakebanking.repository';
-import FakeTransactionRepository from 'src/infrastructure/repository/transaction/fakeTransaction.repository';
+import FakeAccountRepository from 'src/infrastructure/fakeRepositories/account/fakebanking.repository';
+import FakeTransactionRepository from 'src/infrastructure/fakeRepositories/transaction/fakeTransaction.repository';
 import { accounts } from '../../mocks/AccountsAndCustomers';
 
 describe('Money transfer usecases testing', () => {

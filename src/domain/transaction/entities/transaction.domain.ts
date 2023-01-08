@@ -9,7 +9,6 @@ type TransferTransactionProperties = {
 };
 
 class TransferTransactionDomain extends Entity {
-  private type: string;
   private amount: number;
   private label: string;
   private date: Date;
