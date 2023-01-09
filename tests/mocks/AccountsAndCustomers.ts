@@ -15,6 +15,7 @@ const bobAccount = AccountDomain.create({
   number: '0987',
   balance: 1000,
   customer: bob.getId(),
+  overdraftAuthorization: 500,
 });
 
 const jackAccount = AccountDomain.create({

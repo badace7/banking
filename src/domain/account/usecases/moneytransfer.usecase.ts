@@ -4,7 +4,7 @@ import { ITransactionRepository } from '../_ports/output/transaction.irepository
 import TransferTransactionDomain from '../entities/transaction.domain';
 import { IAccountRepository } from 'src/domain/account/_ports/output/account.irepository';
 import AccountDomain from 'src/domain/account/entities/account.domain';
-import { UsecaseError } from 'src/core/exceptions/usecase.error';
+import { UsecaseError } from 'src/libs/exceptions/usecase.error';
 
 @Injectable()
 export class MoneyTransferUsecase implements ITransferRequest {
@@ -22,11 +22,12 @@ export class MoneyTransferUsecase implements ITransferRequest {
       transferTransaction.getTo(),
     );
 
-    await this.makeTransferBetweenAccounts(
-      accountAtOrigin,
+    accountAtOrigin.transferTo(
       accountAtReception,
       transferTransaction.getAmount(),
     );
+
+    await this.saveAccountsChanges(accountAtOrigin, accountAtReception);
 
     await this.saveTransferTransaction(transferTransaction);
   }
@@ -59,19 +60,6 @@ export class MoneyTransferUsecase implements ITransferRequest {
     return isAccountAtReceptionOfTransferFound;
   }
 
-  async makeTransferBetweenAccounts(
-    accountOriginOfTransfer: AccountDomain,
-    accountAtReceptionOfTransfer: AccountDomain,
-    amount: number,
-  ): Promise<void> {
-    accountOriginOfTransfer.debitAmount(amount);
-    accountAtReceptionOfTransfer.creditAmount(amount);
-
-    await this.saveAccountsChanges(
-      accountOriginOfTransfer,
-      accountAtReceptionOfTransfer,
-    );
-  }
   async saveTransferTransaction(
     transferTransaction: TransferTransactionDomain,
   ): Promise<void> {
