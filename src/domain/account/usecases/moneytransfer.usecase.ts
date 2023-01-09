@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ITransferRequest } from '../_ports/input/transfer.irequest';
 import { ITransactionRepository } from '../_ports/output/transaction.irepository';
 import TransferTransactionDomain from '../entities/transaction.domain';
-import { IAccountRepository } from 'src/domain/account/_ports/account.irepository';
+import { IAccountRepository } from 'src/domain/account/_ports/output/account.irepository';
 import AccountDomain from 'src/domain/account/entities/account.domain';
 import { UsecaseError } from 'src/core/exceptions/usecase.error';
 

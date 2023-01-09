@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import FakeAccountRepository from '../../infrastructure/fakeRepositories/account/fakebanking.repository';
-import { TransactionController } from '../../infrastructure/http/account/banking.controller';
-import { MoneyTransferUsecase } from '../../domain/transaction/usecases/moneytransfer.usecase';
+import { AccountController } from 'src/infrastructure/http/transaction/transaction.controller';
+import { MoneyTransferUsecase } from '../../domain/account/usecases/moneytransfer.usecase';
 import FakeTransactionRepository from 'src/infrastructure/fakeRepositories/transaction/fakeTransaction.repository';
 
-const transactionUsecasesToInject = [MoneyTransferUsecase];
+const usecasesToInject = [MoneyTransferUsecase];
 const outputPortDI = [
   { provide: 'IAccountRepository', useClass: FakeAccountRepository },
   { provide: 'ITransactionRepository', useClass: FakeTransactionRepository },
@@ -15,7 +15,7 @@ const inputPortDI = [
 
 @Module({
   imports: [],
-  controllers: [TransactionController],
-  providers: [...transactionUsecasesToInject, ...outputPortDI, ...inputPortDI],
+  controllers: [AccountController],
+  providers: [...usecasesToInject, ...outputPortDI, ...inputPortDI],
 })
-export class TransactionModule {}
+export class AccountModule {}

@@ -1,5 +1,5 @@
-import { ITransactionRepository } from '../../../domain/transaction/_ports/output/transaction.irepository';
-import TransferTransactionDomain from '../../../domain/transaction/entities/transaction.domain';
+import { ITransactionRepository } from '../../../domain/account/_ports/output/transaction.irepository';
+import TransferTransactionDomain from '../../../domain/account/entities/transaction.domain';
 
 class FakeTransactionRepository implements ITransactionRepository {
   private fakeTransactionEntityManager: Map<string, TransferTransactionDomain>;
@@ -21,6 +21,9 @@ class FakeTransactionRepository implements ITransactionRepository {
     this.fakeTransactionEntityManager.set(transaction.getId(), transaction);
 
     return this.fakeTransactionEntityManager.get(transaction.getId());
+  }
+  async getAll(): Promise<TransferTransactionDomain[]> {
+    return Array.from(this.fakeTransactionEntityManager.values());
   }
 }
 export default FakeTransactionRepository;

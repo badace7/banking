@@ -1,9 +1,9 @@
 import { Controller, Get, HttpStatus, Inject, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { ITransferRequest } from 'src/domain/transaction/_ports/input/transfer.irequest';
+import { ITransferRequest } from 'src/domain/account/_ports/input/transfer.irequest';
 
-@Controller('transaction')
-export class TransactionController {
+@Controller('account')
+export class AccountController {
   constructor(
     @Inject('ITransferRequest')
     private readonly MoneyTransfer: ITransferRequest,

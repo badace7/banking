@@ -5,4 +5,5 @@ export interface ITransactionRepository {
   saveTransaction(
     transaction: TransferTransactionDomain,
   ): Promise<TransferTransactionDomain>;
+  getAll(): Promise<TransferTransactionDomain[]>;
 }
