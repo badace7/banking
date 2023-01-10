@@ -1,4 +1,4 @@
-import AccountDomain from 'src/domain/account/entities/account.domain';
+import AccountDomain from 'src/domain/account/models/account.domain';
 import { IAccountRepository } from 'src/domain/account/_ports/output/account.irepository';
 
 class FakeAccountRepository implements IAccountRepository {

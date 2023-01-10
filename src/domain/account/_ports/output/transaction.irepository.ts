@@ -1,9 +1,7 @@
-import TransferTransactionDomain from '../../entities/transaction.domain';
+import TransferDomain from '../../models/transfer.domain';
 
 export interface ITransactionRepository {
-  findTransaction(transactionId: string): Promise<TransferTransactionDomain>;
-  saveTransaction(
-    transaction: TransferTransactionDomain,
-  ): Promise<TransferTransactionDomain>;
-  getAll(): Promise<TransferTransactionDomain[]>;
+  findTransaction(transactionId: string): Promise<TransferDomain>;
+  saveTransaction(transaction: TransferDomain): Promise<TransferDomain>;
+  getAll(): Promise<TransferDomain[]>;
 }

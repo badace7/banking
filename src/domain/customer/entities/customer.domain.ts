@@ -1,45 +1,33 @@
-import { Entity } from 'src/libs/domain/Entity';
+import { Entity } from 'src/libs/domain/entity';
 
 type CustomerProperties = {
-  id?: string;
   firstName: string;
   lastName: string;
   accountNumber: string;
 };
 
-class CustomerDomain extends Entity {
-  private firstName: string;
-  private lastName: string;
-  private accountNumber: string;
-  private constructor({
-    id,
-    firstName,
-    lastName,
-    accountNumber,
-  }: CustomerProperties) {
-    super(id);
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.accountNumber = accountNumber;
+class CustomerDomain extends Entity<CustomerProperties> {
+  private constructor(properties: CustomerProperties, id?: string) {
+    super(properties, id);
   }
 
   public getlastName(): string {
-    return this.lastName;
+    return this.properties.lastName;
   }
 
   public setName(lastName: string): void {
-    this.lastName = lastName;
+    this.properties.lastName = lastName;
   }
   public getFirstName(): string {
-    return this.firstName;
+    return this.properties.firstName;
   }
 
   public setFirstName(firstName: string): void {
-    this.firstName = firstName;
+    this.properties.firstName = firstName;
   }
 
   public getAccountNumber(): string {
-    return this.accountNumber;
+    return this.properties.accountNumber;
   }
 
   public static create(customerData: CustomerProperties): CustomerDomain {

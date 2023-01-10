@@ -1,25 +1,25 @@
 import CustomerDomain from '../../src/domain/customer/entities/customer.domain';
-import AccountDomain from '../../src/domain/account/entities/account.domain';
+import AccountDomain from '../../src/domain/account/models/account.domain';
 const bob = CustomerDomain.create({
   firstName: 'Bob',
   lastName: 'Dylan',
-  accountNumber: '0987',
+  accountNumber: '98797897897',
 });
 const jack = CustomerDomain.create({
   firstName: 'Jack',
   lastName: 'Fisher',
-  accountNumber: '0123',
+  accountNumber: '12312312312',
 });
 
 const bobAccount = AccountDomain.create({
-  number: '0987',
+  number: '98797897897',
   balance: 1000,
   customer: bob.getId(),
   overdraftAuthorization: 500,
 });
 
 const jackAccount = AccountDomain.create({
-  number: '0123',
+  number: '12312312312',
   balance: 1000,
   customer: jack.getId(),
 });

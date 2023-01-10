@@ -1,9 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ITransferRequest } from '../_ports/input/transfer.irequest';
-import { ITransactionRepository } from '../_ports/output/transaction.irepository';
-import TransferTransactionDomain from '../entities/transaction.domain';
-import { IAccountRepository } from 'src/domain/account/_ports/output/account.irepository';
-import AccountDomain from 'src/domain/account/entities/account.domain';
+import { ITransferRequest } from '../../input/transfer.irequest';
+import { IAccountRepository } from '../../_ports/output/account.irepository';
+import { ITransactionRepository } from '../../_ports/output/transaction.irepository';
+import { CreateTransferCommand } from '../../commands/transfer.command';
+import AccountDomain from '../../models/account.domain';
+import TransferDomain from '../../models/transfer.domain';
 import { UsecaseError } from 'src/libs/exceptions/usecase.error';
 
 @Injectable()
@@ -13,21 +14,18 @@ export class MoneyTransferUsecase implements ITransferRequest {
     @Inject('ITransactionRepository')
     private TransactionRepository: ITransactionRepository,
   ) {}
-  async execute(transferTransaction: TransferTransactionDomain): Promise<void> {
-    const accountAtOrigin = await this.getAccountOriginOfTransfer(
-      transferTransaction.getFrom(),
-    );
+  async execute(command: CreateTransferCommand): Promise<void> {
+    const accountAtOrigin = await this.getAccountOriginOfTransfer(command.from);
 
     const accountAtReception = await this.getAccountAtReceptionOfTransfer(
-      transferTransaction.getTo(),
+      command.to,
     );
 
-    accountAtOrigin.transferTo(
-      accountAtReception,
-      transferTransaction.getAmount(),
-    );
+    accountAtOrigin.transferTo(accountAtReception, command.amount);
 
     await this.saveAccountsChanges(accountAtOrigin, accountAtReception);
+
+    const transferTransaction = TransferDomain.create(command);
 
     await this.saveTransferTransaction(transferTransaction);
   }
@@ -61,7 +59,7 @@ export class MoneyTransferUsecase implements ITransferRequest {
   }
 
   async saveTransferTransaction(
-    transferTransaction: TransferTransactionDomain,
+    transferTransaction: TransferDomain,
   ): Promise<void> {
     const isTransactionSaved = await this.TransactionRepository.saveTransaction(
       transferTransaction,

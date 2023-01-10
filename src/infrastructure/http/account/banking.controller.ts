@@ -1,6 +1,6 @@
 import { Controller, Get, HttpStatus, Inject, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { ITransferRequest } from 'src/domain/account/_ports/input/transfer.irequest';
+import { ITransferRequest } from 'src/domain/account/input/transfer.irequest';
 
 @Controller('transaction')
 export class TransactionController {
