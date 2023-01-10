@@ -1,5 +1,5 @@
 import { AggregateRoot } from 'src/libs/domain/aggregate.root';
-import { TransferCreated } from '../events/transfer.created';
+import { TransferCreatedEvent } from '../events/transfercreated.event';
 
 type TransferProperties = {
   label: string;
@@ -36,7 +36,7 @@ class TransferDomain extends AggregateRoot<TransferProperties> {
 
   static create(transaction: TransferProperties): TransferDomain {
     const transfer = new TransferDomain(transaction);
-    const transferEvent = new TransferCreated(transfer);
+    const transferEvent = new TransferCreatedEvent(transfer);
     transfer.addDomainEvent(transferEvent);
     return transfer;
   }

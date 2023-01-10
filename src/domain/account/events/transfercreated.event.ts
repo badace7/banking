@@ -1,7 +1,7 @@
 import { IDomainEvent } from 'src/libs/domain/domain.ievent';
 import TransferDomain from '../models/transfer.domain';
 
-export class TransferCreated implements IDomainEvent<TransferDomain> {
+export class TransferCreatedEvent implements IDomainEvent<TransferDomain> {
   public dateEvent: Date;
   public payload: TransferDomain;
 

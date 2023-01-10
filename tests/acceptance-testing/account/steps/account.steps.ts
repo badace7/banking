@@ -5,6 +5,7 @@ import * as request from 'supertest';
 import { expect } from 'chai';
 import { AccountModule } from '../../../../src/config/nestModules/account.module';
 import CustomerDomain from '../../../../src/domain/customer/entities/customer.domain';
+import assert from 'assert';
 
 /**
  * Scenario: A customer wants to deposite 1000E

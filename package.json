@@ -19,7 +19,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./tests/jest-e2e.json",
-    "test:e2e:account": "cucumber-js -p account"
+    "test:e2e:cucumber": "cucumber-js -p common"
   },
   "dependencies": {
     "@cucumber/pretty-formatter": "^1.0.0",
