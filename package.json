@@ -25,6 +25,7 @@
     "@cucumber/pretty-formatter": "^1.0.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/cqrs": "^9.0.1",
     "@nestjs/platform-express": "^9.0.0",
     "chai": "^4.3.6",
     "reflect-metadata": "^0.1.13",

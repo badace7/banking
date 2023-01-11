@@ -1,14 +1,16 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { ITransferRequest } from '../../_ports/input/transfer.irequest';
+import { Inject } from '@nestjs/common';
 import { IAccountRepository } from '../../_ports/output/account.irepository';
 import { ITransactionRepository } from '../../_ports/output/transaction.irepository';
 import { CreateTransferCommand } from '../../commands/transfer.command';
 import AccountDomain from '../../models/account.domain';
 import TransferDomain from '../../models/transfer.domain';
 import { UsecaseError } from 'src/libs/exceptions/usecase.error';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-@Injectable()
-export class MoneyTransferUsecase implements ITransferRequest {
+@CommandHandler(CreateTransferCommand)
+export class MoneyTransferUsecase
+  implements ICommandHandler<CreateTransferCommand>
+{
   constructor(
     @Inject('IAccountRepository') private AccountRepository: IAccountRepository,
     @Inject('ITransactionRepository')

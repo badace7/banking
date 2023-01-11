@@ -25,6 +25,8 @@ class FakeAccountRepository implements IAccountRepository {
   }
 
   async findBankAccount(accountNumber: string): Promise<AccountDomain> {
+    console.log('in fake repo', this.fakeAccountEntityManager);
+
     return this.fakeAccountEntityManager.get(accountNumber);
   }
 
