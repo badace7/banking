@@ -1,19 +1,19 @@
-import { IDomainEvent } from './domain.ievent';
+import { IEvent } from './domain.ievent';
 import { Entity } from './entity';
 
 export abstract class AggregateRoot<T> extends Entity<T> {
-  private domainEvents: IDomainEvent<unknown>[] = [];
+  private domainEvents: IEvent[] = [];
 
-  getDomainEvents(): IDomainEvent<unknown>[] {
+  getDomainEvents(): IEvent[] {
     return this.domainEvents;
   }
 
-  protected addDomainEvent(event: IDomainEvent<unknown>): void {
+  protected addDomainEvent(event: IEvent): void {
     this.domainEvents.push(event);
     this.logEvent(event);
   }
 
-  private logEvent(event: IDomainEvent<unknown>): void {
+  private logEvent(event: IEvent): void {
     console.info(
       `[Event Created]: ${this.constructor.name} make ${event.constructor.name}`,
     );

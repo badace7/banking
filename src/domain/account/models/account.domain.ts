@@ -1,6 +1,6 @@
 import { Entity } from 'src/libs/domain/entity';
 
-type AccountProperties = {
+export type AccountProperties = {
   number: string;
   balance: number;
   customer: string;

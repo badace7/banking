@@ -20,7 +20,6 @@ export class MoneyTransferUsecase implements ITransferRequest {
     const accountAtReception = await this.getAccountAtReceptionOfTransfer(
       command.to,
     );
-
     accountAtOrigin.transferTo(accountAtReception, command.amount);
 
     await this.saveAccountsChanges(accountAtOrigin, accountAtReception);

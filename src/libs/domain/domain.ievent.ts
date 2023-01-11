@@ -1,5 +1,4 @@
-export interface IDomainEvent<T> {
+export interface IEvent {
   dateEvent: Date;
   getId(): string;
-  getPayload(): T;
 }

@@ -1,20 +1,23 @@
-import { IDomainEvent } from 'src/libs/domain/domain.ievent';
-import TransferDomain from '../models/transfer.domain';
+import { IEvent } from 'src/libs/domain/domain.ievent';
 
-export class TransferCreatedEvent implements IDomainEvent<TransferDomain> {
+type transferEventProps = {
+  label: string;
+  amount: number;
+  from: string;
+  to: string;
+};
+
+export class TransferCreatedEvent implements IEvent {
+  public id: string;
   public dateEvent: Date;
-  public payload: TransferDomain;
+  public payload: transferEventProps;
 
-  constructor(transferTransaction: TransferDomain) {
+  constructor(transferTransaction: transferEventProps, id: string) {
+    this.id = id;
     this.dateEvent = new Date();
     this.payload = transferTransaction;
   }
-
   getId(): string {
-    return this.payload.getId();
-  }
-
-  getPayload(): TransferDomain {
-    return this.payload;
+    return this.id;
   }
 }
