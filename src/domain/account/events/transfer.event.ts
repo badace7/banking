@@ -7,15 +7,17 @@ type transferEventProps = {
   to: string;
 };
 
-export class TransferCreatedEvent implements IEvent {
-  public id: string;
-  public dateEvent: Date;
-  public payload: transferEventProps;
+export class TransferEvent implements IEvent {
+  public readonly id: string;
+  public readonly type: string;
+  public readonly payload: transferEventProps;
+  public readonly dateEvent: Date;
 
   constructor(transferTransaction: transferEventProps, id: string) {
     this.id = id;
-    this.dateEvent = new Date();
+    this.type = 'CREATE';
     this.payload = transferTransaction;
+    this.dateEvent = new Date();
   }
   getId(): string {
     return this.id;

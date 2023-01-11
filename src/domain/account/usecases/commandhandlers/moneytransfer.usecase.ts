@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ITransferRequest } from '../../input/transfer.irequest';
+import { ITransferRequest } from '../../_ports/input/transfer.irequest';
 import { IAccountRepository } from '../../_ports/output/account.irepository';
 import { ITransactionRepository } from '../../_ports/output/transaction.irepository';
 import { CreateTransferCommand } from '../../commands/transfer.command';
