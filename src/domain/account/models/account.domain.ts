@@ -12,10 +12,10 @@ class AccountDomain extends Entity<AccountProperties> {
     if (this.hasOverdraftAuthorization()) {
       this.checkIfAllowToPerformOperationWithOverdraft(amount);
       this.properties.balance = this.properties.balance - amount;
-      return;
+    } else {
+      this.checkIfBalancePermitOperation(amount);
+      this.properties.balance -= amount;
     }
-    this.checkIfBalancePermitOperation(amount);
-    this.properties.balance -= amount;
   }
 
   creditAmount(amount: number): void {

@@ -1,7 +1,6 @@
 FROM node:16.14.0-alpine as base
-WORKDIR /usr/app
-COPY package.json ./
-COPY package-lock.json ./
+WORKDIR /usr/src/app
+COPY ["package.json", "package-lock.json", "tsconfig.json", ".env", "./"]
 RUN npm ci
 COPY . ./
 

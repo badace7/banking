@@ -13,6 +13,10 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
+  afterEach(async () => {
+    await app.close();
+  });
+
   it('should transfer 1000€ from one customer account to another', async () => {
     //GIVEN customers named Jack and bob
     //AND They have a bank account with account numbers as shown below
