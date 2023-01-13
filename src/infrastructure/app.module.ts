@@ -7,6 +7,7 @@ import { AccountModule } from './account/account.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
+      envFilePath: `${process.cwd()}/.env.${process.env.NODE_ENV}`,
       isGlobal: true,
       load: [postgresConfig],
     }),
