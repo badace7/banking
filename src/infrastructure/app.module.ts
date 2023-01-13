@@ -13,20 +13,8 @@ import { AccountModule } from './account/account.module';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get('DB_HOST'),
-        port: configService.get('DB_PORT'),
-        username: configService.get('DB_USER'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_NAME'),
-        entities: ['dist/**/*.entity.{ts,js}'],
-        synchronize: true,
-        logging: true,
-        migrations: ['dist/migrations/*.{ts,js}'],
-        migrationTableName: 'migrations_banking',
-        migrationsRun: true,
-      }),
+      useFactory: async (configService: ConfigService) =>
+        configService.get('database'),
     }),
     AccountModule,
   ],

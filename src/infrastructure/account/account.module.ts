@@ -4,9 +4,10 @@ import { MoneyTransferUsecase } from '../../domain/account/usecases/commandhandl
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AccountEntity } from './entities/account.entity';
-import { TransferEntity } from '../transaction/transaction.entity';
+import { TransferEntity } from '../transaction/transfer.entity';
 import { AccountRepository } from './repositories/account.repository';
-import { TransferRepository } from '../transaction/transaction.repository';
+import { TransferRepository } from '../transaction/transfer.repository';
+import { CustomerEntity } from '../customer/customer.entity';
 
 export const usecasesToInject = [MoneyTransferUsecase];
 const fakeOutputPortDI = [
@@ -17,7 +18,7 @@ const fakeOutputPortDI = [
 @Module({
   imports: [
     CqrsModule,
-    TypeOrmModule.forFeature([AccountEntity, TransferEntity]),
+    TypeOrmModule.forFeature([AccountEntity, CustomerEntity, TransferEntity]),
   ],
   exports: [TypeOrmModule],
   controllers: [AccountController],

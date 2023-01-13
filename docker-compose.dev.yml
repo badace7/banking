@@ -3,11 +3,11 @@ services:
     image: postgres:14-alpine
     restart: always
     environment:
-      POSTGRES_USER: bankuser
-      POSTGRES_PASSWORD: bankpassword
-      POSTGRES_DB: banking_db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
-      - 5432:5432
+      - ${DB_PORT}:5432
     volumes:
       - db_volume:/var/lib/postgresql/data
     networks:
@@ -19,8 +19,8 @@ services:
     container_name: pgadmin_container
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@email.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
       PGADMIN_LISTEN_PORT: 80
     ports:
       - 5050:80
@@ -29,25 +29,21 @@ services:
     networks:
       - db_network
 
-  # api:
-  #   depends_on:
-  #     - db
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #     target: dev
-  #   environment:
-  #     DB_NAME: banking_db
-  #     DB_HOST: localhost
-  #     DB_PORT: 5432
-  #     DB_USER: bankuser
-  #     DB_PASSWORD: bankpassword
-  #   ports:
-  #     - 8080:8080
-  #   volumes:
-  #     - ./src:/usr/app/src
-  #   networks:
-  #     - db_network
+  api:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+    volumes:
+      - ./src:/usr/app/src
+    networks:
+      - db_network
 
 volumes:
   db_volume:

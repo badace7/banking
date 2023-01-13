@@ -1,10 +1,10 @@
-import { IAccountRepository } from 'src/domain/account/_ports/output/account.irepository';
-import { MoneyTransferUsecase } from 'src/domain/account/usecases/commandhandlers/moneytransfer.usecase';
-import FakeAccountRepository from 'src/infrastructure/account/fakeRepositories/fakebanking.repository';
-import FakeTransactionRepository from 'src/infrastructure/transaction/fakeTransaction.repository';
-import { accounts } from '../../mocks/AccountsAndCustomers';
-import { ITransactionRepository } from 'src/domain/account/_ports/output/transaction.irepository';
 import { CreateTransferCommand } from 'src/domain/account/commands/transfer.command';
+import { MoneyTransferUsecase } from 'src/domain/account/usecases/commandhandlers/moneytransfer.usecase';
+import { IAccountRepository } from 'src/domain/account/_ports/output/account.irepository';
+import { ITransactionRepository } from 'src/domain/account/_ports/output/transaction.irepository';
+import FakeAccountRepository from 'src/infrastructure/account/fakeRepositories/fakebanking.repository';
+import FakeTransactionRepository from 'src/infrastructure/transaction/fakeTransfer.repository';
+import { accounts } from '../../mocks/AccountsAndCustomers';
 
 describe('Money transfer usecases testing', () => {
   let moneyTransferUsecase: MoneyTransferUsecase;

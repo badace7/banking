@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import TransferDomain from 'src/domain/account/models/transfer.domain';
 import { ITransactionRepository } from 'src/domain/account/_ports/output/transaction.irepository';
 import { Repository } from 'typeorm';
-import { TransferEntity } from './transaction.entity';
+import { TransferEntity } from './transfer.entity';
 
 @Injectable()
 export class TransferRepository implements ITransactionRepository {

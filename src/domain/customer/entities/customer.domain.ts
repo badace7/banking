@@ -1,4 +1,4 @@
-import { Entity } from 'src/libs/domain/entity';
+import { Entity } from 'src/libs/domain/Entity';
 
 type CustomerProperties = {
   firstName: string;
