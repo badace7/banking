@@ -19,7 +19,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./tests/jest-e2e.json",
-    "test:e2e:cucumber": "cucumber-js -p common"
+    "test:acceptance": "cucumber-js -p default"
   },
   "dependencies": {
     "@cucumber/pretty-formatter": "^1.0.0",
@@ -59,7 +59,7 @@
     "ts-jest": "28.0.8",
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
-    "tsconfig-paths": "4.1.0",
+    "tsconfig-paths": "^4.1.2",
     "ttypescript": "^1.5.13",
     "typescript": "^4.7.4"
   }

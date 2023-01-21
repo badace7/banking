@@ -9,13 +9,13 @@ export type AccountProperties = {
 
 class AccountDomain extends Entity<AccountProperties> {
   debitAmount(amount: number): void {
-    if (this.hasOverdraftAuthorization()) {
-      this.checkIfAllowToPerformOperationWithOverdraft(amount);
-      this.properties.balance = this.properties.balance - amount;
-    } else {
+    if (!this.hasOverdraftAuthorization()) {
       this.checkIfBalancePermitOperation(amount);
       this.properties.balance -= amount;
+      return;
     }
+    this.checkIfAllowToPerformOperationWithOverdraft(amount);
+    this.properties.balance = this.properties.balance - amount;
   }
 
   creditAmount(amount: number): void {
