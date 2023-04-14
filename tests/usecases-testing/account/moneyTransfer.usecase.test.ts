@@ -130,7 +130,7 @@ describe('Money transfer usecases testing', () => {
         moneyTransferUsecase.execute(transferTransaction);
       //THEN the message is displayed as shown below
       await expect(jackGivesATry).rejects.toThrow(
-        'You cannot make this transfer because your balance is insufficient',
+        'You cannot make this transaction because your balance is insufficient',
       );
     });
 
@@ -158,7 +158,7 @@ describe('Money transfer usecases testing', () => {
         moneyTransferUsecase.execute(transferTransaction);
       //THEN the message is displayed as shown below
       await expect(bobGivesATry).rejects.toThrow(
-        'your overdraft authorization does not allow you to perform this operation',
+        'You cannot make this transaction because your balance is insufficient',
       );
     });
   });

@@ -45,7 +45,7 @@ describe('Account domain transfer testing', () => {
 
     //Assert
     expect(tryAtransfer).toThrow(
-      'You cannot make this transfer because your balance is insufficient',
+      'You cannot make this transaction because your balance is insufficient',
     );
   });
 
@@ -55,7 +55,7 @@ describe('Account domain transfer testing', () => {
       number: '98797897897',
       balance: 500,
       customer: 'BobId',
-      overdraftAuthorization: 500,
+      overdraftFacility: 500,
     });
     const jackAccount = AccountDomain.create({
       number: '12312312312',
@@ -78,7 +78,7 @@ describe('Account domain transfer testing', () => {
       number: '98797897897',
       balance: -200,
       customer: 'BobId',
-      overdraftAuthorization: 500,
+      overdraftFacility: 500,
     });
     const jackAccount = AccountDomain.create({
       number: '12312312312',
@@ -93,7 +93,7 @@ describe('Account domain transfer testing', () => {
 
     //Assert
     expect(tryAtransfer).toThrow(
-      'your overdraft authorization does not allow you to perform this operation',
+      'You cannot make this transaction because your balance is insufficient',
     );
   });
 });
