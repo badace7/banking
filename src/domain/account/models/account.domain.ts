@@ -1,4 +1,6 @@
 import { AggregateRoot } from 'src/libs/domain/aggregate.root';
+import { CreditEvent } from '../events/credit.event';
+import { DebitEvent } from '../events/debit.event';
 
 export type AccountProperties = {
   number: string;
@@ -8,22 +10,36 @@ export type AccountProperties = {
 };
 
 class AccountDomain extends AggregateRoot<AccountProperties> {
-  debitAmount(amount: number): void {
+  debitAmount(origin: string, amount: number): void {
     if (this.isNotAuthorizedToPerformOperation(amount)) {
       throw new Error(
         `You cannot make this transaction because your balance is insufficient`,
       );
     }
     this.properties.balance -= amount;
+
+    const debitEvent = new DebitEvent({
+      origin,
+      amount,
+    });
+
+    this.addDomainEvent(debitEvent);
   }
 
-  creditAmount(amount: number): void {
+  creditAmount(origin: string, amount: number): void {
     this.properties.balance += amount;
+
+    const creditEvent = new CreditEvent({
+      origin,
+      amount,
+    });
+
+    this.addDomainEvent(creditEvent);
   }
 
   transferTo(accountAtReception: AccountDomain, amount: number): void {
-    this.debitAmount(amount);
-    accountAtReception.creditAmount(amount);
+    this.debitAmount(accountAtReception.getNumber(), amount);
+    accountAtReception.creditAmount(this.getNumber(), amount);
   }
 
   private isNotAuthorizedToPerformOperation(amount: number): boolean {

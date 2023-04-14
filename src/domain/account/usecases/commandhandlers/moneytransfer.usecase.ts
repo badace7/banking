@@ -32,7 +32,7 @@ export class MoneyTransferUsecase
     await this.saveTransferTransaction(transferTransaction);
   }
 
-  async getAccountOriginOfTransfer(
+  private async getAccountOriginOfTransfer(
     accountNumber: string,
   ): Promise<AccountDomain> {
     const isAccountOriginOfTransferFound =
@@ -46,7 +46,7 @@ export class MoneyTransferUsecase
     return isAccountOriginOfTransferFound;
   }
 
-  async getAccountAtReceptionOfTransfer(
+  private async getAccountAtReceptionOfTransfer(
     accountNumber: string,
   ): Promise<AccountDomain> {
     const isAccountAtReceptionOfTransferFound =
@@ -60,7 +60,7 @@ export class MoneyTransferUsecase
     return isAccountAtReceptionOfTransferFound;
   }
 
-  async saveTransferTransaction(
+  private async saveTransferTransaction(
     transferTransaction: TransferDomain,
   ): Promise<void> {
     const isTransactionSaved = await this.TransactionRepository.saveTransaction(
@@ -73,7 +73,7 @@ export class MoneyTransferUsecase
       );
     }
   }
-  async saveAccountsChanges(
+  private async saveAccountsChanges(
     accountOriginOfTransfer: AccountDomain,
     accountAtReceptionOfTransfer: AccountDomain,
   ): Promise<void> {
