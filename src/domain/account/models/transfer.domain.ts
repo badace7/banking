@@ -1,5 +1,3 @@
-import { AggregateRoot } from 'src/libs/domain/aggregate.root';
-import { TransferEvent } from '../events/transfer.event';
 import { Entity } from 'src/libs/domain/Entity';
 
 export type TransferProperties = {

@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@cucumber/pretty-formatter": "^1.0.0",
+    "@eventstore/db-client": "^5.0.1",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
