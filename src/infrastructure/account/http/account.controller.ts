@@ -1,7 +1,7 @@
 import { Controller, HttpStatus, Post, Res, Body } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Response } from 'express';
-import { CreateTransferCommand } from 'src/domain/account/commands/transfer.command';
+import { CreateTransferCommand } from 'src/core/account/application/commands/transfer.command';
 
 @Controller('account')
 export class AccountController {

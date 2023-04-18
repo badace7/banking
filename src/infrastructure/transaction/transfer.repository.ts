@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import TransferDomain from 'src/domain/account/models/transfer.domain';
-import { ITransactionRepository } from 'src/domain/account/_ports/output/transaction.irepository';
 import { Repository } from 'typeorm';
 import { TransferEntity } from './transfer.entity';
+import { ITransactionRepository } from 'src/core/account/application/_ports/output/transaction.irepository';
+import TransferDomain from 'src/core/account/domain/transfer.domain';
 
 @Injectable()
 export class TransferRepository implements ITransactionRepository {

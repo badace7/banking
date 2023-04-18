@@ -1,4 +1,5 @@
-import AccountDomain from 'src/domain/account/models/account.domain';
+import AccountDomain from 'src/core/account/domain/account.domain';
+import TransferDomain from 'src/core/account/domain/transfer.domain';
 
 describe('Account domain transfer testing', () => {
   it('should transfer 500€ and return accounts balances', () => {
@@ -14,10 +15,16 @@ describe('Account domain transfer testing', () => {
       customer: 'jackId',
     });
 
-    const amountToTransfer = 500;
+    const transaction = TransferDomain.create({
+      label: 'remboursement',
+      amount: 500,
+      from: bobAccount.getNumber(),
+      to: jackAccount.getNumber(),
+      date: new Date(),
+    });
 
     //Act
-    bobAccount.transferTo(jackAccount, amountToTransfer);
+    bobAccount.transferTo(jackAccount, transaction);
 
     //Assert
     expect(bobAccount.getBalance()).toBe(500);
@@ -37,11 +44,16 @@ describe('Account domain transfer testing', () => {
       customer: 'jackId',
     });
 
-    const amountToTransfer = 1500;
+    const transaction = TransferDomain.create({
+      label: 'remboursement',
+      amount: 1500,
+      from: bobAccount.getNumber(),
+      to: jackAccount.getNumber(),
+      date: new Date(),
+    });
 
     //Act
-    const tryAtransfer = () =>
-      bobAccount.transferTo(jackAccount, amountToTransfer);
+    const tryAtransfer = () => bobAccount.transferTo(jackAccount, transaction);
 
     //Assert
     expect(tryAtransfer).toThrow(
@@ -62,10 +74,16 @@ describe('Account domain transfer testing', () => {
       balance: 1500,
       customer: 'jackId',
     });
-    const amountToTransfer = 700;
+    const transaction = TransferDomain.create({
+      label: 'remboursement',
+      amount: 700,
+      from: bobAccount.getNumber(),
+      to: jackAccount.getNumber(),
+      date: new Date(),
+    });
 
     //Act
-    bobAccount.transferTo(jackAccount, amountToTransfer);
+    bobAccount.transferTo(jackAccount, transaction);
 
     //Assert
     expect(bobAccount.getBalance()).toBe(-200);
@@ -85,11 +103,17 @@ describe('Account domain transfer testing', () => {
       balance: 2200,
       customer: 'jackId',
     });
-    const amountToTransfer = 400;
+
+    const transaction = TransferDomain.create({
+      label: 'remboursement',
+      amount: 400,
+      from: bobAccount.getNumber(),
+      to: jackAccount.getNumber(),
+      date: new Date(),
+    });
 
     //Act
-    const tryAtransfer = () =>
-      bobAccount.transferTo(jackAccount, amountToTransfer);
+    const tryAtransfer = () => bobAccount.transferTo(jackAccount, transaction);
 
     //Assert
     expect(tryAtransfer).toThrow(

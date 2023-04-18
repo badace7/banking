@@ -1,16 +1,14 @@
 import { Inject } from '@nestjs/common';
-import { IAccountRepository } from '../../_ports/output/account.irepository';
-import { ITransactionRepository } from '../../_ports/output/transaction.irepository';
-import { CreateTransferCommand } from '../../commands/transfer.command';
-import AccountDomain from '../../models/account.domain';
-import TransferDomain from '../../models/transfer.domain';
+import { IAccountRepository } from '../_ports/output/account.irepository';
+import { ITransactionRepository } from '../_ports/output/transaction.irepository';
+import { CreateTransferCommand } from './transfer.command';
 import { UsecaseError } from 'src/libs/exceptions/usecase.error';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import TransferDomain from 'src/core/account/domain/transfer.domain';
+import AccountDomain from 'src/core/account/domain/account.domain';
 
 @CommandHandler(CreateTransferCommand)
-export class MoneyTransferUsecase
-  implements ICommandHandler<CreateTransferCommand>
-{
+export class MoneyTransfer implements ICommandHandler<CreateTransferCommand> {
   constructor(
     @Inject('IAccountRepository') private AccountRepository: IAccountRepository,
     @Inject('ITransactionRepository')
@@ -23,11 +21,11 @@ export class MoneyTransferUsecase
       command.to,
     );
 
-    accountAtOrigin.transferTo(accountAtReception, command.amount);
+    const transferTransaction = TransferDomain.create(command);
+
+    accountAtOrigin.transferTo(accountAtReception, transferTransaction);
 
     await this.saveAccountsChanges(accountAtOrigin, accountAtReception);
-
-    const transferTransaction = TransferDomain.create(command);
 
     await this.saveTransferTransaction(transferTransaction);
   }

@@ -1,18 +1,19 @@
 import { Given, Then, When, Before, DataTable } from '@cucumber/cucumber';
 import { expect } from 'chai';
-import { CreateTransferCommand } from 'src/domain/account/commands/transfer.command';
-import AccountDomain from 'src/domain/account/models/account.domain';
-import { MoneyTransferUsecase } from 'src/domain/account/usecases/commandhandlers/moneytransfer.usecase';
-import { IAccountRepository } from 'src/domain/account/_ports/output/account.irepository';
-import { ITransactionRepository } from 'src/domain/account/_ports/output/transaction.irepository';
+import { IAccountRepository } from 'src/core/account/application/_ports/output/account.irepository';
+import { ITransactionRepository } from 'src/core/account/application/_ports/output/transaction.irepository';
+import { MoneyTransfer } from 'src/core/account/application/commands/moneytransfer.usecase';
+import { CreateTransferCommand } from 'src/core/account/application/commands/transfer.command';
+import AccountDomain from 'src/core/account/domain/account.domain';
 import FakeAccountRepository from 'src/infrastructure/account/fakeRepositories/fakebanking.repository';
+
 import FakeTransactionRepository from 'src/infrastructure/transaction/fakeTransfer.repository';
 
 /**
  * Scenario: A customer wants to transfer money to his friend
  */
 
-let moneyTransferUsecase: MoneyTransferUsecase;
+let moneyTransferUsecase: MoneyTransfer;
 let AccountRepository: IAccountRepository;
 let TransactionRepository: ITransactionRepository;
 
@@ -61,7 +62,7 @@ Given(
 );
 
 When(/^Jack does the money transfer$/, async function () {
-  moneyTransferUsecase = new MoneyTransferUsecase(
+  moneyTransferUsecase = new MoneyTransfer(
     AccountRepository,
     TransactionRepository,
   );

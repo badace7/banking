@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import AccountDomain from 'src/domain/account/models/account.domain';
-import { IAccountRepository } from 'src/domain/account/_ports/output/account.irepository';
 import { Repository } from 'typeorm';
 import { AccountEntity } from '../entities/account.entity';
+import { IAccountRepository } from 'src/core/account/application/_ports/output/account.irepository';
+import AccountDomain from 'src/core/account/domain/account.domain';
 
 @Injectable()
 export class AccountRepository implements IAccountRepository {
