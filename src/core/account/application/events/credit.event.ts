@@ -1,7 +1,7 @@
 import { v4 as createUUIDv4 } from 'uuid';
 import { IEvent } from 'src/libs/domain/domain.ievent';
 
-type creditEventProps = {
+export type creditEventProps = {
   from: string;
   amount: number;
   label: string;

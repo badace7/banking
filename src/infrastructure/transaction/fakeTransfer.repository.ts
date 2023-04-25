@@ -1,5 +1,6 @@
 import { ITransactionRepository } from 'src/core/account/application/_ports/output/transaction.irepository';
 import TransferDomain from 'src/core/account/domain/transfer.domain';
+import { IEvent } from 'src/libs/domain/domain.ievent';
 
 class FakeTransactionRepository implements ITransactionRepository {
   private fakeTransactionEntityManager: Map<string, TransferDomain>;
@@ -9,17 +10,19 @@ class FakeTransactionRepository implements ITransactionRepository {
       [transaction?.getId(), transaction],
     ]);
   }
-  async findTransaction(transactionId: string): Promise<TransferDomain> {
+  async saveTransactionEvent(
+    transactionEvents: IEvent[],
+    accountId: string,
+  ): Promise<void> {
+    await this.fakeTransactionEntityManager.set(
+      accountId,
+      transactionEvents as any,
+    );
+  }
+  async findTransactionEvent(transactionId: string): Promise<TransferDomain> {
     return this.fakeTransactionEntityManager.get(transactionId);
   }
-  async saveTransaction(transaction: TransferDomain): Promise<TransferDomain> {
-    this.fakeTransactionEntityManager.set(
-      transaction.getId(),
-      transaction.properties as any,
-    );
 
-    return this.fakeTransactionEntityManager.get(transaction.getId());
-  }
   async getAll(): Promise<TransferDomain[]> {
     return Array.from(this.fakeTransactionEntityManager.values());
   }

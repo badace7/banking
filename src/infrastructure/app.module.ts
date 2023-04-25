@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import postgresConfig from 'src/config/postgres.config';
 import { AccountModule } from './account/account.module';
+import { EventStoreModule } from 'src/config/eventstoredb.config';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AccountModule } from './account/account.module';
       useFactory: async (configService: ConfigService) =>
         configService.get('database'),
     }),
+    EventStoreModule,
     AccountModule,
   ],
 })

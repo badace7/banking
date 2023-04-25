@@ -26,8 +26,6 @@ export class MoneyTransfer implements ICommandHandler<CreateTransferCommand> {
     accountAtOrigin.transferTo(accountAtReception, transferTransaction);
 
     await this.saveAccountsChanges(accountAtOrigin, accountAtReception);
-
-    await this.saveTransferTransaction(transferTransaction);
   }
 
   private async getAccountOriginOfTransfer(
@@ -58,19 +56,6 @@ export class MoneyTransfer implements ICommandHandler<CreateTransferCommand> {
     return isAccountAtReceptionOfTransferFound;
   }
 
-  private async saveTransferTransaction(
-    transferTransaction: TransferDomain,
-  ): Promise<void> {
-    const isTransactionSaved = await this.TransactionRepository.saveTransaction(
-      transferTransaction,
-    );
-
-    if (!isTransactionSaved) {
-      throw new UsecaseError(
-        'Something gone wrong, we failed to save the transaction.',
-      );
-    }
-  }
   private async saveAccountsChanges(
     accountOriginOfTransfer: AccountDomain,
     accountAtReceptionOfTransfer: AccountDomain,
@@ -85,6 +70,11 @@ export class MoneyTransfer implements ICommandHandler<CreateTransferCommand> {
       throw new UsecaseError('Cannot update the account at origin of transfer');
     }
 
+    await this.TransactionRepository.saveTransactionEvent(
+      accountOriginOfTransfer.getDomainEvents(),
+      accountOriginOfTransfer.getId(),
+    );
+
     const isAccountAtReceptionOfTransferUpdated =
       await this.AccountRepository.updateBankAccount(
         accountAtReceptionOfTransfer.getNumber(),
@@ -96,5 +86,22 @@ export class MoneyTransfer implements ICommandHandler<CreateTransferCommand> {
         'Cannot update the account at reception of transfer',
       );
     }
+
+    await this.TransactionRepository.saveTransactionEvent(
+      accountAtReceptionOfTransfer.getDomainEvents(),
+      accountAtReceptionOfTransfer.getId(),
+    );
   }
+
+  // private async saveTransferEvent(transferEvent: IEvent): Promise<void> {
+  //   const isTransactionSaved = await this.TransactionRepository.saveTransaction(
+  //     transferTransaction,
+  //   );
+
+  //   if (!isTransactionSaved) {
+  //     throw new UsecaseError(
+  //       'Something gone wrong, we failed to save the transaction.',
+  //     );
+  //   }
+  // }
 }

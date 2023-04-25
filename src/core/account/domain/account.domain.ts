@@ -90,14 +90,18 @@ class AccountDomain extends AggregateRoot<AccountProperties> {
     return this.properties.balance;
   }
 
+  getOverdraftFacility(): number {
+    return this.properties.overdraftFacility;
+  }
+
   private constructor(properties: AccountProperties, id?: string) {
     super(properties, id);
   }
 
-  static create(account: AccountProperties): AccountDomain {
+  static create(account: AccountProperties, id?: string): AccountDomain {
     account.number = account.number ?? this.accountNumberGenerator();
     account.overdraftFacility = account.overdraftFacility ?? null;
-    return new AccountDomain(account);
+    return new AccountDomain(account, id);
   }
 }
 

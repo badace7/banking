@@ -11,5 +11,5 @@ export class AccountEntity {
   @Column()
   customer: string;
   @Column()
-  overdraftAuthorization: number;
+  overdraftFacility: number;
 }

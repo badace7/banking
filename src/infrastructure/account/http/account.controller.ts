@@ -12,9 +12,10 @@ export class AccountController {
     try {
       const command = new CreateTransferCommand(body);
       await this.commandBus.execute(command);
-      response.status(HttpStatus.OK).send('success');
+      response.status(HttpStatus.OK).send('The transfer was successful');
     } catch (error) {
-      console.error(error.message);
+      console.log(error);
+      response.status(HttpStatus.NOT_FOUND).send(error.message);
     }
   }
 }

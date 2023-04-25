@@ -1,4 +1,3 @@
-import FakeTransactionRepository from 'src/infrastructure/transaction/fakeTransfer.repository';
 import { accounts } from '../../mocks/AccountsAndCustomers';
 
 import { IAccountRepository } from 'src/core/account/application/_ports/output/account.irepository';
@@ -6,6 +5,7 @@ import { ITransactionRepository } from 'src/core/account/application/_ports/outp
 import FakeAccountRepository from 'src/infrastructure/account/fakeRepositories/fakebanking.repository';
 import { CreateTransferCommand } from 'src/core/account/application/commands/transfer.command';
 import { MoneyTransfer } from 'src/core/account/application/commands/moneytransfer.usecase';
+import FakeTransactionRepository from 'src/infrastructure/transaction/fakeTransfer.repository';
 
 describe('Money transfer usecases testing', () => {
   let moneyTransferUsecase: MoneyTransfer;
@@ -58,11 +58,6 @@ describe('Money transfer usecases testing', () => {
           await AccountRepository.findBankAccount(bobAccount.number)
         ).getBalance(),
       ).toBe(2000);
-
-      //AND The transfer transaction is created as shown below
-      expect(await TransactionRepository.getAll()).toContainEqual(
-        transferTransaction,
-      );
     });
 
     it('should transfer 2500€ from one customer account that has overdraft authorization to another', async () => {
@@ -98,11 +93,6 @@ describe('Money transfer usecases testing', () => {
           await AccountRepository.findBankAccount(jackAccount.number)
         ).getBalance(),
       ).toBe(2500);
-
-      //AND The transfer transaction is created as shown below
-      expect(await TransactionRepository.getAll()).toContainEqual(
-        transferTransaction,
-      );
     });
   });
 
