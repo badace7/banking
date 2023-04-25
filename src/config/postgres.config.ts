@@ -1,5 +1,6 @@
 export default () => ({
   database: {
+    name: 'banking',
     type: 'postgres',
     host: process.env.DB_HOST,
     port: parseInt(process.env.DB_POST, 10),

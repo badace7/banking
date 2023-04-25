@@ -1,4 +1,9 @@
-import { EventStoreDBClient, jsonEvent } from '@eventstore/db-client';
+import {
+  EventStoreDBClient,
+  FORWARDS,
+  START,
+  jsonEvent,
+} from '@eventstore/db-client';
 import { Injectable } from '@nestjs/common';
 import { ITransactionRepository } from 'src/core/account/application/_ports/output/transaction.irepository';
 import TransferDomain from 'src/core/account/domain/transfer.domain';
@@ -18,6 +23,10 @@ export class TransferRepository implements ITransactionRepository {
     );
 
     await this.client.appendToStream(accountId.toString(), events);
+    // const test = await this.client.readStream('3', { direction: FORWARDS });
+    // for await (const event of test) {
+    //   console.log(event);
+    // }
   }
   findTransactionEvent(transactionId: string): Promise<TransferDomain> {
     throw new Error('Method not implemented.');
@@ -26,4 +35,3 @@ export class TransferRepository implements ITransactionRepository {
     throw new Error('Method not implemented.');
   }
 }
-

@@ -24,6 +24,7 @@ export class migrations1673536730377 implements MigrationInterface {
 
     await queryRunner.manager.save(
       queryRunner.manager.create<AccountEntity>(AccountEntity, {
+        id: '1',
         number: '98797897897',
         balance: 1000,
         customer: '1',
@@ -33,6 +34,7 @@ export class migrations1673536730377 implements MigrationInterface {
 
     await queryRunner.manager.save(
       queryRunner.manager.create<AccountEntity>(AccountEntity, {
+        id: '2',
         number: '12312312312',
         balance: 1000,
         customer: '2',

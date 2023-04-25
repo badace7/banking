@@ -4,7 +4,7 @@ import { EventStoreDBClient } from '@eventstore/db-client';
 const EventStore = {
   provide: EventStoreDBClient,
   useFactory: () =>
-    EventStoreDBClient.connectionString('esdb://172.26.0.3:2113?tls=false'),
+    EventStoreDBClient.connectionString('esdb://172.22.0.3:2113?tls=false'),
 };
 
 @Global()
