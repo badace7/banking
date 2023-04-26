@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AccountEntity } from '../entities/account.entity';
-import { IAccountRepository } from 'src/core/account/application/_ports/output/account.irepository';
+import { AccountEntity } from './account.entity';
+import { IAccountPort } from 'src/core/account/application/_ports/account.iport';
 import AccountDomain from 'src/core/account/domain/account.domain';
 
 @Injectable()
-export class AccountRepository implements IAccountRepository {
+export class AccountPostgresAdapter implements IAccountPort {
   constructor(
     @InjectRepository(AccountEntity)
-    private readonly manager: Repository<AccountEntity>,
+    private readonly repository: Repository<AccountEntity>,
   ) {}
   async findBankAccount(accountNumber: string): Promise<AccountDomain> {
-    const account = await this.manager.findOne({
+    const account = await this.repository.findOne({
       where: {
         number: accountNumber,
       },
@@ -27,7 +27,7 @@ export class AccountRepository implements IAccountRepository {
     accountNumber: string,
     accountDomain: AccountDomain,
   ): Promise<AccountDomain> {
-    const accountAlreadySave = await this.manager.findOne({
+    const accountAlreadySave = await this.repository.findOne({
       where: {
         number: accountNumber,
       },
@@ -35,7 +35,7 @@ export class AccountRepository implements IAccountRepository {
 
     const accountToRegister = this.toEntity(accountDomain);
 
-    const accountUpdated = await this.manager.save({
+    const accountUpdated = await this.repository.save({
       ...accountAlreadySave,
       ...accountToRegister,
     });

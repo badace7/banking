@@ -13,8 +13,8 @@ export class CreditEvent implements IEvent {
   public readonly payload: creditEventProps;
   public readonly dateEvent: Date;
 
-  constructor(creditTransaction: creditEventProps) {
-    this.id = createUUIDv4();
+  constructor(creditTransaction: creditEventProps, id?: string) {
+    this.id = id ?? createUUIDv4();
     this.type = 'CREDIT';
     this.payload = creditTransaction;
     this.dateEvent = new Date();

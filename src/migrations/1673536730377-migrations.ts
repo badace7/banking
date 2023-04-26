@@ -1,4 +1,4 @@
-import { AccountEntity } from 'src/infrastructure/account/entities/account.entity';
+import { AccountEntity } from 'src/infrastructure/account/output/account.entity';
 import { CustomerEntity } from 'src/infrastructure/customer/customer.entity';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 

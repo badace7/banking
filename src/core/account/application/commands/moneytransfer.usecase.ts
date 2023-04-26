@@ -1,6 +1,6 @@
 import { Inject } from '@nestjs/common';
-import { IAccountRepository } from '../_ports/output/account.irepository';
-import { ITransactionRepository } from '../_ports/output/transaction.irepository';
+import { IAccountPort } from '../_ports/account.iport';
+import { IEventPort } from '../_ports/transaction.iport';
 import { CreateTransferCommand } from './transfer.command';
 import { UsecaseError } from 'src/libs/exceptions/usecase.error';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
@@ -10,9 +10,9 @@ import AccountDomain from 'src/core/account/domain/account.domain';
 @CommandHandler(CreateTransferCommand)
 export class MoneyTransfer implements ICommandHandler<CreateTransferCommand> {
   constructor(
-    @Inject('IAccountRepository') private AccountRepository: IAccountRepository,
-    @Inject('ITransactionRepository')
-    private TransactionRepository: ITransactionRepository,
+    @Inject('IAccountPort') private accountAdapter: IAccountPort,
+    @Inject('IEventPort')
+    private eventStoreAdapter: IEventPort,
   ) {}
   async execute(command: CreateTransferCommand): Promise<void> {
     const accountAtOrigin = await this.getAccountOriginOfTransfer(command.from);
@@ -32,7 +32,7 @@ export class MoneyTransfer implements ICommandHandler<CreateTransferCommand> {
     accountNumber: string,
   ): Promise<AccountDomain> {
     const isAccountOriginOfTransferFound =
-      await this.AccountRepository.findBankAccount(accountNumber);
+      await this.accountAdapter.findBankAccount(accountNumber);
 
     if (!isAccountOriginOfTransferFound) {
       throw new UsecaseError(
@@ -46,7 +46,7 @@ export class MoneyTransfer implements ICommandHandler<CreateTransferCommand> {
     accountNumber: string,
   ): Promise<AccountDomain> {
     const isAccountAtReceptionOfTransferFound =
-      await this.AccountRepository.findBankAccount(accountNumber);
+      await this.accountAdapter.findBankAccount(accountNumber);
 
     if (!isAccountAtReceptionOfTransferFound) {
       throw new UsecaseError(
@@ -61,7 +61,7 @@ export class MoneyTransfer implements ICommandHandler<CreateTransferCommand> {
     accountAtReceptionOfTransfer: AccountDomain,
   ): Promise<void> {
     const isAccountOriginOfTransferUpdated =
-      await this.AccountRepository.updateBankAccount(
+      await this.accountAdapter.updateBankAccount(
         accountOriginOfTransfer.getNumber(),
         accountOriginOfTransfer,
       );
@@ -70,13 +70,13 @@ export class MoneyTransfer implements ICommandHandler<CreateTransferCommand> {
       throw new UsecaseError('Cannot update the account at origin of transfer');
     }
 
-    await this.TransactionRepository.saveTransactionEvent(
+    await this.eventStoreAdapter.save(
       accountOriginOfTransfer.getDomainEvents(),
       accountOriginOfTransfer.getId(),
     );
 
     const isAccountAtReceptionOfTransferUpdated =
-      await this.AccountRepository.updateBankAccount(
+      await this.accountAdapter.updateBankAccount(
         accountAtReceptionOfTransfer.getNumber(),
         accountAtReceptionOfTransfer,
       );
@@ -87,7 +87,7 @@ export class MoneyTransfer implements ICommandHandler<CreateTransferCommand> {
       );
     }
 
-    await this.TransactionRepository.saveTransactionEvent(
+    await this.eventStoreAdapter.save(
       accountAtReceptionOfTransfer.getDomainEvents(),
       accountAtReceptionOfTransfer.getId(),
     );

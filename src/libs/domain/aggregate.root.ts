@@ -4,8 +4,12 @@ import { Entity } from './Entity';
 export abstract class AggregateRoot<T> extends Entity<T> {
   private domainEvents: IEvent[] = [];
 
-  getDomainEvents(): IEvent[] {
+  public getDomainEvents(): IEvent[] {
     return this.domainEvents;
+  }
+
+  public setDomainEvents(events: IEvent[]) {
+    this.domainEvents = events;
   }
 
   protected addDomainEvent(event: IEvent): void {

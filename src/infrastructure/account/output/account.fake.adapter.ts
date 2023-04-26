@@ -1,14 +1,9 @@
-import { IAccountRepository } from 'src/core/account/application/_ports/output/account.irepository';
+import { IAccountPort } from 'src/core/account/application/_ports/account.iport';
 import AccountDomain from 'src/core/account/domain/account.domain';
 
-class FakeAccountRepository implements IAccountRepository {
-  private fakeAccountEntityManager;
+class FakeAccountRepository implements IAccountPort {
+  private fakeAccountEntityManager: Map<string, AccountDomain> = new Map();
 
-  constructor(account?: AccountDomain) {
-    this.fakeAccountEntityManager = new Map<string, AccountDomain>([
-      [account?.getNumber(), account],
-    ]);
-  }
   async updateBankAccount(
     number: string,
     account: AccountDomain,

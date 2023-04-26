@@ -13,8 +13,8 @@ export class DebitEvent implements IEvent {
   public readonly payload: debitEventProps;
   public readonly dateEvent: Date;
 
-  constructor(debitTransaction: debitEventProps) {
-    this.id = createUUIDv4();
+  constructor(debitTransaction: debitEventProps, id?: string) {
+    this.id = id ?? createUUIDv4();
     this.type = 'DEBIT';
     this.payload = debitTransaction;
     this.dateEvent = new Date();

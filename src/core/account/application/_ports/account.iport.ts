@@ -1,6 +1,6 @@
-import AccountDomain from '../../../domain/account.domain';
+import AccountDomain from '../../domain/account.domain';
 
-export interface IAccountRepository {
+export interface IAccountPort {
   findBankAccount(accountNumber: string): Promise<AccountDomain>;
   saveBankAccount(account: AccountDomain): Promise<void>;
   updateBankAccount(

@@ -1,25 +1,24 @@
 import { Given, Then, When, Before, DataTable } from '@cucumber/cucumber';
 import { expect } from 'chai';
-import { IAccountRepository } from 'src/core/account/application/_ports/output/account.irepository';
-import { ITransactionRepository } from 'src/core/account/application/_ports/output/transaction.irepository';
+import { IAccountPort } from 'src/core/account/application/_ports/account.iport';
+import { IEventPort } from 'src/core/account/application/_ports/transaction.iport';
 import { MoneyTransfer } from 'src/core/account/application/commands/moneytransfer.usecase';
 import { CreateTransferCommand } from 'src/core/account/application/commands/transfer.command';
 import AccountDomain from 'src/core/account/domain/account.domain';
-import FakeAccountRepository from 'src/infrastructure/account/fakeRepositories/fakebanking.repository';
-
-import FakeTransactionRepository from 'src/infrastructure/transaction/fakeTransfer.repository';
+import FakeAccountRepository from 'src/infrastructure/account/output/account.fake.adapter';
+import FakeEventStorDBAdapter from 'src/infrastructure/transaction/output/eventstore.fake.adapter';
 
 /**
  * Scenario: A customer wants to transfer money to his friend
  */
 
 let moneyTransferUsecase: MoneyTransfer;
-let AccountRepository: IAccountRepository;
-let TransactionRepository: ITransactionRepository;
+let AccountRepository: IAccountPort;
+let TransactionRepository: IEventPort;
 
 Before(async function () {
   AccountRepository = new FakeAccountRepository();
-  TransactionRepository = new FakeTransactionRepository();
+  TransactionRepository = new FakeEventStorDBAdapter();
 });
 
 Given(/^Customers named Jack and Bob$/, function (table: DataTable) {

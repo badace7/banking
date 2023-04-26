@@ -1,19 +1,20 @@
 import { accounts } from '../../mocks/AccountsAndCustomers';
 
-import { IAccountRepository } from 'src/core/account/application/_ports/output/account.irepository';
-import { ITransactionRepository } from 'src/core/account/application/_ports/output/transaction.irepository';
-import FakeAccountRepository from 'src/infrastructure/account/fakeRepositories/fakebanking.repository';
+import { IAccountPort } from 'src/core/account/application/_ports/account.iport';
+import { IEventPort } from 'src/core/account/application/_ports/transaction.iport';
+
 import { CreateTransferCommand } from 'src/core/account/application/commands/transfer.command';
 import { MoneyTransfer } from 'src/core/account/application/commands/moneytransfer.usecase';
-import FakeTransactionRepository from 'src/infrastructure/transaction/fakeTransfer.repository';
+import FakeAccountRepository from 'src/infrastructure/account/output/account.fake.adapter';
+import FakeEventStorDBAdapter from 'src/infrastructure/transaction/output/eventstore.fake.adapter';
 
 describe('Money transfer usecases testing', () => {
   let moneyTransferUsecase: MoneyTransfer;
-  let AccountRepository: IAccountRepository;
-  let TransactionRepository: ITransactionRepository;
+  let AccountRepository: IAccountPort;
+  let TransactionRepository: IEventPort;
   beforeAll(async () => {
     AccountRepository = new FakeAccountRepository();
-    TransactionRepository = new FakeTransactionRepository();
+    TransactionRepository = new FakeEventStorDBAdapter();
 
     accounts.forEach((account) => {
       AccountRepository.saveBankAccount(account);
