@@ -30,7 +30,7 @@ export const createTransferFixture = () => {
       moneyTransferCommand: MoneyTransferCommand,
     ) {
       try {
-        await moneyTransferUsecase.handle(moneyTransferCommand);
+        await moneyTransferUsecase.execute(moneyTransferCommand);
       } catch (error) {
         thrownError = error;
       }

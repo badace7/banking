@@ -15,7 +15,7 @@ export class MoneyTransfer implements ICommandHandler<MoneyTransferCommand> {
     private eventStoreAdapter: IEventPort,
   ) {}
 
-  async handle(command: MoneyTransferCommand): Promise<void> {
+  async execute(command: MoneyTransferCommand): Promise<void> {
     const accountAtOrigin = await this.getAccount(command.from);
     const accountAtReception = await this.getAccount(command.to);
 

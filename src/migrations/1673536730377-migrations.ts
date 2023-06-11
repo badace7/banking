@@ -1,9 +1,63 @@
 import { AccountEntity } from 'src/infrastructure/account/output/account.entity';
 import { CustomerEntity } from 'src/infrastructure/customer/customer.entity';
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class migrations1673536730377 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.createTable(
+      new Table({
+        name: 'customers',
+        columns: [
+          {
+            name: 'id',
+            type: 'varchar',
+            isPrimary: true,
+          },
+          {
+            name: 'firstName',
+            type: 'varchar',
+          },
+          {
+            name: 'lastName',
+            type: 'varchar',
+          },
+          {
+            name: 'accountNumber',
+            type: 'varchar',
+          },
+        ],
+      }),
+    );
+
+    await queryRunner.createTable(
+      new Table({
+        name: 'accounts',
+        columns: [
+          {
+            name: 'id',
+            type: 'varchar',
+            isPrimary: true,
+          },
+          {
+            name: 'number',
+            type: 'varchar',
+          },
+          {
+            name: 'balance',
+            type: 'varchar',
+          },
+          {
+            name: 'customer',
+            type: 'varchar',
+          },
+          {
+            name: 'overdraftFacility',
+            type: 'integer',
+          },
+        ],
+      }),
+    );
+
     await queryRunner.manager.save(
       queryRunner.manager.create<CustomerEntity>(CustomerEntity, {
         id: '1',
