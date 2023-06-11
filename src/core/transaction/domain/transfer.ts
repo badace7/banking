@@ -11,25 +11,13 @@ export type TransferProperties = {
 export class TransferTransaction extends Transaction {
   readonly _type: string = 'TRANSFER';
   private constructor(
-    readonly _label: string,
-    readonly _amount: number,
-    readonly _from: string,
-    readonly _to: string,
-    readonly _date: Date,
+    readonly label: string,
+    readonly amount: number,
+    readonly from: string,
+    readonly to: string,
+    readonly date: Date,
   ) {
-    super(_amount, _date, _label);
-  }
-
-  get from(): string {
-    return this.from;
-  }
-
-  get to(): string {
-    return this.to;
-  }
-
-  get type(): string {
-    return this._type;
+    super(amount, date, label);
   }
 
   static create(transaction: TransferProperties): TransferTransaction {

@@ -4,16 +4,20 @@ export class Money {
     readonly currency: string = '€',
   ) {}
 
-  add(money: Money): Money {
-    return new Money(this.amount + money.amount);
+  add(amount: number): Money {
+    return new Money(this.amount + amount);
   }
 
-  substract(money: Money): Money {
-    return new Money(this.amount - money.amount);
+  substract(money: number): Money {
+    return new Money(this.amount - money);
   }
 
-  isGreaterThan(money: Money): boolean {
-    return this.amount > money.amount;
+  // isGreaterThan(money: Money): boolean {
+  //   return this.amount > money.amount;
+  // }
+
+  isLessThan(money: number) {
+    return this.amount < money;
   }
 
   showAmount() {

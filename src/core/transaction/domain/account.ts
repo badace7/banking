@@ -26,31 +26,15 @@ export default class Account extends AggregateRoot<AccountProperties> {
   }
 
   setTransactionToPerform(transaction: Transaction) {
-    this.transactionManager._transaction = transaction;
-  }
-
-  private get number(): string {
-    return this.props.number.value;
-  }
-
-  private get customer(): string {
-    return this.props.customer;
-  }
-
-  private get balance(): number {
-    return this.props.balance.amount;
-  }
-
-  private get overdraftFacility(): number {
-    return this.props.overdraftFacility.value.amount;
+    this.transactionManager.transaction = transaction;
   }
 
   get data() {
     return {
-      number: this.number,
-      balance: this.balance,
-      customer: this.customer,
-      overdraftFacility: this.overdraftFacility,
+      number: this.props.number.value,
+      balance: this.props.balance.amount,
+      customer: this.props.customer,
+      overdraftFacility: this.props.overdraftFacility.value,
     };
   }
 
@@ -65,9 +49,7 @@ export default class Account extends AggregateRoot<AccountProperties> {
         number: AccountNumber.createNumber(data.number),
         balance: Money.create(data.balance),
         customer: data.customer,
-        overdraftFacility: OverdraftFacility.create(
-          Money.create(data.overdraftFacility),
-        ),
+        overdraftFacility: OverdraftFacility.create(data.overdraftFacility),
       },
       id,
     );
