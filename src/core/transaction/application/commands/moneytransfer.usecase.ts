@@ -29,12 +29,12 @@ export class MoneyTransfer implements ICommandHandler<MoneyTransferCommand> {
   }
 
   private async getAccount(accountNumber: string): Promise<Account> {
-    const isAccount = await this.accountAdapter.findBankAccount(accountNumber);
+    const account = await this.accountAdapter.findBankAccount(accountNumber);
 
-    if (!isAccount) {
+    if (!account) {
       throw new UsecaseError(`The account ${accountNumber} not found.`);
     }
-    return isAccount;
+    return account;
   }
 
   private async saveAccountChanges(account: Account) {
