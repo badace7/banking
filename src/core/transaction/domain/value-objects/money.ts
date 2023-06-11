@@ -12,10 +12,6 @@ export class Money {
     return new Money(this.amount - money);
   }
 
-  // isGreaterThan(money: Money): boolean {
-  //   return this.amount > money.amount;
-  // }
-
   isLessThan(money: number) {
     return this.amount < money;
   }
