@@ -1,14 +1,14 @@
 import { EventStoreDBClient, FORWARDS, jsonEvent } from '@eventstore/db-client';
 import { Injectable } from '@nestjs/common';
-import { IEventPort } from 'src/core/account/application/_ports/transaction.iport';
+import { IEventPort } from 'src/core/transaction/application/_ports/transaction.iport';
 import {
   CreditEvent,
   creditEventProps,
-} from 'src/core/account/application/events/credit.event';
+} from 'src/core/transaction/application/events/credit.event';
 import {
   DebitEvent,
   debitEventProps,
-} from 'src/core/account/application/events/debit.event';
+} from 'src/core/transaction/application/events/debit.event';
 import { IEvent } from 'src/libs/domain/domain.ievent';
 
 @Injectable()

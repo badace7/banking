@@ -5,7 +5,7 @@ type TransferCommandProps = {
   to: string;
 };
 
-export class CreateTransferCommand {
+export class MoneyTransferCommand {
   public readonly label: string;
   public readonly amount: number;
   public readonly from: string;

@@ -6,7 +6,7 @@ import { AccountPostgresAdapter } from './output/account.postgres.adapter';
 import { EventStoreDBAdapter } from '../transaction/output/eventstoredb.adapter';
 import { CustomerEntity } from '../customer/customer.entity';
 import { AccountController } from './input/account.controller';
-import { MoneyTransfer } from 'src/core/account/application/commands/moneytransfer.usecase';
+import { MoneyTransfer } from 'src/core/transaction/application/commands/moneytransfer.usecase';
 
 export const usecasesToInject = [MoneyTransfer];
 const fakeOutputPortDI = [

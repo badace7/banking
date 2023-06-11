@@ -1,4 +1,4 @@
-import { IEventPort } from 'src/core/account/application/_ports/transaction.iport';
+import { IEventPort } from 'src/core/transaction/application/_ports/transaction.iport';
 import { IEvent } from 'src/libs/domain/domain.ievent';
 
 class FakeEventStorDBAdapter implements IEventPort {

@@ -1,7 +1,7 @@
 import { Controller, HttpStatus, Post, Res, Body } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Response } from 'express';
-import { CreateTransferCommand } from 'src/core/account/application/commands/transfer.command';
+import { MoneyTransferCommand } from 'src/core/transaction/application/commands/transfer.command';
 
 @Controller('account')
 export class AccountController {
@@ -10,7 +10,7 @@ export class AccountController {
   @Post('transfer')
   async CreateAtransfer(@Body() body: any, @Res() response: Response) {
     try {
-      const command = new CreateTransferCommand(body);
+      const command = new MoneyTransferCommand(body);
       await this.commandBus.execute(command);
       response.status(HttpStatus.OK).send('The transfer was successful');
     } catch (error) {

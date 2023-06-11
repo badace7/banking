@@ -12,22 +12,22 @@ class CustomerDomain extends Entity<CustomerProperties> {
   }
 
   public getlastName(): string {
-    return this.properties.lastName;
+    return this.props.lastName;
   }
 
   public setName(lastName: string): void {
-    this.properties.lastName = lastName;
+    this.props.lastName = lastName;
   }
   public getFirstName(): string {
-    return this.properties.firstName;
+    return this.props.firstName;
   }
 
   public setFirstName(firstName: string): void {
-    this.properties.firstName = firstName;
+    this.props.firstName = firstName;
   }
 
   public getAccountNumber(): string {
-    return this.properties.accountNumber;
+    return this.props.accountNumber;
   }
 
   public static create(customerData: CustomerProperties): CustomerDomain {

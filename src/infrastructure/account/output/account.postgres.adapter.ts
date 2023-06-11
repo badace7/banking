@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AccountEntity } from './account.entity';
-import { IAccountPort } from 'src/core/account/application/_ports/account.iport';
-import AccountDomain from 'src/core/account/domain/account.domain';
+import { IAccountPort } from 'src/core/transaction/application/_ports/account.iport';
+import Account from 'src/core/transaction/domain/account';
 
 @Injectable()
 export class AccountPostgresAdapter implements IAccountPort {
@@ -11,7 +11,7 @@ export class AccountPostgresAdapter implements IAccountPort {
     @InjectRepository(AccountEntity)
     private readonly repository: Repository<AccountEntity>,
   ) {}
-  async findBankAccount(accountNumber: string): Promise<AccountDomain> {
+  async findBankAccount(accountNumber: string): Promise<Account> {
     const account = await this.repository.findOne({
       where: {
         number: accountNumber,
@@ -20,13 +20,13 @@ export class AccountPostgresAdapter implements IAccountPort {
 
     return this.toDomain(account);
   }
-  saveBankAccount(account: AccountDomain): Promise<void> {
+  saveBankAccount(account: Account): Promise<void> {
     throw new Error('Method not implemented.');
   }
   async updateBankAccount(
     accountNumber: string,
-    accountDomain: AccountDomain,
-  ): Promise<AccountDomain> {
+    accountDomain: Account,
+  ): Promise<Account> {
     const accountAlreadySave = await this.repository.findOne({
       where: {
         number: accountNumber,
@@ -43,8 +43,8 @@ export class AccountPostgresAdapter implements IAccountPort {
     return this.toDomain(accountUpdated);
   }
 
-  private toDomain(account: AccountEntity): AccountDomain {
-    return AccountDomain.create(
+  private toDomain(account: AccountEntity): Account {
+    return Account.create(
       {
         number: account.number,
         balance: account.balance,
@@ -55,12 +55,12 @@ export class AccountPostgresAdapter implements IAccountPort {
     );
   }
 
-  private toEntity(accountDomain: AccountDomain): AccountEntity {
+  private toEntity(accountDomain: Account): AccountEntity {
     const accountEntity = new AccountEntity();
-    accountEntity.number = accountDomain.getNumber();
-    accountEntity.balance = accountDomain.getBalance();
-    accountEntity.customer = accountDomain.getCustomer();
-    accountEntity.overdraftFacility = accountDomain.getOverdraftFacility();
+    accountEntity.number = accountDomain.data.number;
+    accountEntity.balance = accountDomain.data.balance;
+    accountEntity.customer = accountDomain.data.customer;
+    accountEntity.overdraftFacility = accountDomain.data.overdraftFacility;
     accountEntity.id = accountDomain.getId();
 
     return accountEntity;

@@ -1,13 +1,10 @@
-import { IAccountPort } from 'src/core/account/application/_ports/account.iport';
-import AccountDomain from 'src/core/account/domain/account.domain';
+import { IAccountPort } from 'src/core/transaction/application/_ports/account.iport';
+import Account from 'src/core/transaction/domain/account';
 
 class FakeAccountRepository implements IAccountPort {
-  private fakeAccountEntityManager: Map<string, AccountDomain> = new Map();
+  private fakeAccountEntityManager: Map<string, Account> = new Map();
 
-  async updateBankAccount(
-    number: string,
-    account: AccountDomain,
-  ): Promise<AccountDomain> {
+  async updateBankAccount(number: string, account: Account): Promise<Account> {
     const isAccountExist = this.fakeAccountEntityManager.has(number);
 
     if (!isAccountExist) {
@@ -19,12 +16,12 @@ class FakeAccountRepository implements IAccountPort {
     return this.fakeAccountEntityManager.get(number);
   }
 
-  async findBankAccount(accountNumber: string): Promise<AccountDomain> {
+  async findBankAccount(accountNumber: string): Promise<Account> {
     return this.fakeAccountEntityManager.get(accountNumber);
   }
 
-  async saveBankAccount(account: AccountDomain): Promise<void> {
-    this.fakeAccountEntityManager.set(account.getNumber(), account);
+  async saveBankAccount(account: Account): Promise<void> {
+    this.fakeAccountEntityManager.set(account.data.number, account);
   }
 }
 

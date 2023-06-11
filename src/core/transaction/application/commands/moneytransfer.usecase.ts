@@ -1,36 +1,38 @@
 import { Inject } from '@nestjs/common';
 import { IAccountPort } from '../_ports/account.iport';
 import { IEventPort } from '../_ports/transaction.iport';
-import { CreateTransferCommand } from './transfer.command';
+import { MoneyTransferCommand } from './transfer.command';
 import { UsecaseError } from 'src/libs/exceptions/usecase.error';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import TransferDomain from 'src/core/account/domain/transfer.domain';
-import AccountDomain from 'src/core/account/domain/account.domain';
+import TransferTransaction from 'src/core/transaction/domain/transfer';
+import Account from 'src/core/transaction/domain/account';
 
-@CommandHandler(CreateTransferCommand)
-export class MoneyTransfer implements ICommandHandler<CreateTransferCommand> {
+@CommandHandler(MoneyTransferCommand)
+export class MoneyTransfer implements ICommandHandler<MoneyTransferCommand> {
   constructor(
     @Inject('IAccountPort') private accountAdapter: IAccountPort,
     @Inject('IEventPort')
     private eventStoreAdapter: IEventPort,
   ) {}
-  async execute(command: CreateTransferCommand): Promise<void> {
+  async handle(command: MoneyTransferCommand): Promise<void> {
     const accountAtOrigin = await this.getAccountOriginOfTransfer(command.from);
 
     const accountAtReception = await this.getAccountAtReceptionOfTransfer(
       command.to,
     );
 
-    const transferTransaction = TransferDomain.create(command);
+    const transferTransaction = TransferTransaction.create(command);
 
-    accountAtOrigin.transferTo(accountAtReception, transferTransaction);
+    accountAtOrigin.setTransactionToPerform(transferTransaction);
+
+    accountAtOrigin.transferTo(accountAtReception);
 
     await this.saveAccountsChanges(accountAtOrigin, accountAtReception);
   }
 
   private async getAccountOriginOfTransfer(
     accountNumber: string,
-  ): Promise<AccountDomain> {
+  ): Promise<Account> {
     const isAccountOriginOfTransferFound =
       await this.accountAdapter.findBankAccount(accountNumber);
 
@@ -44,7 +46,7 @@ export class MoneyTransfer implements ICommandHandler<CreateTransferCommand> {
 
   private async getAccountAtReceptionOfTransfer(
     accountNumber: string,
-  ): Promise<AccountDomain> {
+  ): Promise<Account> {
     const isAccountAtReceptionOfTransferFound =
       await this.accountAdapter.findBankAccount(accountNumber);
 
@@ -57,12 +59,12 @@ export class MoneyTransfer implements ICommandHandler<CreateTransferCommand> {
   }
 
   private async saveAccountsChanges(
-    accountOriginOfTransfer: AccountDomain,
-    accountAtReceptionOfTransfer: AccountDomain,
+    accountOriginOfTransfer: Account,
+    accountAtReceptionOfTransfer: Account,
   ): Promise<void> {
     const isAccountOriginOfTransferUpdated =
       await this.accountAdapter.updateBankAccount(
-        accountOriginOfTransfer.getNumber(),
+        accountOriginOfTransfer.data.number,
         accountOriginOfTransfer,
       );
 
@@ -77,7 +79,7 @@ export class MoneyTransfer implements ICommandHandler<CreateTransferCommand> {
 
     const isAccountAtReceptionOfTransferUpdated =
       await this.accountAdapter.updateBankAccount(
-        accountAtReceptionOfTransfer.getNumber(),
+        accountAtReceptionOfTransfer.data.number,
         accountAtReceptionOfTransfer,
       );
 
@@ -92,16 +94,4 @@ export class MoneyTransfer implements ICommandHandler<CreateTransferCommand> {
       accountAtReceptionOfTransfer.getId(),
     );
   }
-
-  // private async saveTransferEvent(transferEvent: IEvent): Promise<void> {
-  //   const isTransactionSaved = await this.TransactionRepository.saveTransaction(
-  //     transferTransaction,
-  //   );
-
-  //   if (!isTransactionSaved) {
-  //     throw new UsecaseError(
-  //       'Something gone wrong, we failed to save the transaction.',
-  //     );
-  //   }
-  // }
 }
