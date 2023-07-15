@@ -4,9 +4,9 @@ module.exports = {
   moduleNameMapper: {
     '^src/(.*)$': '<rootDir>/src/$1',
   },
-  testRegex: './tests/.*\\.(test|spec)?\\.(js|ts)$',
+  testRegex: './src/module/.*/tests/.*\\.(test|spec)?\\.(ts|js)$',
   moduleFileExtensions: ['ts', 'js', 'json', 'node'],
-  roots: ['<rootDir>/tests'],
+  roots: ['<rootDir>/src/module'],
   transform: {
     '.(ts|tsx)': 'ts-jest',
   },

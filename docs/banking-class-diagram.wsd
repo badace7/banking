@@ -1,0 +1,62 @@
+@startuml
+
+skin rose
+
+title Banking - Class Diagram
+
+
+class Account {
+  - id: string
+  - number: string
+  - customer: string
+  - balance: number
+  - overdraftFacility: number
+  + Account()
+}
+
+class User {
+  - id: string
+  - accountNumber: string
+  - password: string
+  + User()
+}
+
+class Identity {
+  - id: string
+  - name: string
+  - firstName: string
+  - address: string
+  - email: string
+  - profession: string
+  + Identity()
+}
+
+class Operation {
+  - id: string
+  - amount: string
+  - origin: string
+  - destination: string
+  - date: Date
+  - label: string
+  + Operation()
+}
+
+class Role {
+  - id: string
+  - role: string
+  + Role()
+}
+
+class OperationType {
+  - id: string
+  - type: string
+  + OperationType()
+}
+
+User "0.*" o-- "1" Role
+Operation "0.*" o-- "1" Account
+Operation "0.*" o-- "1" OperationType
+Account "0.*" o-- "1" User
+User "1" o-- "1" Identity
+
+@enduml

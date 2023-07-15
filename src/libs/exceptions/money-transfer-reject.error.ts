@@ -1,1 +1,1 @@
-export class TransactionRejectedError extends Error {}
+export class OperationRejectedError extends Error {}
