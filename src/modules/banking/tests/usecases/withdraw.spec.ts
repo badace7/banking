@@ -1,6 +1,6 @@
 import { OperationRejectedError } from 'src/libs/exceptions/money-transfer-reject.error';
-import { WithdrawCommand } from 'src/module/banking/application/commands/withdraw.command';
-import { OperationType } from 'src/module/banking/domain/operation';
+import { WithdrawCommand } from 'src/modules/banking/application/commands/withdraw.command';
+import { OperationType } from 'src/modules/banking/domain/operation';
 import {
   WithdrawFixture,
   createWithdrawFixture,

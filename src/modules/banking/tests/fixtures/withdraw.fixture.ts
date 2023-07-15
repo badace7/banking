@@ -1,10 +1,10 @@
-import FakeAccountRepository from 'src/module/banking/infra/account.fake.adapter';
-import FakeOperationRepository from 'src/module/banking/infra/operation.fake.adapter';
-import { StubDateProvider } from 'src/module/banking/infra/date-provider.fake.adapter';
-import { Withdraw } from 'src/module/banking/application/commands/withdraw.usecase';
-import Account from 'src/module/banking/domain/account';
-import { WithdrawCommand } from 'src/module/banking/application/commands/withdraw.command';
-import { Operation } from 'src/module/banking/domain/operation';
+import FakeAccountRepository from 'src/modules/banking/infra/account.fake.adapter';
+import FakeOperationRepository from 'src/modules/banking/infra/operation.fake.adapter';
+import { StubDateProvider } from 'src/modules/banking/infra/date-provider.fake.adapter';
+import { Withdraw } from 'src/modules/banking/application/commands/withdraw.usecase';
+import Account from 'src/modules/banking/domain/account';
+import { WithdrawCommand } from 'src/modules/banking/application/commands/withdraw.command';
+import { Operation } from 'src/modules/banking/domain/operation';
 
 export const createWithdrawFixture = () => {
   const accountRepository = new FakeAccountRepository();

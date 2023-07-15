@@ -1,5 +1,5 @@
-import { ICustomerRepository } from 'src/module/authentication/application/_ports/customer.irepository';
-import CustomerDomain from 'src/module/authentication/domain/customer.domain';
+import { ICustomerRepository } from 'src/modules/authentication/application/_ports/customer.irepository';
+import CustomerDomain from 'src/modules/authentication/domain/customer.domain';
 
 class FakeCustomerRepository implements ICustomerRepository {
   private fakeCustomerEntityManager;

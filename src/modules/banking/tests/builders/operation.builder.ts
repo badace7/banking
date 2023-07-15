@@ -1,4 +1,4 @@
-import { Operation, OperationType } from 'src/module/banking/domain/operation';
+import { Operation, OperationType } from 'src/modules/banking/domain/operation';
 
 export const OperationBuilder = ({
   id = 'operation-id',

@@ -1,7 +1,7 @@
 import { OperationRejectedError } from 'src/libs/exceptions/money-transfer-reject.error';
 import { createTransferFixture } from '../fixtures/money-transfer.fixture';
-import { OperationType } from 'src/module/banking/domain/operation';
-import { MoneyTransferCommand } from 'src/module/banking/application/commands/transfer.command';
+import { OperationType } from 'src/modules/banking/domain/operation';
+import { MoneyTransferCommand } from 'src/modules/banking/application/commands/transfer.command';
 import { TransferFixture } from '../fixtures/money-transfer.fixture';
 import { AccountBuilder } from '../builders/account.builder';
 import { OperationBuilder } from '../builders/operation.builder';

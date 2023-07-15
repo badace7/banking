@@ -1,4 +1,4 @@
-import Account from 'src/module/banking/domain/account';
+import Account from 'src/modules/banking/domain/account';
 
 export const AccountBuilder = ({
   id = 'account-id',

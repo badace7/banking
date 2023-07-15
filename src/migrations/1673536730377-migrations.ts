@@ -1,5 +1,5 @@
-import { AccountEntity } from 'src/core/transaction/infra/account/output/account.entity';
-import { CustomerEntity } from 'src/module/authentication/infra/customer/customer.entity';
+import { CustomerEntity } from 'src/modules/authentication/infra/customer/customer.entity';
+import { AccountEntity } from 'src/modules/banking/infra/account.entity';
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class migrations1673536730377 implements MigrationInterface {
