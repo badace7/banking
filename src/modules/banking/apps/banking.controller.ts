@@ -1,7 +1,8 @@
-import { Controller, HttpStatus, Post, Res, Body } from '@nestjs/common';
+import { Controller, HttpStatus, Post, Res, Body, Get } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Response } from 'express';
 import { MoneyTransferCommand } from '../application/commands/transfer.command';
+import { v4 as uuidv4 } from 'uuid';
 
 @Controller('banking')
 export class BankingController {
@@ -11,7 +12,7 @@ export class BankingController {
   async CreateAtransfer(@Body() body: any, @Res() response: Response) {
     try {
       const command = new MoneyTransferCommand(
-        body.id,
+        uuidv4(),
         body.label,
         body.amount,
         body.origin,
@@ -23,5 +24,10 @@ export class BankingController {
       console.log(error);
       response.status(HttpStatus.NOT_FOUND).send(error.message);
     }
+  }
+
+  @Get('test')
+  async test(@Res() response: Response) {
+    response.status(HttpStatus.OK).send('The transfer was successful');
   }
 }

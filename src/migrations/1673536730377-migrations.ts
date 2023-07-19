@@ -1,5 +1,6 @@
 import { CustomerEntity } from 'src/modules/authentication/infra/customer/customer.entity';
 import { AccountEntity } from 'src/modules/banking/infra/account.entity';
+import { OperationType } from 'src/modules/banking/infra/operation-type.entity';
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class migrations1673536730377 implements MigrationInterface {
@@ -58,12 +59,86 @@ export class migrations1673536730377 implements MigrationInterface {
       }),
     );
 
+    await queryRunner.createTable(
+      new Table({
+        name: 'operations_types',
+        columns: [
+          {
+            name: 'id',
+            type: 'integer',
+            isPrimary: true,
+          },
+          {
+            name: 'type',
+            type: 'integer',
+          },
+        ],
+      }),
+    );
+
+    await queryRunner.createTable(
+      new Table({
+        name: 'operations',
+        columns: [
+          {
+            name: 'id',
+            type: 'varchar',
+            isPrimary: true,
+          },
+          {
+            name: 'amount',
+            type: 'float',
+          },
+          {
+            name: 'origin',
+            type: 'varchar',
+          },
+          {
+            name: 'destination',
+            type: 'varchar',
+          },
+          {
+            name: 'date',
+            type: 'date',
+          },
+          {
+            name: 'label',
+            type: 'varchar',
+          },
+          {
+            name: 'type',
+            type: 'integer',
+          },
+        ],
+      }),
+    );
+
     await queryRunner.manager.save(
       queryRunner.manager.create<CustomerEntity>(CustomerEntity, {
         id: '1',
         firstName: 'Bob',
         lastName: 'Dylan',
         accountNumber: '98797897897',
+      }),
+    );
+
+    await queryRunner.manager.save(
+      queryRunner.manager.create<OperationType>(OperationType, {
+        id: 1,
+        type: 1,
+      }),
+    );
+
+    await queryRunner.manager.save(
+      queryRunner.manager.create<OperationType>(OperationType, {
+        id: 2,
+        type: 2,
+      }),
+    );
+    await queryRunner.manager.save(
+      queryRunner.manager.create<OperationType>(OperationType, {
+        id: 3,
+        type: 3,
       }),
     );
 
@@ -100,6 +175,7 @@ export class migrations1673536730377 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`DELETE * FROM customers`);
     await queryRunner.query(`DELETE * FROM accounts`);
-    await queryRunner.query(`DELETE * FROM transactions`);
+    await queryRunner.query(`DELETE * FROM operations_types`);
+    await queryRunner.query(`DELETE * FROM operations`);
   }
 }

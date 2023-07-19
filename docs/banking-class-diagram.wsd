@@ -33,7 +33,7 @@ class Identity {
 
 class Operation {
   - id: string
-  - amount: string
+  - amount: number
   - origin: string
   - destination: string
   - date: Date
@@ -49,7 +49,7 @@ class Role {
 
 class OperationType {
   - id: string
-  - type: string
+  - type: number
   + OperationType()
 }
 

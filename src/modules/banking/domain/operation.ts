@@ -1,7 +1,7 @@
 export enum OperationType {
-  WITHDRAW,
-  DEPOSIT,
-  TRANSFER,
+  WITHDRAW = 1,
+  DEPOSIT = 2,
+  TRANSFER = 3,
 }
 
 export class Operation {
