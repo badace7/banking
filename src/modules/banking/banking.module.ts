@@ -12,6 +12,7 @@ import { Deposit } from './application/commands/deposit.usecase';
 import { OperationEntity } from './infra/operation.entity';
 import { OperationTypeEntity } from './infra/operation-type.entity';
 import { CustomerEntity } from '../authentication/infra/customer/customer.entity';
+import { TransferMoneyCommand } from './apps/banking.cli';
 
 export const usecasesToInject = [MoneyTransfer, Withdraw, Deposit];
 const fakeOutputPortDI = [
@@ -32,6 +33,6 @@ const fakeOutputPortDI = [
   ],
   exports: [TypeOrmModule],
   controllers: [BankingController],
-  providers: [...usecasesToInject, ...fakeOutputPortDI],
+  providers: [...usecasesToInject, ...fakeOutputPortDI, TransferMoneyCommand],
 })
 export class BankingModule {}
