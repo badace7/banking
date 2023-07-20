@@ -10,7 +10,7 @@ import { DateProvider } from './infra/date-provider.adapter';
 import { Withdraw } from './application/commands/withdraw.usecase';
 import { Deposit } from './application/commands/deposit.usecase';
 import { OperationEntity } from './infra/operation.entity';
-import { OperationType } from './infra/operation-type.entity';
+import { OperationTypeEntity } from './infra/operation-type.entity';
 import { CustomerEntity } from '../authentication/infra/customer/customer.entity';
 
 export const usecasesToInject = [MoneyTransfer, Withdraw, Deposit];
@@ -27,7 +27,7 @@ const fakeOutputPortDI = [
       AccountEntity,
       CustomerEntity,
       OperationEntity,
-      OperationType,
+      OperationTypeEntity,
     ]),
   ],
   exports: [TypeOrmModule],
