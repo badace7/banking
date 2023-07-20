@@ -1,7 +1,7 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('operations_types')
-export class OperationType {
+export class OperationTypeEntity {
   @PrimaryColumn()
   id: number;
   @Column()
