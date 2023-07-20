@@ -1,6 +1,6 @@
 import { CustomerEntity } from 'src/modules/authentication/infra/customer/customer.entity';
 import { AccountEntity } from 'src/modules/banking/infra/account.entity';
-import { OperationType } from 'src/modules/banking/infra/operation-type.entity';
+import { OperationTypeEntity } from 'src/modules/banking/infra/operation-type.entity';
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class migrations1673536730377 implements MigrationInterface {
@@ -96,6 +96,7 @@ export class migrations1673536730377 implements MigrationInterface {
           {
             name: 'destination',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'date',
@@ -123,20 +124,20 @@ export class migrations1673536730377 implements MigrationInterface {
     );
 
     await queryRunner.manager.save(
-      queryRunner.manager.create<OperationType>(OperationType, {
+      queryRunner.manager.create<OperationTypeEntity>(OperationTypeEntity, {
         id: 1,
         type: 1,
       }),
     );
 
     await queryRunner.manager.save(
-      queryRunner.manager.create<OperationType>(OperationType, {
+      queryRunner.manager.create<OperationTypeEntity>(OperationTypeEntity, {
         id: 2,
         type: 2,
       }),
     );
     await queryRunner.manager.save(
-      queryRunner.manager.create<OperationType>(OperationType, {
+      queryRunner.manager.create<OperationTypeEntity>(OperationTypeEntity, {
         id: 3,
         type: 3,
       }),
