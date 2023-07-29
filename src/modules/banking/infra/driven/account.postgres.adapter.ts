@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AccountEntity } from './account.entity';
-import { IAccountPort } from '../application/_ports/account.iport';
-import Account from '../domain/account';
+import Account from '../../domain/account';
+import { IAccountPort } from '../../application/_ports/account.iport';
 
 @Injectable()
 export class AccountPostgresAdapter implements IAccountPort {
@@ -26,19 +26,8 @@ export class AccountPostgresAdapter implements IAccountPort {
   async updateBankAccount(
     accountNumber: string,
     accountDomain: Account,
-  ): Promise<Account> {
-    const accountAlreadySave = await this.repository.findOne({
-      where: {
-        number: accountNumber,
-      },
-    });
-
-    const accountToRegister = this.toEntity(accountDomain);
-
-    const accountUpdated = await this.repository.save({
-      ...accountAlreadySave,
-      ...accountToRegister,
-    });
+  ): Promise<any> {
+    const accountUpdated = await this.repository.save(accountDomain.data);
 
     return this.toDomain(accountUpdated);
   }

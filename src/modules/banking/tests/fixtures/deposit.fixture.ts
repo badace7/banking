@@ -2,9 +2,9 @@ import { DepositCommand } from 'src/modules/banking/application/commands/deposit
 import { Deposit } from 'src/modules/banking/application/commands/deposit.usecase';
 import Account from 'src/modules/banking/domain/account';
 import { Operation } from 'src/modules/banking/domain/operation';
-import FakeAccountRepository from 'src/modules/banking/infra/account.fake.adapter';
-import { StubDateProvider } from 'src/modules/banking/infra/date-provider.fake.adapter';
-import FakeOperationRepository from 'src/modules/banking/infra/operation.fake.adapter';
+import FakeOperationRepository from '../../infra/driven/operation.fake.adapter';
+import { StubDateProvider } from '../../infra/driven/date-provider.fake.adapter';
+import FakeAccountRepository from '../../infra/driven/account.fake.adapter';
 
 export const createDepositFixture = () => {
   const accountRepository = new FakeAccountRepository();

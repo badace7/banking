@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { IOperationPort } from '../application/_ports/operation.iport';
+
 import { OperationEntity } from './operation.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Operation } from '../domain/operation';
+import { IOperationPort } from '../../application/_ports/operation.iport';
+import { Operation } from '../../domain/operation';
 
 @Injectable()
 export class OperationPostgresAdapter implements IOperationPort {

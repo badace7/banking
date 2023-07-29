@@ -1,10 +1,10 @@
 import { Controller, HttpStatus, Post, Res, Body, Get } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Response } from 'express';
-import { MoneyTransferCommand } from '../application/commands/transfer.command';
+import { MoneyTransferCommand } from '../../application/commands/transfer.command';
 import { v4 as uuidv4 } from 'uuid';
-import { DepositCommand } from '../application/commands/deposit.command';
-import { WithdrawCommand } from '../application/commands/withdraw.command';
+import { DepositCommand } from '../../application/commands/deposit.command';
+import { WithdrawCommand } from '../../application/commands/withdraw.command';
 
 @Controller('banking')
 export class BankingController {
@@ -31,8 +31,6 @@ export class BankingController {
   async depositMoney(@Body() body: any, @Res() response: Response) {
     try {
       const command = new DepositCommand(uuidv4(), body.origin, body.amount);
-      console.log(command);
-
       await this.commandBus.execute(command);
       response.status(HttpStatus.OK).send('The deposit was successful');
     } catch (error) {

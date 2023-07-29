@@ -39,7 +39,7 @@ $ npm install
 $ npm run start
 
 # commands
-$ docker-compose exec api npm run cli transfer test 100 12312312312 98797897897
+$ docker-compose exec api npm run cli banking test 100 12312312312 98797897897
 
 # watch mode
 $ npm run start:dev

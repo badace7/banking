@@ -1,5 +1,5 @@
-import { IOperationPort } from '../application/_ports/operation.iport';
-import { Operation } from '../domain/operation';
+import { IOperationPort } from '../../application/_ports/operation.iport';
+import { Operation } from '../../domain/operation';
 
 class FakeOperationRepository implements IOperationPort {
   private fakeOperationEntityManager: Map<string, Operation> = new Map();
