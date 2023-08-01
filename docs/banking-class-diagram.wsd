@@ -1,8 +1,8 @@
-@startuml
+@startuml banking
 
 skin rose
 
-title Banking - Class Diagram
+title Digi'bank - Class Diagram
 
 
 class Account {
@@ -34,8 +34,7 @@ class Identity {
 class Operation {
   - id: string
   - amount: number
-  - origin: string
-  - destination: string
+  - account: string
   - date: Date
   - label: string
   + Operation()
@@ -49,14 +48,21 @@ class Role {
 
 class OperationType {
   - id: string
-  - type: number
+  - type: string
   + OperationType()
+}
+
+class FlowIndicator {
+  - id: string
+  - indicator: string
+  + FlowIndicator()
 }
 
 User "0.*" o-- "1" Role
 Operation "0.*" o-- "1" Account
 Operation "0.*" o-- "1" OperationType
-Account "0.*" o-- "1" User
+Operation "0.*" o-- "1" FlowIndicator
+Account "0.*" o-- "0.*" User
 User "1" o-- "1" Identity
 
 @enduml

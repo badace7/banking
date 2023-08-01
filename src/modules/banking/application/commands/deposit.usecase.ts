@@ -26,8 +26,7 @@ export class Deposit implements ICommandHandler<DepositCommand> {
       id: command.id,
       label: 'Deposit',
       amount: command.amount,
-      origin: command.origin,
-      destination: null,
+      account: command.origin,
       type: OperationType.DEPOSIT,
       date: this.dateProvider.getNow(),
     });

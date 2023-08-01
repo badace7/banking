@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-
 import { OperationEntity } from './operation.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -17,7 +16,7 @@ export class OperationPostgresAdapter implements IOperationPort {
   }
   async getAllOfCustomer(accountNumber: string): Promise<Operation[]> {
     const operations = await this.repository.find({
-      where: [{ origin: accountNumber }, { destination: accountNumber }],
+      where: [{ account: accountNumber }],
     });
 
     return operations.map((o) =>
@@ -25,8 +24,7 @@ export class OperationPostgresAdapter implements IOperationPort {
         id: o.id,
         label: o.label,
         amount: o.amount,
-        origin: o.origin,
-        destination: o.destination,
+        account: o.account,
         type: o.type,
         date: o.date,
       }),

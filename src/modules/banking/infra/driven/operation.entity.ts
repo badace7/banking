@@ -5,15 +5,13 @@ export class OperationEntity {
   @PrimaryColumn()
   id: string;
   @Column()
+  label: string;
+  @Column()
   amount: number;
   @Column()
-  origin: string;
-  @Column()
-  destination: string;
+  account: string;
   @Column()
   date: Date;
-  @Column()
-  label: string;
   @Column()
   type: number;
 }

@@ -9,8 +9,7 @@ export class Operation {
     private readonly _id: string,
     private readonly _label: string,
     private readonly _amount: number,
-    private readonly _origin: string,
-    private readonly _destination: string,
+    private readonly _account: string,
     private readonly _type: OperationType,
     private readonly _date: Date,
   ) {}
@@ -20,8 +19,7 @@ export class Operation {
       id: this._id,
       label: this._label,
       amount: this._amount,
-      origin: this._origin,
-      destination: this._destination,
+      account: this._account,
       type: this._type,
       date: this._date,
     };
@@ -36,8 +34,7 @@ export class Operation {
       operation.id,
       operation.label,
       operation.amount,
-      operation.origin,
-      operation.destination,
+      operation.account,
       operation.type,
       operation.date,
     );

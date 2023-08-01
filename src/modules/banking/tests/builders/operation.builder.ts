@@ -4,20 +4,18 @@ export const OperationBuilder = ({
   id = 'operation-id',
   label = 'label',
   amount = 1000,
-  origin = '12312312312',
-  destination = null,
+  account = '12312312312',
   type = null,
   date = new Date('2023-07-15T19:00:00.000Z'),
 }: {
   id?: string;
   label?: string;
   amount?: number;
-  origin?: string;
-  destination?: string;
+  account?: string;
   type?: OperationType;
   date?: Date;
 } = {}) => {
-  const props = { id, label, amount, origin, destination, type, date };
+  const props = { id, label, amount, account, type, date };
   return {
     withId(_id: string) {
       return OperationBuilder({
@@ -37,16 +35,10 @@ export const OperationBuilder = ({
         amount: _amount,
       });
     },
-    withOrigin(_origin: string) {
+    withAccount(_origin: string) {
       return OperationBuilder({
         ...props,
-        origin: _origin,
-      });
-    },
-    withDestination(_destination: string) {
-      return OperationBuilder({
-        ...props,
-        destination: _destination,
+        account: _origin,
       });
     },
     withType(_type: OperationType) {
@@ -66,8 +58,7 @@ export const OperationBuilder = ({
         id: props.id,
         label: props.label,
         amount: props.amount,
-        origin: props.origin,
-        destination: props.destination,
+        account: props.account,
         type: props.type,
         date: props.date,
       });

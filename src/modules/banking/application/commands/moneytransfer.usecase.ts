@@ -20,23 +20,32 @@ export class MoneyTransfer implements ICommandHandler<MoneyTransferCommand> {
     const sourceAccount = await this.getAccount(command.origin);
     const destinationAccount = await this.getAccount(command.destination);
 
-    sourceAccount.debit(command.amount);
-    destinationAccount.credit(command.amount);
-
-    await this.updateAccount(sourceAccount);
-    await this.updateAccount(destinationAccount);
-
-    const operation = Operation.create({
+    const sourceOperation = Operation.create({
       id: command.id,
       label: command.label,
       amount: command.amount,
-      origin: command.origin,
-      destination: command.destination,
+      account: command.origin,
       type: OperationType.TRANSFER,
       date: this.dateProvider.getNow(),
     });
 
-    await this.operationAdapter.save(operation);
+    const destinationOperation = Operation.create({
+      id: command.id,
+      label: command.label,
+      amount: command.amount,
+      account: command.destination,
+      type: OperationType.TRANSFER,
+      date: this.dateProvider.getNow(),
+    });
+
+    sourceAccount.debit(sourceOperation.data.amount);
+    destinationAccount.credit(sourceOperation.data.amount);
+
+    await this.updateAccount(sourceAccount);
+    await this.updateAccount(destinationAccount);
+
+    await this.operationAdapter.save(sourceOperation);
+    await this.operationAdapter.save(destinationOperation);
   }
 
   private async getAccount(accountNumber: string): Promise<Account> {

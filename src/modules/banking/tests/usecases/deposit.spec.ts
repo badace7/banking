@@ -30,7 +30,7 @@ describe('Feature: Deposit money', () => {
       uat.thenHisBalanceShouldBe(1500);
       await uat.AndTransferOperationShouldBeRecorded(
         OperationBuilder()
-          .withOrigin('12312312312')
+          .withAccount('12312312312')
           .withId('withdraw-id')
           .withLabel('Deposit')
           .withAmount(500)

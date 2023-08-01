@@ -26,8 +26,7 @@ export class Withdraw implements ICommandHandler<WithdrawCommand> {
       id: command.id,
       label: 'Withdraw',
       amount: command.amount,
-      origin: command.origin,
-      destination: null,
+      account: command.origin,
       type: OperationType.WITHDRAW,
       date: this.dateProvider.getNow(),
     });

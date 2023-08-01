@@ -1,8 +1,10 @@
 import { OperationRejectedError } from 'src/libs/exceptions/money-transfer-reject.error';
-import { createTransferFixture } from '../fixtures/money-transfer.fixture';
 import { OperationType } from 'src/modules/banking/domain/operation';
 import { MoneyTransferCommand } from 'src/modules/banking/application/commands/transfer.command';
-import { TransferFixture } from '../fixtures/money-transfer.fixture';
+import {
+  TransferFixture,
+  createTransferFixture,
+} from '../fixtures/money-transfer.fixture';
 import { AccountBuilder } from '../builders/account.builder';
 import { OperationBuilder } from '../builders/operation.builder';
 
@@ -48,8 +50,7 @@ describe('Feature: Money transfer between two customers', () => {
       await uat.AndBobBalanceShouldBe(2000);
       await uat.AndTransferOperationShouldBeRecorded(
         OperationBuilder()
-          .withOrigin('12312312312')
-          .withDestination('98797897897')
+          .withAccount('12312312312')
           .withId('operation-id')
           .withLabel("Participation in Anna's gift")
           .withAmount(1000)
@@ -130,8 +131,7 @@ describe('Feature: Money transfer between two customers', () => {
       await uat.AndBobBalanceShouldBe(2500);
       await uat.AndTransferOperationShouldBeRecorded(
         OperationBuilder()
-          .withOrigin('12312312312')
-          .withDestination('98797897897')
+          .withAccount('12312312312')
           .withId('operation-id')
           .withLabel('Spain holiday')
           .withAmount(2500)

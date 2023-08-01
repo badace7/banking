@@ -11,8 +11,11 @@ module.exports = {
     '.(ts|tsx)': 'ts-jest',
   },
   globals: {
-    'ts-jest': {
-      compiler: 'ttypescript',
-    },
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        compiler: 'ttypescript',
+      },
+    ],
   },
 };

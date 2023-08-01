@@ -71,7 +71,7 @@ export class migrations1673536730377 implements MigrationInterface {
           },
           {
             name: 'type',
-            type: 'integer',
+            type: 'varchar',
           },
         ],
       }),
@@ -87,25 +87,20 @@ export class migrations1673536730377 implements MigrationInterface {
             isPrimary: true,
           },
           {
+            name: 'label',
+            type: 'varchar',
+          },
+          {
             name: 'amount',
             type: 'float',
           },
           {
-            name: 'origin',
+            name: 'account',
             type: 'varchar',
-          },
-          {
-            name: 'destination',
-            type: 'varchar',
-            isNullable: true,
           },
           {
             name: 'date',
             type: 'date',
-          },
-          {
-            name: 'label',
-            type: 'varchar',
           },
           {
             name: 'type',
