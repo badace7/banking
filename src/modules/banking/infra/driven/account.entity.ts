@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { OperationEntity } from './operation.entity';
 
 @Entity('accounts')
 export class AccountEntity {
@@ -12,4 +13,7 @@ export class AccountEntity {
   customer: string;
   @Column()
   overdraftFacility: number;
+
+  @OneToMany(() => OperationEntity, (operation) => operation.account)
+  operations: OperationEntity[];
 }

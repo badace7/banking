@@ -38,7 +38,7 @@ export const createDepositFixture = () => {
       expect(account.data.balance).toEqual(expectedBalance);
     },
     async AndTransferOperationShouldBeRecorded(expectedOperation: Operation) {
-      const operations = await operationRepository.getAllOfCustomer(
+      const operations = await operationRepository.getAllOfAccount(
         accountToCredit.data.number,
       );
       expect(operations).toContainEqual(expectedOperation);

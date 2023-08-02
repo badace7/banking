@@ -1,6 +1,9 @@
 import { OperationRejectedError } from 'src/libs/exceptions/money-transfer-reject.error';
 import { WithdrawCommand } from 'src/modules/banking/application/commands/withdraw.command';
-import { OperationType } from 'src/modules/banking/domain/operation';
+import {
+  FlowIndicator,
+  OperationType,
+} from 'src/modules/banking/domain/operation';
 import {
   WithdrawFixture,
   createWithdrawFixture,
@@ -30,11 +33,12 @@ describe('Feature: Withdraw money', () => {
       uat.thenHisBalanceShouldBe(500);
       await uat.AndTransferOperationShouldBeRecorded(
         OperationBuilder()
-          .withAccount('12312312312')
           .withId('withdraw-id')
+          .withAccount('12312312312')
           .withLabel('Withdraw')
           .withAmount(500)
           .withType(OperationType.WITHDRAW)
+          .withFlow(FlowIndicator.DEBIT)
           .build(),
       );
     });
@@ -71,11 +75,12 @@ describe('Feature: Withdraw money', () => {
       uat.thenHisBalanceShouldBe(-200);
       await uat.AndTransferOperationShouldBeRecorded(
         OperationBuilder()
-          .withAccount('12312312312')
           .withId('withdraw-id')
+          .withAccount('12312312312')
           .withLabel('Withdraw')
           .withAmount(700)
           .withType(OperationType.WITHDRAW)
+          .withFlow(FlowIndicator.DEBIT)
           .build(),
       );
     });

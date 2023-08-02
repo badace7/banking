@@ -1,7 +1,12 @@
+export enum FlowIndicator {
+  DEBIT = 'DEBIT',
+  CREDIT = 'CREDIT',
+}
+
 export enum OperationType {
-  WITHDRAW = 1,
-  DEPOSIT = 2,
-  TRANSFER = 3,
+  WITHDRAW = 'WITHDRAW',
+  DEPOSIT = 'DEPOSIT',
+  TRANSFER = 'TRANSFER',
 }
 
 export class Operation {
@@ -11,6 +16,7 @@ export class Operation {
     private readonly _amount: number,
     private readonly _account: string,
     private readonly _type: OperationType,
+    private readonly _flow: FlowIndicator,
     private readonly _date: Date,
   ) {}
 
@@ -21,6 +27,7 @@ export class Operation {
       amount: this._amount,
       account: this._account,
       type: this._type,
+      flow: this._flow,
       date: this._date,
     };
   }
@@ -36,6 +43,7 @@ export class Operation {
       operation.amount,
       operation.account,
       operation.type,
+      operation.flow,
       operation.date,
     );
   }

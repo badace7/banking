@@ -1,6 +1,9 @@
 import { WithdrawCommand } from 'src/modules/banking/application/commands/withdraw.command';
 
-import { OperationType } from 'src/modules/banking/domain/operation';
+import {
+  FlowIndicator,
+  OperationType,
+} from 'src/modules/banking/domain/operation';
 import {
   DepositFixture,
   createDepositFixture,
@@ -30,11 +33,12 @@ describe('Feature: Deposit money', () => {
       uat.thenHisBalanceShouldBe(1500);
       await uat.AndTransferOperationShouldBeRecorded(
         OperationBuilder()
-          .withAccount('12312312312')
           .withId('withdraw-id')
+          .withAccount('12312312312')
           .withLabel('Deposit')
           .withAmount(500)
           .withType(OperationType.DEPOSIT)
+          .withFlow(FlowIndicator.CREDIT)
           .build(),
       );
     });

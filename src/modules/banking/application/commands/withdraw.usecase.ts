@@ -3,7 +3,11 @@ import { IAccountPort } from '../_ports/account.iport';
 import { WithdrawCommand } from './withdraw.command';
 import { UsecaseError } from 'src/libs/exceptions/usecase.error';
 import Account from '../../domain/account';
-import { Operation, OperationType } from '../../domain/operation';
+import {
+  FlowIndicator,
+  Operation,
+  OperationType,
+} from '../../domain/operation';
 import { IOperationPort } from '../_ports/operation.iport';
 import { IDateProvider } from '../_ports/date-provider.iport';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
@@ -28,6 +32,7 @@ export class Withdraw implements ICommandHandler<WithdrawCommand> {
       amount: command.amount,
       account: command.origin,
       type: OperationType.WITHDRAW,
+      flow: FlowIndicator.DEBIT,
       date: this.dateProvider.getNow(),
     });
 

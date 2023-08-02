@@ -42,13 +42,13 @@ export class AccountPostgresAdapter implements IAccountPort {
     });
   }
 
-  private toEntity(accountDomain: Account): AccountEntity {
+  private toEntity(account: Account): AccountEntity {
     const accountEntity = new AccountEntity();
-    accountEntity.number = accountDomain.data.number;
-    accountEntity.balance = accountDomain.data.balance;
-    accountEntity.customer = accountDomain.data.customer;
-    accountEntity.overdraftFacility = accountDomain.data.overdraftFacility;
-    accountEntity.id = accountDomain.data.id;
+    accountEntity.number = account.data.number;
+    accountEntity.balance = account.data.balance;
+    accountEntity.customer = account.data.customer;
+    accountEntity.overdraftFacility = account.data.overdraftFacility;
+    accountEntity.id = account.data.id;
 
     return accountEntity;
   }

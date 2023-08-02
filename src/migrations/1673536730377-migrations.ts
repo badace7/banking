@@ -1,8 +1,14 @@
-import { CustomerEntity } from 'src/modules/authentication/infra/customer/customer.entity';
+import { UserEntity } from 'src/modules/authentication/infra/customer/customer.entity';
 import { AccountEntity } from 'src/modules/banking/infra/driven/account.entity';
+import { FlowIndicatorEntity } from 'src/modules/banking/infra/driven/flow-indicator.entity';
 import { OperationTypeEntity } from 'src/modules/banking/infra/driven/operation-type.entity';
 
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
 export class migrations1673536730377 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -79,6 +85,23 @@ export class migrations1673536730377 implements MigrationInterface {
 
     await queryRunner.createTable(
       new Table({
+        name: 'flow_indicators',
+        columns: [
+          {
+            name: 'id',
+            type: 'integer',
+            isPrimary: true,
+          },
+          {
+            name: 'indicator',
+            type: 'varchar',
+          },
+        ],
+      }),
+    );
+
+    await queryRunner.createTable(
+      new Table({
         name: 'operations',
         columns: [
           {
@@ -95,23 +118,46 @@ export class migrations1673536730377 implements MigrationInterface {
             type: 'float',
           },
           {
-            name: 'account',
-            type: 'varchar',
-          },
-          {
             name: 'date',
             type: 'date',
           },
           {
-            name: 'type',
+            name: 'accountId',
+            type: 'varchar',
+          },
+          {
+            name: 'operationTypeId',
+            type: 'integer',
+          },
+          {
+            name: 'flowIndicatorId',
             type: 'integer',
           },
         ],
       }),
     );
 
+    await queryRunner.createForeignKeys('operations', [
+      new TableForeignKey({
+        columnNames: ['accountId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'accounts',
+        onDelete: 'CASCADE',
+      }),
+      new TableForeignKey({
+        columnNames: ['operationTypeId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'operations_types',
+      }),
+      new TableForeignKey({
+        columnNames: ['flowIndicatorId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'flow_indicators',
+      }),
+    ]);
+
     await queryRunner.manager.save(
-      queryRunner.manager.create<CustomerEntity>(CustomerEntity, {
+      queryRunner.manager.create<UserEntity>(UserEntity, {
         id: '1',
         firstName: 'Bob',
         lastName: 'Dylan',
@@ -120,31 +166,45 @@ export class migrations1673536730377 implements MigrationInterface {
     );
 
     await queryRunner.manager.save(
+      queryRunner.manager.create<UserEntity>(UserEntity, {
+        id: '2',
+        firstName: 'Jack',
+        lastName: 'Fisher',
+        accountNumber: '12312312312',
+      }),
+    );
+
+    await queryRunner.manager.save(
       queryRunner.manager.create<OperationTypeEntity>(OperationTypeEntity, {
         id: 1,
-        type: 1,
+        type: 'WITHDRAW',
       }),
     );
 
     await queryRunner.manager.save(
       queryRunner.manager.create<OperationTypeEntity>(OperationTypeEntity, {
         id: 2,
-        type: 2,
+        type: 'DEPOSIT',
       }),
     );
     await queryRunner.manager.save(
       queryRunner.manager.create<OperationTypeEntity>(OperationTypeEntity, {
         id: 3,
-        type: 3,
+        type: 'TRANSFER',
       }),
     );
 
     await queryRunner.manager.save(
-      queryRunner.manager.create<CustomerEntity>(CustomerEntity, {
-        id: '2',
-        firstName: 'Jack',
-        lastName: 'Fisher',
-        accountNumber: '12312312312',
+      queryRunner.manager.create<FlowIndicatorEntity>(FlowIndicatorEntity, {
+        id: 1,
+        indicator: 'DEBIT',
+      }),
+    );
+
+    await queryRunner.manager.save(
+      queryRunner.manager.create<FlowIndicatorEntity>(FlowIndicatorEntity, {
+        id: 2,
+        indicator: 'CREDIT',
       }),
     );
 
@@ -170,9 +230,10 @@ export class migrations1673536730377 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DELETE * FROM customers`);
-    await queryRunner.query(`DELETE * FROM accounts`);
-    await queryRunner.query(`DELETE * FROM operations_types`);
-    await queryRunner.query(`DELETE * FROM operations`);
+    await queryRunner.query(`DELETE FROM customers`);
+    await queryRunner.query(`DELETE FROM accounts`);
+    await queryRunner.query(`DELETE FROM operations_types`);
+    await queryRunner.query(`DELETE FROM operations`);
+    await queryRunner.query(`DELETE FROM flow_indicators`);
   }
 }

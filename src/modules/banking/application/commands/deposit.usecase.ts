@@ -3,7 +3,11 @@ import { IAccountPort } from '../_ports/account.iport';
 import { UsecaseError } from 'src/libs/exceptions/usecase.error';
 import Account from '../../domain/account';
 import { DepositCommand } from './deposit.command';
-import { Operation, OperationType } from '../../domain/operation';
+import {
+  FlowIndicator,
+  Operation,
+  OperationType,
+} from '../../domain/operation';
 import { IOperationPort } from '../_ports/operation.iport';
 import { IDateProvider } from '../_ports/date-provider.iport';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
@@ -28,6 +32,7 @@ export class Deposit implements ICommandHandler<DepositCommand> {
       amount: command.amount,
       account: command.origin,
       type: OperationType.DEPOSIT,
+      flow: FlowIndicator.CREDIT,
       date: this.dateProvider.getNow(),
     });
 

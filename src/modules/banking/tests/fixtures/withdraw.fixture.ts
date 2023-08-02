@@ -43,7 +43,7 @@ export const createWithdrawFixture = () => {
       expect(account.data.balance).toEqual(expectedBalance);
     },
     async AndTransferOperationShouldBeRecorded(expectedOperation: Operation) {
-      const operations = await operationRepository.getAllOfCustomer(
+      const operations = await operationRepository.getAllOfAccount(
         accountToDebit.data.number,
       );
       expect(operations).toContainEqual(expectedOperation);

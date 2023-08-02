@@ -1,12 +1,16 @@
 import { Inject } from '@nestjs/common';
-import { IAccountPort } from '../_ports/account.iport';
-import { MoneyTransferCommand } from './transfer.command';
-import { UsecaseError } from 'src/libs/exceptions/usecase.error';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { IOperationPort } from '../_ports/operation.iport';
-import { Operation, OperationType } from '../../domain/operation';
-import { IDateProvider } from '../_ports/date-provider.iport';
+import { UsecaseError } from 'src/libs/exceptions/usecase.error';
 import Account from '../../domain/account';
+import {
+  FlowIndicator,
+  Operation,
+  OperationType,
+} from '../../domain/operation';
+import { IAccountPort } from '../_ports/account.iport';
+import { IDateProvider } from '../_ports/date-provider.iport';
+import { IOperationPort } from '../_ports/operation.iport';
+import { MoneyTransferCommand } from './transfer.command';
 
 @CommandHandler(MoneyTransferCommand)
 export class MoneyTransfer implements ICommandHandler<MoneyTransferCommand> {
@@ -26,6 +30,7 @@ export class MoneyTransfer implements ICommandHandler<MoneyTransferCommand> {
       amount: command.amount,
       account: command.origin,
       type: OperationType.TRANSFER,
+      flow: FlowIndicator.DEBIT,
       date: this.dateProvider.getNow(),
     });
 
@@ -35,6 +40,7 @@ export class MoneyTransfer implements ICommandHandler<MoneyTransferCommand> {
       amount: command.amount,
       account: command.destination,
       type: OperationType.TRANSFER,
+      flow: FlowIndicator.CREDIT,
       date: this.dateProvider.getNow(),
     });
 

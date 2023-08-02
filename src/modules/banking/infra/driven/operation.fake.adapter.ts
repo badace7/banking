@@ -7,7 +7,7 @@ class FakeOperationRepository implements IOperationPort {
     this.fakeOperationEntityManager.set(operation.data.account, operation);
     return Promise.resolve();
   }
-  getAllOfCustomer(accountNumber: string): Promise<Operation[]> {
+  getAllOfAccount(accountNumber: string): Promise<Operation[]> {
     return Promise.resolve(
       [...this.fakeOperationEntityManager.values()]
         .filter((trn) => trn.data.account === accountNumber)
@@ -18,6 +18,7 @@ class FakeOperationRepository implements IOperationPort {
             amount: t.data.amount,
             account: t.data.account,
             type: t.data.type,
+            flow: t.data.flow,
             date: t.data.date,
           }),
         ),

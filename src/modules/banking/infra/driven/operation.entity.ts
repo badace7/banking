@@ -1,4 +1,7 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { AccountEntity } from './account.entity';
+import { OperationTypeEntity } from './operation-type.entity';
+import { FlowIndicatorEntity } from './flow-indicator.entity';
 
 @Entity('operations')
 export class OperationEntity {
@@ -9,9 +12,20 @@ export class OperationEntity {
   @Column()
   amount: number;
   @Column()
-  account: string;
-  @Column()
   date: Date;
-  @Column()
-  type: number;
+
+  @ManyToOne(() => AccountEntity, (account) => account.operations)
+  account: AccountEntity;
+
+  @ManyToOne(
+    () => OperationTypeEntity,
+    (operationType) => operationType.operations,
+  )
+  operationType: OperationTypeEntity;
+
+  @ManyToOne(
+    () => FlowIndicatorEntity,
+    (flowIndicator) => flowIndicator.operations,
+  )
+  flowIndicator: FlowIndicatorEntity;
 }

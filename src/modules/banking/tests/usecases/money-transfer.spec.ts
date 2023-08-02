@@ -1,5 +1,5 @@
 import { OperationRejectedError } from 'src/libs/exceptions/money-transfer-reject.error';
-import { OperationType } from 'src/modules/banking/domain/operation';
+
 import { MoneyTransferCommand } from 'src/modules/banking/application/commands/transfer.command';
 import {
   TransferFixture,
@@ -7,6 +7,7 @@ import {
 } from '../fixtures/money-transfer.fixture';
 import { AccountBuilder } from '../builders/account.builder';
 import { OperationBuilder } from '../builders/operation.builder';
+import { FlowIndicator, OperationType } from '../../domain/operation';
 
 describe('Feature: Money transfer between two customers', () => {
   let uat: TransferFixture;
@@ -51,10 +52,10 @@ describe('Feature: Money transfer between two customers', () => {
       await uat.AndTransferOperationShouldBeRecorded(
         OperationBuilder()
           .withAccount('12312312312')
-          .withId('operation-id')
           .withLabel("Participation in Anna's gift")
           .withAmount(1000)
           .withType(OperationType.TRANSFER)
+          .withFlow(FlowIndicator.DEBIT)
           .build(),
       );
     });
@@ -132,10 +133,10 @@ describe('Feature: Money transfer between two customers', () => {
       await uat.AndTransferOperationShouldBeRecorded(
         OperationBuilder()
           .withAccount('12312312312')
-          .withId('operation-id')
           .withLabel('Spain holiday')
           .withAmount(2500)
           .withType(OperationType.TRANSFER)
+          .withFlow(FlowIndicator.DEBIT)
           .build(),
       );
     });

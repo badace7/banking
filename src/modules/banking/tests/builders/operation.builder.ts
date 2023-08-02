@@ -1,4 +1,8 @@
-import { Operation, OperationType } from 'src/modules/banking/domain/operation';
+import {
+  FlowIndicator,
+  Operation,
+  OperationType,
+} from 'src/modules/banking/domain/operation';
 
 export const OperationBuilder = ({
   id = 'operation-id',
@@ -6,6 +10,7 @@ export const OperationBuilder = ({
   amount = 1000,
   account = '12312312312',
   type = null,
+  flow = null,
   date = new Date('2023-07-15T19:00:00.000Z'),
 }: {
   id?: string;
@@ -13,9 +18,10 @@ export const OperationBuilder = ({
   amount?: number;
   account?: string;
   type?: OperationType;
+  flow?: FlowIndicator;
   date?: Date;
 } = {}) => {
-  const props = { id, label, amount, account, type, date };
+  const props = { id, label, amount, account, type, flow, date };
   return {
     withId(_id: string) {
       return OperationBuilder({
@@ -47,6 +53,12 @@ export const OperationBuilder = ({
         type: _type,
       });
     },
+    withFlow(_flow: FlowIndicator) {
+      return OperationBuilder({
+        ...props,
+        flow: _flow,
+      });
+    },
     withDate(_date: Date) {
       return OperationBuilder({
         ...props,
@@ -60,6 +72,7 @@ export const OperationBuilder = ({
         amount: props.amount,
         account: props.account,
         type: props.type,
+        flow: props.flow,
         date: props.date,
       });
     },

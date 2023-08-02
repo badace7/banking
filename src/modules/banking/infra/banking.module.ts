@@ -1,18 +1,19 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AccountEntity } from './driven/account.entity';
-import { BankingController } from './driver/banking.controller';
+import { BankingCli } from 'src/cli/banking.cli';
+import { UserEntity } from '../../authentication/infra/customer/customer.entity';
+import { Deposit } from '../application/commands/deposit.usecase';
 import { MoneyTransfer } from '../application/commands/moneytransfer.usecase';
 import { Withdraw } from '../application/commands/withdraw.usecase';
-import { Deposit } from '../application/commands/deposit.usecase';
-import { CustomerEntity } from '../../authentication/infra/customer/customer.entity';
+import { AccountEntity } from './driven/account.entity';
 import { AccountPostgresAdapter } from './driven/account.postgres.adapter';
-import { OperationPostgresAdapter } from './driven/operation.postgres.adapter';
 import { DateProvider } from './driven/date-provider.adapter';
-import { OperationEntity } from './driven/operation.entity';
+import { FlowIndicatorEntity } from './driven/flow-indicator.entity';
 import { OperationTypeEntity } from './driven/operation-type.entity';
-import { BankingCli } from 'src/cli/banking.cli';
+import { OperationEntity } from './driven/operation.entity';
+import { OperationPostgresAdapter } from './driven/operation.postgres.adapter';
+import { BankingController } from './driver/banking.controller';
 
 export const usecasesToInject = [MoneyTransfer, Withdraw, Deposit];
 const OutputPortDI = [
@@ -26,9 +27,10 @@ const OutputPortDI = [
     CqrsModule,
     TypeOrmModule.forFeature([
       AccountEntity,
-      CustomerEntity,
+      UserEntity,
       OperationEntity,
       OperationTypeEntity,
+      FlowIndicatorEntity,
     ]),
   ],
   exports: [TypeOrmModule],

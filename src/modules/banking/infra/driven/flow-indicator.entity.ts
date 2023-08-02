@@ -1,13 +1,14 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { OperationEntity } from './operation.entity';
 
-@Entity('operations_types')
-export class OperationTypeEntity {
+@Entity('flow_indicators')
+export class FlowIndicatorEntity {
   @PrimaryColumn()
   id: number;
-  @Column()
-  type: string;
 
-  @OneToMany(() => OperationEntity, (operation) => operation.operationType)
+  @Column()
+  indicator: string;
+
+  @OneToMany(() => OperationEntity, (operation) => operation.flowIndicator)
   operations: OperationEntity[];
 }
