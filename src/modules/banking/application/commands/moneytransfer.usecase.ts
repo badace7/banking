@@ -1,5 +1,3 @@
-import { Inject } from '@nestjs/common';
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UsecaseError } from 'src/libs/exceptions/usecase.error';
 import Account from '../../domain/account';
 import {
@@ -12,12 +10,11 @@ import { IDateProvider } from '../_ports/date-provider.iport';
 import { IOperationPort } from '../_ports/operation.iport';
 import { MoneyTransferCommand } from './transfer.command';
 
-@CommandHandler(MoneyTransferCommand)
-export class MoneyTransfer implements ICommandHandler<MoneyTransferCommand> {
+export class MoneyTransfer {
   constructor(
-    @Inject('IAccountPort') private accountAdapter: IAccountPort,
-    @Inject('IOperationPort') private operationAdapter: IOperationPort,
-    @Inject('IDateProvider') private dateProvider: IDateProvider,
+    private accountAdapter: IAccountPort,
+    private operationAdapter: IOperationPort,
+    private dateProvider: IDateProvider,
   ) {}
 
   async execute(command: MoneyTransferCommand): Promise<void> {

@@ -1,6 +1,5 @@
 import { Command, CommandRunner } from 'nest-commander';
 import { v4 as uuidv4 } from 'uuid';
-import { CommandBus } from '@nestjs/cqrs';
 import { input } from '@inquirer/prompts';
 import select, { Separator } from '@inquirer/select';
 import { WithdrawCommand } from 'src/modules/banking/application/commands/withdraw.command';
@@ -12,7 +11,7 @@ import { MoneyTransferCommand } from 'src/modules/banking/application/commands/t
   options: { isDefault: true },
 })
 export class BankingCli extends CommandRunner {
-  constructor(private readonly commandBus: CommandBus) {
+  constructor() {
     super();
   }
   async run(): Promise<void> {
@@ -90,7 +89,7 @@ export class BankingCli extends CommandRunner {
 
     const command = new WithdrawCommand(uuidv4(), origin, parseInt(amount));
 
-    await this.commandBus.execute(command);
+    // await this.commandBus.execute(command);
     console.log('Withdraw was successful');
     process.exit(0);
   }
@@ -105,7 +104,7 @@ export class BankingCli extends CommandRunner {
 
     const command = new DepositCommand(uuidv4(), origin, parseInt(amount));
 
-    await this.commandBus.execute(command);
+    // await this.commandBus.execute(command);
     console.log('Deposit was successful');
     process.exit(0);
   }
@@ -132,7 +131,7 @@ export class BankingCli extends CommandRunner {
       destination,
     );
 
-    await this.commandBus.execute(command);
+    // await this.commandBus.execute(command);
     console.log('Deposit was successful');
     process.exit(0);
   }

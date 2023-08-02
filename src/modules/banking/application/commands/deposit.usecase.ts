@@ -10,10 +10,8 @@ import {
 } from '../../domain/operation';
 import { IOperationPort } from '../_ports/operation.iport';
 import { IDateProvider } from '../_ports/date-provider.iport';
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-@CommandHandler(DepositCommand)
-export class Deposit implements ICommandHandler<DepositCommand> {
+export class Deposit {
   constructor(
     @Inject('IAccountPort') private accountAdapter: IAccountPort,
     @Inject('IOperationPort') private operationAdapter: IOperationPort,
