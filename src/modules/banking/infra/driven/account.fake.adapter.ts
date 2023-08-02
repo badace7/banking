@@ -1,4 +1,4 @@
-import { IAccountPort } from '../../application/_ports/account.iport';
+import { IAccountPort } from '../../application/_ports/driven/account.iport';
 import Account from '../../domain/account';
 
 class FakeAccountRepository implements IAccountPort {

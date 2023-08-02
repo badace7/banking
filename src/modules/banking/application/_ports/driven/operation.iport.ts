@@ -1,4 +1,4 @@
-import { Operation } from '../../domain/operation';
+import { Operation } from 'src/modules/banking/domain/operation';
 
 export const OPERATION_PORT = 'IOperationPort';
 

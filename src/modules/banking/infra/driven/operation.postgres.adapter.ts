@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { OperationEntity } from './operation.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IOperationPort } from '../../application/_ports/operation.iport';
+
 import {
   FlowIndicator,
   Operation,
@@ -11,6 +11,7 @@ import {
 import { OperationTypeEntity } from './operation-type.entity';
 import { FlowIndicatorEntity } from './flow-indicator.entity';
 import { AccountEntity } from './account.entity';
+import { IOperationPort } from '../../application/_ports/driven/operation.iport';
 
 @Injectable()
 export class OperationPostgresAdapter implements IOperationPort {

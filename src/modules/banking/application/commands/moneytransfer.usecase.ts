@@ -5,12 +5,15 @@ import {
   Operation,
   OperationType,
 } from '../../domain/operation';
-import { IAccountPort } from '../_ports/account.iport';
-import { IDateProvider } from '../_ports/date-provider.iport';
-import { IOperationPort } from '../_ports/operation.iport';
-import { MoneyTransferCommand } from './transfer.command';
 
-export class MoneyTransfer {
+import { IDateProvider } from '../_ports/driven/date-provider.iport';
+
+import { MoneyTransferCommand } from './transfer.command';
+import { IMoneyTransfer } from '../_ports/driver/money-transfer.iport';
+import { IAccountPort } from '../_ports/driven/account.iport';
+import { IOperationPort } from '../_ports/driven/operation.iport';
+
+export class MoneyTransfer implements IMoneyTransfer {
   constructor(
     private accountAdapter: IAccountPort,
     private operationAdapter: IOperationPort,

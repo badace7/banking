@@ -1,19 +1,39 @@
-import { Controller, HttpStatus, Post, Res, Body } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpStatus,
+  Inject,
+  Post,
+  Res,
+} from '@nestjs/common';
 import { Response } from 'express';
-import { MoneyTransferCommand } from '../../application/commands/transfer.command';
 import { v4 as uuidv4 } from 'uuid';
 import { DepositCommand } from '../../application/commands/deposit.command';
+import { MoneyTransferCommand } from '../../application/commands/transfer.command';
 import { WithdrawCommand } from '../../application/commands/withdraw.command';
-import { MoneyTransfer } from '../../application/commands/moneytransfer.usecase';
-import { Withdraw } from '../../application/commands/withdraw.usecase';
-import { Deposit } from '../../application/commands/deposit.usecase';
+
+import {
+  DEPOSIT_PORT,
+  IDeposit,
+} from '../../application/_ports/driver/deposit.iport';
+import {
+  IMoneyTransfer,
+  MONEY_TRANSFER_PORT,
+} from '../../application/_ports/driver/money-transfer.iport';
+import {
+  IWithdraw,
+  WITHDRAW_PORT,
+} from '../../application/_ports/driver/withdraw.iport';
 
 @Controller('banking')
 export class BankingController {
   constructor(
-    private readonly moneyTransferUsecase: MoneyTransfer,
-    private readonly depositUsecase: Deposit,
-    private readonly withdrawUsecase: Withdraw,
+    @Inject(MONEY_TRANSFER_PORT)
+    private readonly moneyTransferUsecase: IMoneyTransfer,
+    @Inject(WITHDRAW_PORT)
+    private readonly withdrawUsecase: IWithdraw,
+    @Inject(DEPOSIT_PORT)
+    private readonly depositUsecase: IDeposit,
   ) {}
 
   @Post('transfer')

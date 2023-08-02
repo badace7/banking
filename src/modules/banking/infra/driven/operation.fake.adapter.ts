@@ -1,4 +1,4 @@
-import { IOperationPort } from '../../application/_ports/operation.iport';
+import { IOperationPort } from '../../application/_ports/driven/operation.iport';
 import { Operation } from '../../domain/operation';
 
 class FakeOperationRepository implements IOperationPort {

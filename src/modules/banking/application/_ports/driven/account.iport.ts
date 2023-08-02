@@ -1,4 +1,4 @@
-import Account from '../../domain/account';
+import Account from 'src/modules/banking/domain/account';
 
 export const ACCOUNT_PORT = 'IAccountPort';
 

@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { IAccountPort } from '../_ports/account.iport';
+
 import { UsecaseError } from 'src/libs/exceptions/usecase.error';
 import Account from '../../domain/account';
 import { DepositCommand } from './deposit.command';
@@ -8,8 +8,10 @@ import {
   Operation,
   OperationType,
 } from '../../domain/operation';
-import { IOperationPort } from '../_ports/operation.iport';
-import { IDateProvider } from '../_ports/date-provider.iport';
+
+import { IDateProvider } from '../_ports/driven/date-provider.iport';
+import { IAccountPort } from '../_ports/driven/account.iport';
+import { IOperationPort } from '../_ports/driven/operation.iport';
 
 export class Deposit {
   constructor(

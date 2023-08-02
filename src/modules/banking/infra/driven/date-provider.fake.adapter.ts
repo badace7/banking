@@ -1,4 +1,4 @@
-import { IDateProvider } from '../../application/_ports/date-provider.iport';
+import { IDateProvider } from '../../application/_ports/driven/date-provider.iport';
 
 export class StubDateProvider implements IDateProvider {
   now: Date;
