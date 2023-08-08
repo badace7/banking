@@ -27,9 +27,12 @@ export class AccountPostgresAdapter implements IAccountPort {
     accountNumber: string,
     accountDomain: Account,
   ): Promise<any> {
-    const accountUpdated = await this.repository.save(accountDomain.data);
+    const entity = this.toEntity(accountDomain);
+    const accountUpdated = await this.repository.preload(entity);
 
-    return this.toDomain(accountUpdated);
+    const updatedAccount = await this.repository.save(accountUpdated);
+
+    return this.toDomain(updatedAccount);
   }
 
   private toDomain(account: AccountEntity): Account {
@@ -37,7 +40,7 @@ export class AccountPostgresAdapter implements IAccountPort {
       id: account.id,
       number: account.number,
       balance: account.balance,
-      customer: account.customer,
+      user: account.user,
       overdraftFacility: account.overdraftFacility,
     });
   }
@@ -46,7 +49,7 @@ export class AccountPostgresAdapter implements IAccountPort {
     const accountEntity = new AccountEntity();
     accountEntity.number = account.data.number;
     accountEntity.balance = account.data.balance;
-    accountEntity.customer = account.data.customer;
+    accountEntity.user = account.data.user;
     accountEntity.overdraftFacility = account.data.overdraftFacility;
     accountEntity.id = account.data.id;
 
