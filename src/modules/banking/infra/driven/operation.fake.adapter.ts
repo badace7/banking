@@ -4,7 +4,7 @@ import { Operation } from '../../domain/operation';
 class FakeOperationRepository implements IOperationPort {
   private fakeOperationEntityManager: Map<string, Operation> = new Map();
   save(operation: Operation): Promise<void> {
-    this.fakeOperationEntityManager.set(operation.data.account, operation);
+    this.fakeOperationEntityManager.set(operation.data.id, operation);
     return Promise.resolve();
   }
   getAllOfAccount(accountNumber: string): Promise<Operation[]> {
