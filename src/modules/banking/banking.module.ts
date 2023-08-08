@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BankingCli } from 'src/cli/banking.cli';
 import { createInjectableProvider } from 'src/provider.factory';
-import { UserEntity } from '../authentication/infra/customer/customer.entity';
+import { UserEntity } from '../authentication/infra/customer/user.entity';
 
 import { DATE_PORT } from './application/_ports/driven/date-provider.iport';
 import { DEPOSIT_PORT } from './application/_ports/driver/deposit.iport';
@@ -23,7 +22,7 @@ import { OPERATION_PORT } from './application/_ports/driven/operation.iport';
 import { MONEY_TRANSFER_PORT } from './application/_ports/driver/money-transfer.iport';
 import { WITHDRAW_PORT } from './application/_ports/driver/withdraw.iport';
 
-const respositories = [
+export const respositories = [
   {
     provide: ACCOUNT_PORT,
     useClass: AccountPostgresAdapter,
@@ -40,7 +39,7 @@ const respositories = [
 
 const PORTS = [ACCOUNT_PORT, OPERATION_PORT, DATE_PORT];
 
-const usecases = [
+export const usecases = [
   createInjectableProvider(MONEY_TRANSFER_PORT, MoneyTransfer, PORTS),
   createInjectableProvider(WITHDRAW_PORT, Withdraw, PORTS),
   createInjectableProvider(DEPOSIT_PORT, Deposit, PORTS),
@@ -57,7 +56,7 @@ const usecases = [
     ]),
   ],
   controllers: [BankingController],
-  providers: [...usecases, ...respositories, BankingCli],
-  exports: [TypeOrmModule],
+  providers: [...usecases, ...respositories],
+  exports: [...usecases, ...respositories, TypeOrmModule],
 })
 export class BankingModule {}
