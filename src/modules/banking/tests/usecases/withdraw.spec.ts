@@ -33,7 +33,7 @@ describe('Feature: Withdraw money', () => {
       uat.thenHisBalanceShouldBe(500);
       await uat.AndTransferOperationShouldBeRecorded(
         OperationBuilder()
-          .withId('withdraw-id')
+          .withId('withdraw-id-1')
           .withAccount('12312312312')
           .withLabel('Withdraw')
           .withAmount(500)
@@ -75,7 +75,7 @@ describe('Feature: Withdraw money', () => {
       uat.thenHisBalanceShouldBe(-200);
       await uat.AndTransferOperationShouldBeRecorded(
         OperationBuilder()
-          .withId('withdraw-id')
+          .withId('withdraw-id-1')
           .withAccount('12312312312')
           .withLabel('Withdraw')
           .withAmount(700)

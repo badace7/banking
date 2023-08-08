@@ -28,12 +28,12 @@ describe('Feature: Deposit money', () => {
       );
       uat.andJackWantsToDepositMoneyNow(new Date('2023-07-15T19:00:00.000Z'));
       await uat.whenJackDepositMoney(
-        new WithdrawCommand('withdraw-id', '12312312312', 500),
+        new WithdrawCommand('deposit-id', '12312312312', 500),
       );
       uat.thenHisBalanceShouldBe(1500);
       await uat.AndTransferOperationShouldBeRecorded(
         OperationBuilder()
-          .withId('withdraw-id')
+          .withId('deposit-id-2')
           .withAccount('12312312312')
           .withLabel('Deposit')
           .withAmount(500)

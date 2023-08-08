@@ -39,7 +39,7 @@ describe('Feature: Money transfer between two customers', () => {
 
       await uat.whenJackMakesAmoneyTransfer(
         new MoneyTransferCommand(
-          'operation-id',
+          'transfer-id',
           "Participation in Anna's gift",
           1000,
           '12312312312',
@@ -51,6 +51,7 @@ describe('Feature: Money transfer between two customers', () => {
       await uat.AndBobBalanceShouldBe(2000);
       await uat.AndTransferOperationShouldBeRecorded(
         OperationBuilder()
+          .withId('transfer-id-1')
           .withAccount('12312312312')
           .withLabel("Participation in Anna's gift")
           .withAmount(1000)
@@ -82,7 +83,7 @@ describe('Feature: Money transfer between two customers', () => {
 
       await uat.whenJackMakesAmoneyTransfer(
         new MoneyTransferCommand(
-          'operation-id',
+          'transfer-id',
           'Car accident',
           3000,
           '12312312312',
@@ -119,7 +120,7 @@ describe('Feature: Money transfer between two customers', () => {
 
       await uat.whenJackMakesAmoneyTransfer(
         new MoneyTransferCommand(
-          'operation-id',
+          'transfer-id',
           'Spain holiday',
           2500,
           '12312312312',
@@ -132,6 +133,7 @@ describe('Feature: Money transfer between two customers', () => {
       await uat.AndBobBalanceShouldBe(2500);
       await uat.AndTransferOperationShouldBeRecorded(
         OperationBuilder()
+          .withId('transfer-id-1')
           .withAccount('12312312312')
           .withLabel('Spain holiday')
           .withAmount(2500)
@@ -163,7 +165,7 @@ describe('Feature: Money transfer between two customers', () => {
 
       await uat.whenJackMakesAmoneyTransfer(
         new MoneyTransferCommand(
-          'operation-id',
+          'transfer-id',
           'Car accident',
           100,
           '12312312312',
