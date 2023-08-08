@@ -1,4 +1,4 @@
-import { UserEntity } from 'src/modules/authentication/infra/customer/customer.entity';
+import { UserEntity } from 'src/modules/authentication/infra/customer/user.entity';
 import { AccountEntity } from 'src/modules/banking/infra/driven/account.entity';
 import { FlowIndicatorEntity } from 'src/modules/banking/infra/driven/flow-indicator.entity';
 import { OperationTypeEntity } from 'src/modules/banking/infra/driven/operation-type.entity';
@@ -14,7 +14,7 @@ export class migrations1673536730377 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'customers',
+        name: 'users',
         columns: [
           {
             name: 'id',
@@ -55,7 +55,7 @@ export class migrations1673536730377 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'customer',
+            name: 'user',
             type: 'varchar',
           },
           {
@@ -213,7 +213,7 @@ export class migrations1673536730377 implements MigrationInterface {
         id: '1',
         number: '98797897897',
         balance: 1000,
-        customer: '1',
+        user: '1',
         overdraftFacility: 500,
       }),
     );
@@ -223,14 +223,14 @@ export class migrations1673536730377 implements MigrationInterface {
         id: '2',
         number: '12312312312',
         balance: 1000,
-        customer: '2',
+        user: '2',
         overdraftFacility: 500,
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DELETE FROM customers`);
+    await queryRunner.query(`DELETE FROM users`);
     await queryRunner.query(`DELETE FROM accounts`);
     await queryRunner.query(`DELETE FROM operations_types`);
     await queryRunner.query(`DELETE FROM operations`);

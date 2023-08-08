@@ -10,7 +10,7 @@ export class AccountEntity {
   @Column()
   balance: number;
   @Column()
-  customer: string;
+  user: string;
   @Column()
   overdraftFacility: number;
 

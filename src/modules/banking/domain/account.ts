@@ -20,7 +20,7 @@ export default class Account {
       id: this._id,
       number: this._number,
       balance: this._balance,
-      customer: this._customer,
+      user: this._user,
       overdraftFacility: this._overdraftFacility,
     };
   }
@@ -44,7 +44,7 @@ export default class Account {
     private _id: string,
     private _number: string,
     private _balance: number,
-    private _customer: string,
+    private _user: string,
     private _overdraftFacility: number,
   ) {}
 
@@ -53,7 +53,7 @@ export default class Account {
       data.id,
       data.number,
       data.balance,
-      data.customer,
+      data.user,
       data.overdraftFacility,
     );
   }

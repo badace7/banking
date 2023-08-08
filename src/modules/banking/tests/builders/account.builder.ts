@@ -4,16 +4,16 @@ export const AccountBuilder = ({
   id = 'account-id',
   number = 'account-number',
   balance = 1000,
-  customer = 'John Doe',
+  user = 'John Doe',
   overdraftFacility = null,
 }: {
   id?: string;
   number?: string;
   balance?: number;
-  customer?: string;
+  user?: string;
   overdraftFacility?: number;
 } = {}) => {
-  const props = { id, number, balance, customer, overdraftFacility };
+  const props = { id, number, balance, user, overdraftFacility };
   return {
     withAccountNumber(_number: string) {
       return AccountBuilder({
@@ -33,10 +33,10 @@ export const AccountBuilder = ({
         id: _id,
       });
     },
-    ownerId(_customer: string) {
+    ownerId(_user: string) {
       return AccountBuilder({
         ...props,
-        customer: _customer,
+        user: _user,
       });
     },
     withOverDraftFacility(_overdraftFacility: number) {
@@ -50,7 +50,7 @@ export const AccountBuilder = ({
         id: props.id,
         number: props.number,
         balance: props.balance,
-        customer: props.customer,
+        user: props.user,
         overdraftFacility: props.overdraftFacility,
       });
     },
