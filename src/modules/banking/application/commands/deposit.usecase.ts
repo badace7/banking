@@ -50,7 +50,7 @@ export class Deposit {
 
   private async saveAccountChanges(account: Account) {
     const isAccountUpdated = await this.accountAdapter.updateBankAccount(
-      account.data.number,
+      account.data.id,
       account,
     );
 

@@ -65,7 +65,7 @@ export class MoneyTransfer implements IMoneyTransfer {
 
   private async updateAccount(account: Account) {
     const isAccountUpdated = await this.accountAdapter.updateBankAccount(
-      account.data.number,
+      account.data.id,
       account,
     );
 

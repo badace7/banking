@@ -24,15 +24,14 @@ export class AccountPostgresAdapter implements IAccountPort {
     throw new Error('Method not implemented.');
   }
   async updateBankAccount(
-    accountNumber: string,
+    accountId: string,
     accountDomain: Account,
   ): Promise<any> {
     const entity = this.toEntity(accountDomain);
-    const accountUpdated = await this.repository.preload(entity);
 
-    const updatedAccount = await this.repository.save(accountUpdated);
+    const isUpdated = await this.repository.update(accountId, entity);
 
-    return this.toDomain(updatedAccount);
+    return isUpdated.affected === 1 ? true : false;
   }
 
   private toDomain(account: AccountEntity): Account {
