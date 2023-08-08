@@ -24,10 +24,10 @@ export class Deposit {
 
     account.credit(command.amount);
 
-    this.saveAccountChanges(account);
+    await this.saveAccountChanges(account);
 
     const operation = Operation.create({
-      id: command.id,
+      id: `${command.id}-2`,
       label: 'Deposit',
       amount: command.amount,
       account: command.origin,
@@ -36,7 +36,7 @@ export class Deposit {
       date: this.dateProvider.getNow(),
     });
 
-    this.operationAdapter.save(operation);
+    await this.operationAdapter.save(operation);
   }
 
   private async getAccount(accountNumber: string): Promise<Account> {

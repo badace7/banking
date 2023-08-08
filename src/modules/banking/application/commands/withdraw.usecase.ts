@@ -22,10 +22,10 @@ export class Withdraw {
 
     account.debit(command.amount);
 
-    this.saveAccountChanges(account);
+    await this.saveAccountChanges(account);
 
     const operation = Operation.create({
-      id: command.id,
+      id: `${command.id}-1`,
       label: 'Withdraw',
       amount: command.amount,
       account: command.origin,

@@ -25,7 +25,7 @@ export class MoneyTransfer implements IMoneyTransfer {
     const destinationAccount = await this.getAccount(command.destination);
 
     const sourceOperation = Operation.create({
-      id: command.id,
+      id: `${command.id}-1`,
       label: command.label,
       amount: command.amount,
       account: command.origin,
@@ -35,7 +35,7 @@ export class MoneyTransfer implements IMoneyTransfer {
     });
 
     const destinationOperation = Operation.create({
-      id: command.id,
+      id: `${command.id}-2`,
       label: command.label,
       amount: command.amount,
       account: command.destination,
