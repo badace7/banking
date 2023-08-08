@@ -1,8 +1,8 @@
 import { CommandFactory } from 'nest-commander';
-import { AppModule } from 'src/app.module';
+import { CliModule } from './cli.module';
 
 async function bootstrap() {
-  await CommandFactory.run(AppModule), ['error'];
+  await CommandFactory.run(CliModule), ['error'];
 }
 
 bootstrap();
