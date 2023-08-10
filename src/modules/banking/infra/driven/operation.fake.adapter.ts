@@ -10,16 +10,16 @@ class FakeOperationRepository implements IOperationPort {
   getAllOfAccount(accountNumber: string): Promise<Operation[]> {
     return Promise.resolve(
       [...this.fakeOperationEntityManager.values()]
-        .filter((trn) => trn.data.account === accountNumber)
-        .map((t) =>
+        .filter((operation) => operation.data.account === accountNumber)
+        .map((operation) =>
           Operation.create({
-            id: t.data.id,
-            label: t.data.label,
-            amount: t.data.amount,
-            account: t.data.account,
-            type: t.data.type,
-            flow: t.data.flow,
-            date: t.data.date,
+            id: operation.data.id,
+            label: operation.data.label,
+            amount: operation.data.amount,
+            account: operation.data.account,
+            type: operation.data.type,
+            flow: operation.data.flow,
+            date: operation.data.date,
           }),
         ),
     );

@@ -20,6 +20,7 @@ describe('Feature: Money transfer between two customers', () => {
     test('Jack is authorized to make a money transfer', async () => {
       uat.givenJackHasABankAccount(
         AccountBuilder()
+          .withId('jack-account-id')
           .withAccountNumber('12312312312')
           .withBalance(1000)
           .ownerId('jack-id')
@@ -27,6 +28,7 @@ describe('Feature: Money transfer between two customers', () => {
       );
       uat.andBobHasAbankAccount(
         AccountBuilder()
+          .withId('bob-account-id')
           .withAccountNumber('98797897897')
           .withBalance(1000)
           .ownerId('bob-id')
@@ -63,6 +65,7 @@ describe('Feature: Money transfer between two customers', () => {
     test('Jack is not authorized to make a money transfer cause his balance is insufficient', async () => {
       uat.givenJackHasABankAccount(
         AccountBuilder()
+          .withId('jack-account-id')
           .withAccountNumber('12312312312')
           .withBalance(2500)
           .ownerId('jack-id')
@@ -71,6 +74,7 @@ describe('Feature: Money transfer between two customers', () => {
 
       uat.andBobHasAbankAccount(
         AccountBuilder()
+          .withId('bob-account-id')
           .withAccountNumber('98797897897')
           .withBalance(-500)
           .ownerId('bob-id')
@@ -99,6 +103,7 @@ describe('Feature: Money transfer between two customers', () => {
     test('Jack is authorized to make a money transfer with overdraft authorization', async () => {
       uat.givenJackHasABankAccount(
         AccountBuilder()
+          .withId('jack-account-id')
           .withAccountNumber('12312312312')
           .withBalance(2000)
           .ownerId('jack-id')
@@ -108,6 +113,7 @@ describe('Feature: Money transfer between two customers', () => {
 
       uat.andBobHasAbankAccount(
         AccountBuilder()
+          .withId('bob-account-id')
           .withAccountNumber('98797897897')
           .withBalance(0)
           .ownerId('bob-id')
@@ -145,6 +151,7 @@ describe('Feature: Money transfer between two customers', () => {
     test('Jack is not authorized to make a money transfer with overdraft authorization cause is balance is insufficient', async () => {
       uat.givenJackHasABankAccount(
         AccountBuilder()
+          .withId('jack-account-id')
           .withAccountNumber('12312312312')
           .withBalance(-500)
           .ownerId('jack-id')
@@ -153,6 +160,7 @@ describe('Feature: Money transfer between two customers', () => {
 
       uat.andBobHasAbankAccount(
         AccountBuilder()
+          .withId('bob-account-id')
           .withAccountNumber('98797897897')
           .withBalance(2500)
           .ownerId('bob-id')
