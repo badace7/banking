@@ -12,6 +12,7 @@ import { OperationTypeEntity } from './operation-type.entity';
 import { FlowIndicatorEntity } from './flow-indicator.entity';
 import { AccountEntity } from './account.entity';
 import { IOperationPort } from '../../application/_ports/driven/operation.iport';
+import { OperationReadModel } from '../../application/queries/operations.read-model';
 
 @Injectable()
 export class OperationPostgresAdapter implements IOperationPort {
@@ -25,6 +26,20 @@ export class OperationPostgresAdapter implements IOperationPort {
     @InjectRepository(AccountEntity)
     private readonly AccountRepository: Repository<AccountEntity>,
   ) {}
+  async getAllByAccountNumber(
+    accountNumber: string,
+  ): Promise<OperationReadModel[]> {
+    const operations = await this.operationRepository
+      .createQueryBuilder('operation')
+      .innerJoin('operation.account', 'account')
+      .innerJoinAndSelect('operation.operationType', 'operationType')
+      .innerJoinAndSelect('operation.flowIndicator', 'flowIndicator')
+      .orderBy('operation.date', 'DESC')
+      .where('account.number = :number', { number: accountNumber })
+      .getMany();
+
+    return operations.map((operation) => this.toReadModel(operation));
+  }
   async save(operation: Operation): Promise<void> {
     const operationType = await this.operationTypeRepository.findOne({
       where: { type: operation.data.type },
@@ -89,5 +104,20 @@ export class OperationPostgresAdapter implements IOperationPort {
     });
 
     return domain;
+  }
+
+  private toReadModel(operation: OperationEntity): OperationReadModel {
+    const readModel = OperationReadModel.create({
+      id: operation.id,
+      label: operation.label,
+      amount: operation.amount,
+      type: operation.operationType.type,
+      flow: operation.flowIndicator.indicator,
+      date: operation.date,
+    });
+
+    console.log(readModel);
+
+    return readModel;
   }
 }

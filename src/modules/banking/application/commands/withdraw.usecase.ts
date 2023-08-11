@@ -1,4 +1,3 @@
-import { Inject } from '@nestjs/common';
 import { WithdrawCommand } from './withdraw.command';
 import { UsecaseError } from 'src/libs/exceptions/usecase.error';
 import Account from '../../domain/account';
@@ -13,9 +12,9 @@ import { IOperationPort } from '../_ports/driven/operation.iport';
 
 export class Withdraw {
   constructor(
-    @Inject('IAccountPort') private accountAdapter: IAccountPort,
-    @Inject('IOperationPort') private operationAdapter: IOperationPort,
-    @Inject('IDateProvider') private dateProvider: IDateProvider,
+    private accountAdapter: IAccountPort,
+    private operationAdapter: IOperationPort,
+    private dateProvider: IDateProvider,
   ) {}
   async execute(command: WithdrawCommand): Promise<void> {
     const account = await this.getAccount(command.origin);

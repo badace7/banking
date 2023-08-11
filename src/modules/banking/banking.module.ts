@@ -21,6 +21,8 @@ import { ACCOUNT_PORT } from './application/_ports/driven/account.iport';
 import { OPERATION_PORT } from './application/_ports/driven/operation.iport';
 import { MONEY_TRANSFER_PORT } from './application/_ports/driver/money-transfer.iport';
 import { WITHDRAW_PORT } from './application/_ports/driver/withdraw.iport';
+import { FIND_OPERATIONS_BY_ACCOUNT_NUMBER_PORT } from './application/_ports/driver/find-operations-by-account-number.iport';
+import { FindOperationsByAccountNumber } from './application/queries/find-operations-by-account-number.usecase';
 
 export const respositories = [
   {
@@ -43,6 +45,11 @@ export const usecases = [
   createInjectableProvider(MONEY_TRANSFER_PORT, MoneyTransfer, PORTS),
   createInjectableProvider(WITHDRAW_PORT, Withdraw, PORTS),
   createInjectableProvider(DEPOSIT_PORT, Deposit, PORTS),
+  createInjectableProvider(
+    FIND_OPERATIONS_BY_ACCOUNT_NUMBER_PORT,
+    FindOperationsByAccountNumber,
+    [OPERATION_PORT],
+  ),
 ];
 
 @Module({

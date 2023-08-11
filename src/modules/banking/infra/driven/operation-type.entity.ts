@@ -7,7 +7,6 @@ export class OperationTypeEntity {
   id: number;
   @Column()
   type: string;
-
   @OneToMany(() => OperationEntity, (operation) => operation.operationType)
   operations: OperationEntity[];
 }
