@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AccountEntity } from './account.entity';
 import Account from '../../domain/account';
-import { IAccountPort } from '../../application/_ports/driven/account.iport';
+import { IAccountPort } from '../../application/_ports/repositories/account.iport';
 
 @Injectable()
 export class AccountPostgresAdapter implements IAccountPort {

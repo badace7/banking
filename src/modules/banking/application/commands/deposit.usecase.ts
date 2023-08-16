@@ -7,9 +7,9 @@ import {
   OperationType,
 } from '../../domain/operation';
 
-import { IDateProvider } from '../_ports/driven/date-provider.iport';
-import { IAccountPort } from '../_ports/driven/account.iport';
-import { IOperationPort } from '../_ports/driven/operation.iport';
+import { IDateProvider } from '../_ports/repositories/date-provider.iport';
+import { IAccountPort } from '../_ports/repositories/account.iport';
+import { IOperationPort } from '../_ports/repositories/operation.iport';
 
 export class Deposit {
   constructor(
