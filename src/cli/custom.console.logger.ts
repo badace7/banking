@@ -1,3 +1,4 @@
+import { OperationReadModel } from 'src/modules/banking/application/queries/operation.read-model';
 import { logo } from './banking.logo';
 
 export class CustomConsoleLogger {
@@ -20,5 +21,12 @@ export class CustomConsoleLogger {
 
   displayTable(tabularData: any) {
     console.table(this.CYAN_COLOR, tabularData);
+  }
+
+  displayOperationsView(operations: OperationReadModel[]) {
+    console.table(
+      operations.map((operation) => operation.data),
+      ['date', 'label', 'debit', 'credit'],
+    );
   }
 }

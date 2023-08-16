@@ -23,6 +23,11 @@ export class CustomPrompt {
           value: 'withdraw',
           description: 'Allows you to withdraw money on your account',
         },
+        {
+          name: 'View operations',
+          value: 'view-operations',
+          description: 'Allows you to view your operations',
+        },
         new Separator('---------------'),
         {
           name: 'Cancel',
@@ -79,5 +84,12 @@ export class CustomPrompt {
       amount,
       label,
     };
+  }
+
+  public async viewOperationsPrompt() {
+    const accountNumber: string = await input({
+      message: 'What is the account number ?',
+    });
+    return accountNumber;
   }
 }

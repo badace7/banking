@@ -11,8 +11,8 @@ import {
 import { OperationTypeEntity } from './operation-type.entity';
 import { FlowIndicatorEntity } from './flow-indicator.entity';
 import { AccountEntity } from './account.entity';
-import { IOperationPort } from '../../application/_ports/driven/operation.iport';
-import { OperationReadModel } from '../../application/queries/operations.read-model';
+import { IOperationPort } from '../../application/_ports/repositories/operation.iport';
+import { OperationResult } from '../../application/queries/operation.result';
 
 @Injectable()
 export class OperationPostgresAdapter implements IOperationPort {
@@ -28,7 +28,7 @@ export class OperationPostgresAdapter implements IOperationPort {
   ) {}
   async getAllByAccountNumber(
     accountNumber: string,
-  ): Promise<OperationReadModel[]> {
+  ): Promise<OperationResult[]> {
     const operations = await this.operationRepository
       .createQueryBuilder('operation')
       .innerJoin('operation.account', 'account')
@@ -38,7 +38,7 @@ export class OperationPostgresAdapter implements IOperationPort {
       .where('account.number = :number', { number: accountNumber })
       .getMany();
 
-    return operations.map((operation) => this.toReadModel(operation));
+    return operations.map((operation) => this.toResult(operation));
   }
   async save(operation: Operation): Promise<void> {
     const operationType = await this.operationTypeRepository.findOne({
@@ -106,18 +106,15 @@ export class OperationPostgresAdapter implements IOperationPort {
     return domain;
   }
 
-  private toReadModel(operation: OperationEntity): OperationReadModel {
-    const readModel = OperationReadModel.create({
+  private toResult(operation: OperationEntity): OperationResult {
+    const result = {
       id: operation.id,
       label: operation.label,
       amount: operation.amount,
       type: operation.operationType.type,
       flow: operation.flowIndicator.indicator,
       date: operation.date,
-    });
-
-    console.log(readModel);
-
-    return readModel;
+    } as OperationResult;
+    return result;
   }
 }

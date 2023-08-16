@@ -3,21 +3,26 @@ import { Command, CommandRunner } from 'nest-commander';
 import {
   DEPOSIT_PORT,
   IDeposit,
-} from 'src/modules/banking/application/_ports/driver/deposit.iport';
+} from 'src/modules/banking/application/_ports/usecases/deposit.iport';
 import {
   IMoneyTransfer,
   MONEY_TRANSFER_PORT,
-} from 'src/modules/banking/application/_ports/driver/money-transfer.iport';
+} from 'src/modules/banking/application/_ports/usecases/money-transfer.iport';
 import {
   IWithdraw,
   WITHDRAW_PORT,
-} from 'src/modules/banking/application/_ports/driver/withdraw.iport';
+} from 'src/modules/banking/application/_ports/usecases/withdraw.iport';
 import { DepositCommand } from 'src/modules/banking/application/commands/deposit.command';
 import { MoneyTransferCommand } from 'src/modules/banking/application/commands/transfer.command';
 import { WithdrawCommand } from 'src/modules/banking/application/commands/withdraw.command';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomConsoleLogger } from './custom.console.logger';
 import { CustomPrompt } from './custom.prompt';
+import {
+  FIND_OPERATIONS_BY_ACCOUNT_NUMBER_PORT,
+  IFindOperationByAccountNumber,
+} from 'src/modules/banking/application/_ports/usecases/find-operations-by-account-number.iport';
+import { FindOperationsByNumberQuery } from 'src/modules/banking/application/queries/find-operations-by-account-number.query';
 
 @Command({
   name: 'banking',
@@ -31,6 +36,8 @@ export class BankingCli extends CommandRunner {
     private readonly withdrawUsecase: IWithdraw,
     @Inject(DEPOSIT_PORT)
     private readonly depositUsecase: IDeposit,
+    @Inject(FIND_OPERATIONS_BY_ACCOUNT_NUMBER_PORT)
+    private readonly findOperationsByAccountNumberUsecase: IFindOperationByAccountNumber,
     private readonly logger: CustomConsoleLogger,
     private readonly prompt: CustomPrompt,
   ) {
@@ -80,6 +87,16 @@ export class BankingCli extends CommandRunner {
 
       await this.withdrawUsecase.execute(command);
       this.logger.displaySuccess('Withdraw was successful');
+      process.exit(0);
+    }
+
+    if (choice === 'view-operations') {
+      const accountNumber = await this.prompt.viewOperationsPrompt();
+      const operations =
+        await this.findOperationsByAccountNumberUsecase.execute(
+          new FindOperationsByNumberQuery(accountNumber),
+        );
+      this.logger.displayOperationsView(operations);
       process.exit(0);
     }
 

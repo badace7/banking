@@ -17,20 +17,20 @@ import { WithdrawCommand } from '../../application/commands/withdraw.command';
 import {
   DEPOSIT_PORT,
   IDeposit,
-} from '../../application/_ports/driver/deposit.iport';
+} from '../../application/_ports/usecases/deposit.iport';
 import {
   IMoneyTransfer,
   MONEY_TRANSFER_PORT,
-} from '../../application/_ports/driver/money-transfer.iport';
+} from '../../application/_ports/usecases/money-transfer.iport';
 import {
   IWithdraw,
   WITHDRAW_PORT,
-} from '../../application/_ports/driver/withdraw.iport';
+} from '../../application/_ports/usecases/withdraw.iport';
 import { FindOperationsByNumberQuery } from '../../application/queries/find-operations-by-account-number.query';
 import {
   FIND_OPERATIONS_BY_ACCOUNT_NUMBER_PORT,
   IFindOperationByAccountNumber,
-} from '../../application/_ports/driver/find-operations-by-account-number.iport';
+} from '../../application/_ports/usecases/find-operations-by-account-number.iport';
 
 @Controller('banking/operations')
 export class BankingController {

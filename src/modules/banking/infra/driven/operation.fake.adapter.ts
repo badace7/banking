@@ -1,11 +1,12 @@
-import { IOperationPort } from '../../application/_ports/driven/operation.iport';
-import { OperationReadModel } from '../../application/queries/operations.read-model';
+import { IOperationPort } from '../../application/_ports/repositories/operation.iport';
+import { OperationResult } from '../../application/queries/operation.result';
 import { Operation } from '../../domain/operation';
 
 class FakeOperationRepository implements IOperationPort {
-  getAllByAccountNumber(accountNumber: string): Promise<OperationReadModel[]> {
+  getAllByAccountNumber(accountNumber: string): Promise<OperationResult[]> {
     throw new Error('Method not implemented.');
   }
+
   private fakeOperationEntityManager: Map<string, Operation> = new Map();
   save(operation: Operation): Promise<void> {
     this.fakeOperationEntityManager.set(operation.data.id, operation);

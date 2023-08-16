@@ -3,8 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { createInjectableProvider } from 'src/provider.factory';
 import { UserEntity } from '../authentication/infra/customer/user.entity';
 
-import { DATE_PORT } from './application/_ports/driven/date-provider.iport';
-import { DEPOSIT_PORT } from './application/_ports/driver/deposit.iport';
+import { DATE_PORT } from './application/_ports/repositories/date-provider.iport';
+import { DEPOSIT_PORT } from './application/_ports/usecases/deposit.iport';
 
 import { Deposit } from './application/commands/deposit.usecase';
 import { MoneyTransfer } from './application/commands/moneytransfer.usecase';
@@ -17,11 +17,11 @@ import { OperationTypeEntity } from './infra/driven/operation-type.entity';
 import { OperationEntity } from './infra/driven/operation.entity';
 import { OperationPostgresAdapter } from './infra/driven/operation.postgres.adapter';
 import { BankingController } from './infra/driver/banking.controller';
-import { ACCOUNT_PORT } from './application/_ports/driven/account.iport';
-import { OPERATION_PORT } from './application/_ports/driven/operation.iport';
-import { MONEY_TRANSFER_PORT } from './application/_ports/driver/money-transfer.iport';
-import { WITHDRAW_PORT } from './application/_ports/driver/withdraw.iport';
-import { FIND_OPERATIONS_BY_ACCOUNT_NUMBER_PORT } from './application/_ports/driver/find-operations-by-account-number.iport';
+import { ACCOUNT_PORT } from './application/_ports/repositories/account.iport';
+import { OPERATION_PORT } from './application/_ports/repositories/operation.iport';
+import { MONEY_TRANSFER_PORT } from './application/_ports/usecases/money-transfer.iport';
+import { WITHDRAW_PORT } from './application/_ports/usecases/withdraw.iport';
+import { FIND_OPERATIONS_BY_ACCOUNT_NUMBER_PORT } from './application/_ports/usecases/find-operations-by-account-number.iport';
 import { FindOperationsByAccountNumber } from './application/queries/find-operations-by-account-number.usecase';
 
 export const respositories = [
@@ -48,7 +48,7 @@ export const usecases = [
   createInjectableProvider(
     FIND_OPERATIONS_BY_ACCOUNT_NUMBER_PORT,
     FindOperationsByAccountNumber,
-    [OPERATION_PORT],
+    [OPERATION_PORT, DATE_PORT],
   ),
 ];
 
