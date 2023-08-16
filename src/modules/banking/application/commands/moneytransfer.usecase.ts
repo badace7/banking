@@ -24,6 +24,20 @@ export class MoneyTransfer implements IMoneyTransfer {
     const sourceAccount = await this.getAccount(command.origin);
     const destinationAccount = await this.getAccount(command.destination);
 
+    const { sourceOperation, destinationOperation } =
+      this.createOperations(command);
+
+    sourceAccount.debit(sourceOperation.data.amount);
+    destinationAccount.credit(sourceOperation.data.amount);
+
+    await this.updateAccount(sourceAccount);
+    await this.updateAccount(destinationAccount);
+
+    await this.operationAdapter.save(sourceOperation);
+    await this.operationAdapter.save(destinationOperation);
+  }
+
+  private createOperations(command: MoneyTransferCommand) {
     const sourceOperation = Operation.create({
       id: `${command.id}-1`,
       label: command.label,
@@ -43,15 +57,7 @@ export class MoneyTransfer implements IMoneyTransfer {
       flow: FlowIndicator.CREDIT,
       date: this.dateProvider.getNow(),
     });
-
-    sourceAccount.debit(sourceOperation.data.amount);
-    destinationAccount.credit(sourceOperation.data.amount);
-
-    await this.updateAccount(sourceAccount);
-    await this.updateAccount(destinationAccount);
-
-    await this.operationAdapter.save(sourceOperation);
-    await this.operationAdapter.save(destinationOperation);
+    return { sourceOperation, destinationOperation };
   }
 
   private async getAccount(accountNumber: string): Promise<Account> {
