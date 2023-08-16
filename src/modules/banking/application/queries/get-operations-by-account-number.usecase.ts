@@ -1,18 +1,18 @@
 import { IDateProvider } from '../_ports/repositories/date-provider.iport';
 import { IOperationPort } from '../_ports/repositories/operation.iport';
-import { IFindOperationByAccountNumber } from '../_ports/usecases/find-operations-by-account-number.iport';
-import { FindOperationsByNumberQuery } from './find-operations-by-account-number.query';
+import { IGetOperationByAccountNumber } from '../_ports/usecases/get-operations-by-account-number.iport';
+import { GetOperationsByNumberQuery } from './get-operations-by-account-number.query';
 import { OperationReadModel } from './operation.read-model';
 
-export class FindOperationsByAccountNumber
-  implements IFindOperationByAccountNumber
+export class GetOperationsByAccountNumber
+  implements IGetOperationByAccountNumber
 {
   constructor(
     private operationAdapter: IOperationPort,
     private dateProvider: IDateProvider,
   ) {}
   async execute(
-    query: FindOperationsByNumberQuery,
+    query: GetOperationsByNumberQuery,
   ): Promise<OperationReadModel[]> {
     const operations = await this.operationAdapter.getAllByAccountNumber(
       query.accountNumber,

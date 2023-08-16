@@ -26,13 +26,17 @@ import {
   IWithdraw,
   WITHDRAW_PORT,
 } from '../../application/_ports/usecases/withdraw.iport';
-import { FindOperationsByNumberQuery } from '../../application/queries/find-operations-by-account-number.query';
+import { GetOperationsByNumberQuery } from '../../application/queries/get-operations-by-account-number.query';
 import {
-  FIND_OPERATIONS_BY_ACCOUNT_NUMBER_PORT,
-  IFindOperationByAccountNumber,
-} from '../../application/_ports/usecases/find-operations-by-account-number.iport';
+  GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT,
+  IGetOperationByAccountNumber,
+} from '../../application/_ports/usecases/get-operations-by-account-number.iport';
+import {
+  GET_BALANCE_PORT,
+  IGetBalance,
+} from '../../application/_ports/usecases/get-balance.iport';
 
-@Controller('banking/operations')
+@Controller('banking')
 export class BankingController {
   constructor(
     @Inject(MONEY_TRANSFER_PORT)
@@ -41,26 +45,43 @@ export class BankingController {
     private readonly withdrawUsecase: IWithdraw,
     @Inject(DEPOSIT_PORT)
     private readonly depositUsecase: IDeposit,
-    @Inject(FIND_OPERATIONS_BY_ACCOUNT_NUMBER_PORT)
-    private readonly findOperationsByAccountNumberUsecase: IFindOperationByAccountNumber,
+    @Inject(GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT)
+    private readonly getOperationsByAccountNumberUsecase: IGetOperationByAccountNumber,
+    @Inject(GET_BALANCE_PORT)
+    private readonly getBalanceUsecase: IGetBalance,
   ) {}
 
-  @Get(':accountNumber')
+  @Get('account/:accountNumber')
+  async getBalance(
+    @Param('accountNumber') accountNumber: string,
+    @Res() response: Response,
+  ) {
+    try {
+      const command = new GetOperationsByNumberQuery(accountNumber);
+      const balanceData = await this.getBalanceUsecase.execute(command);
+      response.status(HttpStatus.OK).send(balanceData);
+    } catch (error) {
+      response.status(HttpStatus.NOT_FOUND).send(error.message);
+    }
+  }
+
+  @Get('account/operations/:accountNumber')
   async findAllOperations(
     @Param('accountNumber') accountNumber: string,
     @Res() response: Response,
   ) {
     try {
-      const command = new FindOperationsByNumberQuery(accountNumber);
-      const operations =
-        await this.findOperationsByAccountNumberUsecase.execute(command);
+      const command = new GetOperationsByNumberQuery(accountNumber);
+      const operations = await this.getOperationsByAccountNumberUsecase.execute(
+        command,
+      );
       response.status(HttpStatus.OK).send(operations);
     } catch (error) {
       response.status(HttpStatus.NOT_FOUND).send(error.message);
     }
   }
 
-  @Post('transfer')
+  @Post('account/operation/transfer')
   async transferMoney(@Body() body: any, @Res() response: Response) {
     try {
       const command = new MoneyTransferCommand(
@@ -77,7 +98,7 @@ export class BankingController {
     }
   }
 
-  @Post('deposit')
+  @Post('account/operation/deposit')
   async depositMoney(@Body() body: any, @Res() response: Response) {
     try {
       const command = new DepositCommand(uuidv4(), body.origin, body.amount);
@@ -88,7 +109,7 @@ export class BankingController {
     }
   }
 
-  @Post('withdraw')
+  @Post('account/operation/withdraw')
   async withdrawMoney(@Body() body: any, @Res() response: Response) {
     try {
       const command = new WithdrawCommand(uuidv4(), body.origin, body.amount);

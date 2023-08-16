@@ -21,8 +21,10 @@ import { ACCOUNT_PORT } from './application/_ports/repositories/account.iport';
 import { OPERATION_PORT } from './application/_ports/repositories/operation.iport';
 import { MONEY_TRANSFER_PORT } from './application/_ports/usecases/money-transfer.iport';
 import { WITHDRAW_PORT } from './application/_ports/usecases/withdraw.iport';
-import { FIND_OPERATIONS_BY_ACCOUNT_NUMBER_PORT } from './application/_ports/usecases/find-operations-by-account-number.iport';
-import { FindOperationsByAccountNumber } from './application/queries/find-operations-by-account-number.usecase';
+import { GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT } from './application/_ports/usecases/get-operations-by-account-number.iport';
+import { GetOperationsByAccountNumber } from './application/queries/get-operations-by-account-number.usecase';
+import { GET_BALANCE_PORT } from './application/_ports/usecases/get-balance.iport';
+import { GetBalance } from './application/queries/get-balance.usecase';
 
 export const respositories = [
   {
@@ -46,10 +48,14 @@ export const usecases = [
   createInjectableProvider(WITHDRAW_PORT, Withdraw, PORTS),
   createInjectableProvider(DEPOSIT_PORT, Deposit, PORTS),
   createInjectableProvider(
-    FIND_OPERATIONS_BY_ACCOUNT_NUMBER_PORT,
-    FindOperationsByAccountNumber,
+    GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT,
+    GetOperationsByAccountNumber,
     [OPERATION_PORT, DATE_PORT],
   ),
+  createInjectableProvider(GET_BALANCE_PORT, GetBalance, [
+    ACCOUNT_PORT,
+    DATE_PORT,
+  ]),
 ];
 
 @Module({

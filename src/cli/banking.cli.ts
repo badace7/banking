@@ -19,10 +19,23 @@ import { v4 as uuidv4 } from 'uuid';
 import { CustomConsoleLogger } from './custom.console.logger';
 import { CustomPrompt } from './custom.prompt';
 import {
-  FIND_OPERATIONS_BY_ACCOUNT_NUMBER_PORT,
-  IFindOperationByAccountNumber,
-} from 'src/modules/banking/application/_ports/usecases/find-operations-by-account-number.iport';
-import { FindOperationsByNumberQuery } from 'src/modules/banking/application/queries/find-operations-by-account-number.query';
+  GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT,
+  IGetOperationByAccountNumber,
+} from 'src/modules/banking/application/_ports/usecases/get-operations-by-account-number.iport';
+import { GetOperationsByNumberQuery } from 'src/modules/banking/application/queries/get-operations-by-account-number.query';
+import { GetBalanceQuery } from 'src/modules/banking/application/queries/get-balance.query';
+import {
+  GET_BALANCE_PORT,
+  IGetBalance,
+} from 'src/modules/banking/application/_ports/usecases/get-balance.iport';
+
+enum Choice {
+  transfer = 'transfer',
+  deposit = 'deposit',
+  withdraw = 'withdraw',
+  view_operations = 'view-operations',
+  view_balance = 'view-balance',
+}
 
 @Command({
   name: 'banking',
@@ -36,8 +49,10 @@ export class BankingCli extends CommandRunner {
     private readonly withdrawUsecase: IWithdraw,
     @Inject(DEPOSIT_PORT)
     private readonly depositUsecase: IDeposit,
-    @Inject(FIND_OPERATIONS_BY_ACCOUNT_NUMBER_PORT)
-    private readonly findOperationsByAccountNumberUsecase: IFindOperationByAccountNumber,
+    @Inject(GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT)
+    private readonly findOperationsByAccountNumberUsecase: IGetOperationByAccountNumber,
+    @Inject(GET_BALANCE_PORT)
+    private readonly getBalanceUsecase: IGetBalance,
     private readonly logger: CustomConsoleLogger,
     private readonly prompt: CustomPrompt,
   ) {
@@ -55,7 +70,7 @@ export class BankingCli extends CommandRunner {
   }
 
   private async execOperationByChoice(choice: string) {
-    if (choice === 'transfer') {
+    if (choice === Choice.transfer) {
       const { origin, destination, amount, label } =
         await this.prompt.transferPrompt();
 
@@ -72,7 +87,7 @@ export class BankingCli extends CommandRunner {
       process.exit(0);
     }
 
-    if (choice === 'deposit') {
+    if (choice === Choice.deposit) {
       const { origin, amount } = await this.prompt.depositPrompt();
       const command = new DepositCommand(uuidv4(), origin, parseInt(amount));
 
@@ -81,7 +96,7 @@ export class BankingCli extends CommandRunner {
       process.exit(0);
     }
 
-    if (choice === 'withdraw') {
+    if (choice === Choice.withdraw) {
       const { origin, amount } = await this.prompt.withdrawPrompt();
       const command = new WithdrawCommand(uuidv4(), origin, parseInt(amount));
 
@@ -90,13 +105,39 @@ export class BankingCli extends CommandRunner {
       process.exit(0);
     }
 
-    if (choice === 'view-operations') {
-      const accountNumber = await this.prompt.viewOperationsPrompt();
+    if (choice === Choice.view_operations) {
+      const accountNumber = await this.prompt.getAccountNumberPrompt();
       const operations =
         await this.findOperationsByAccountNumberUsecase.execute(
-          new FindOperationsByNumberQuery(accountNumber),
+          new GetOperationsByNumberQuery(accountNumber),
         );
-      this.logger.displayOperationsView(operations);
+      this.logger.displayDataInTable(
+        operations.map((operation) => operation.data),
+        ['date', 'label', 'debit', 'credit'],
+      );
+      process.exit(0);
+    }
+
+    if (choice === Choice.view_balance) {
+      const accountNumber = await await this.prompt.getAccountNumberPrompt();
+      const balanceData = await this.getBalanceUsecase.execute(
+        new GetBalanceQuery(accountNumber),
+      );
+
+      this.logger.displayMessage('This is your account balance : \n');
+
+      this.logger.displayMessage(
+        'Account number : ' +
+          balanceData.data.accountNumber +
+          '\n' +
+          ' Balance : ' +
+          balanceData.data.balance +
+          '\n' +
+          ' Date : ' +
+          balanceData.data.date,
+      );
+
+      this.logger.displayMessage('------------------------------');
       process.exit(0);
     }
 

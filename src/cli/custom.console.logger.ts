@@ -1,4 +1,3 @@
-import { OperationReadModel } from 'src/modules/banking/application/queries/operation.read-model';
 import { logo } from './banking.logo';
 
 export class CustomConsoleLogger {
@@ -19,14 +18,11 @@ export class CustomConsoleLogger {
     console.error(this.RED_COLOR, error);
   }
 
-  displayTable(tabularData: any) {
-    console.table(this.CYAN_COLOR, tabularData);
+  displayDataInTable(tabularData: any, arrangement: string[]) {
+    console.table(tabularData, arrangement);
   }
 
-  displayOperationsView(operations: OperationReadModel[]) {
-    console.table(
-      operations.map((operation) => operation.data),
-      ['date', 'label', 'debit', 'credit'],
-    );
+  displayMessage(message: string) {
+    console.log(this.GREEN_COLOR, message);
   }
 }

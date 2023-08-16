@@ -16,7 +16,6 @@ export class CustomPrompt {
           name: 'Deposit',
           value: 'deposit',
           description: 'Allows you to deposit money on your account',
-          // disabled: 'Not disponible',
         },
         {
           name: 'Withdraw',
@@ -28,6 +27,11 @@ export class CustomPrompt {
           value: 'view-operations',
           description: 'Allows you to view your operations',
         },
+        {
+          name: 'View balance',
+          value: 'view-balance',
+          description: 'Allows you to view your account balance',
+        },
         new Separator('---------------'),
         {
           name: 'Cancel',
@@ -38,9 +42,7 @@ export class CustomPrompt {
   }
 
   public async depositPrompt() {
-    const origin: string = await input({
-      message: 'Who is at the origin of deposit ?',
-    });
+    const origin: string = await this.getAccountNumberPrompt();
     const amount: string = await input({
       message: 'What is the amount ?',
     });
@@ -51,9 +53,7 @@ export class CustomPrompt {
   }
 
   public async withdrawPrompt() {
-    const origin: string = await input({
-      message: 'Who is at the origin of withdraw ?',
-    });
+    const origin: string = await this.getAccountNumberPrompt();
     const amount: string = await input({
       message: 'What is the amount ?',
     });
@@ -65,9 +65,7 @@ export class CustomPrompt {
   }
 
   public async transferPrompt() {
-    const origin: string = await input({
-      message: 'Who is at the origin of transfer ?',
-    });
+    const origin: string = await this.getAccountNumberPrompt();
     const destination: string = await input({
       message: 'Who is at the destination of transfer ?',
     });
@@ -86,9 +84,9 @@ export class CustomPrompt {
     };
   }
 
-  public async viewOperationsPrompt() {
+  public async getAccountNumberPrompt() {
     const accountNumber: string = await input({
-      message: 'What is the account number ?',
+      message: 'What is your account number ?',
     });
     return accountNumber;
   }
