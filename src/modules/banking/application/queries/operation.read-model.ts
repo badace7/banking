@@ -27,9 +27,11 @@ export class OperationReadModel {
     flow: string;
     date: string;
   }) {
-    const ZERO = '';
+    const DEBIT = 'DEBIT';
+    const CREDIT = 'CREDIT';
+    const ZERO = '0';
 
-    if (operation.flow === 'DEBIT') {
+    if (operation.flow === DEBIT) {
       return new OperationReadModel(
         operation.id,
         operation.label,
@@ -40,7 +42,7 @@ export class OperationReadModel {
       );
     }
 
-    if (operation.flow === 'CREDIT') {
+    if (operation.flow === CREDIT) {
       return new OperationReadModel(
         operation.id,
         operation.label,
