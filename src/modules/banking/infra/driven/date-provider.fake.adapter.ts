@@ -1,7 +1,7 @@
 import { IDateProvider } from '../../application/_ports/repositories/date-provider.iport';
 
 export class StubDateProvider implements IDateProvider {
-  toReadableDate(date: Date): string {
+  toFormatedDate(date: Date): string {
     throw new Error('Method not implemented.');
   }
   now: Date;

@@ -19,7 +19,7 @@ export class GetBalance implements IGetBalance {
     return BalanceReadModel.create({
       accountNumber: account.data.number,
       balance: account.data.balance,
-      date: this.dateProvider.toReadableDate(date),
+      date: this.dateProvider.toFormatedDate(date),
     });
   }
 }

@@ -20,12 +20,12 @@ export class GetOperationsByAccountNumber
 
     return operations.map((operation) =>
       OperationReadModel.create({
-        id: operation.id,
-        label: operation.label,
-        amount: operation.amount,
-        type: operation.type,
-        flow: operation.flow,
-        date: this.dateProvider.toReadableDate(operation.date),
+        id: operation.data.id,
+        label: operation.data.label,
+        amount: operation.data.amount,
+        type: operation.data.type,
+        flow: operation.data.flow,
+        date: this.dateProvider.toFormatedDate(operation.data.date),
       }),
     );
   }

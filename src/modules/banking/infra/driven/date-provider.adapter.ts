@@ -1,7 +1,7 @@
 import { IDateProvider } from '../../application/_ports/repositories/date-provider.iport';
 
 export class DateProvider implements IDateProvider {
-  toReadableDate(date: Date): string {
+  toFormatedDate(date: Date): string {
     const day =
       date.getDate() < 10
         ? '0' + String(date.getDate())
