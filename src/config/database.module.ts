@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import postgresConfig from './postgres.config';
+import postgresConfig, { DB_DEV } from './postgres.config';
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import postgresConfig from './postgres.config';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) =>
-        configService.get('database'),
+        configService.get(DB_DEV),
     }),
   ],
   exports: [ConfigModule, TypeOrmModule],

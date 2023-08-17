@@ -1,7 +1,9 @@
+export const DB_DEV = 'developpment';
+
 export default () => ({
-  database: {
-    name: 'banking_db',
-    type: 'postgres',
+  developpment: {
+    name: process.env.DB_NAME,
+    type: process.env.DB_TYPE,
     host: process.env.DB_HOST,
     port: parseInt(process.env.DB_PORT, 10),
     username: process.env.DB_USER,
@@ -9,9 +11,9 @@ export default () => ({
     database: process.env.DB_NAME,
     synchronize: false,
     logging: true,
-    entities: ['dist/**/*.entity.js'],
-    migrations: ['dist/src/migrations/*.js'],
-    migrationTableName: 'migrations_banking',
+    entities: [process.env.DB_ENTITIES],
+    migrations: [process.env.DB_MIGRATIONS],
+    migrationTableName: process.env.DB_MIGRATION_TABLE_NAME,
     migrationsRun: true,
   },
 });
