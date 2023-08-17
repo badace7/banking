@@ -1,9 +1,8 @@
 import { IOperationPort } from '../../application/_ports/repositories/operation.iport';
-import { OperationResult } from '../../application/queries/operation.result';
 import { Operation } from '../../domain/operation';
 
 class FakeOperationRepository implements IOperationPort {
-  getAllByAccountNumber(accountNumber: string): Promise<OperationResult[]> {
+  getAllByAccountNumber(accountNumber: string): Promise<Operation[]> {
     throw new Error('Method not implemented.');
   }
 

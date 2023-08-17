@@ -12,7 +12,6 @@ import { OperationTypeEntity } from './operation-type.entity';
 import { FlowIndicatorEntity } from './flow-indicator.entity';
 import { AccountEntity } from './account.entity';
 import { IOperationPort } from '../../application/_ports/repositories/operation.iport';
-import { OperationResult } from '../../application/queries/operation.result';
 
 @Injectable()
 export class OperationPostgresAdapter implements IOperationPort {
@@ -26,19 +25,17 @@ export class OperationPostgresAdapter implements IOperationPort {
     @InjectRepository(AccountEntity)
     private readonly AccountRepository: Repository<AccountEntity>,
   ) {}
-  async getAllByAccountNumber(
-    accountNumber: string,
-  ): Promise<OperationResult[]> {
+  async getAllByAccountNumber(accountNumber: string): Promise<Operation[]> {
     const operations = await this.operationRepository
       .createQueryBuilder('operation')
-      .innerJoin('operation.account', 'account')
+      .innerJoinAndSelect('operation.account', 'account')
       .innerJoinAndSelect('operation.operationType', 'operationType')
       .innerJoinAndSelect('operation.flowIndicator', 'flowIndicator')
       .orderBy('operation.date', 'DESC')
       .where('account.number = :number', { number: accountNumber })
       .getMany();
 
-    return operations.map((operation) => this.toResult(operation));
+    return operations.map((operation) => this.toDomain(operation));
   }
   async save(operation: Operation): Promise<void> {
     const operationType = await this.operationTypeRepository.findOne({
@@ -97,24 +94,12 @@ export class OperationPostgresAdapter implements IOperationPort {
       id: operation.id,
       label: operation.label,
       amount: operation.amount,
-      account: operation.account.id,
+      account: operation.account.number,
       type: operation.operationType.type as OperationType,
       flow: operation.flowIndicator.indicator as FlowIndicator,
       date: operation.date,
     });
 
     return domain;
-  }
-
-  private toResult(operation: OperationEntity): OperationResult {
-    const result = {
-      id: operation.id,
-      label: operation.label,
-      amount: operation.amount,
-      type: operation.operationType.type,
-      flow: operation.flowIndicator.indicator,
-      date: operation.date,
-    } as OperationResult;
-    return result;
   }
 }
