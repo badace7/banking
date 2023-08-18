@@ -8,6 +8,7 @@ import {
   TestContainersType,
 } from '../configs/test-containers.config';
 import { createDatabaseConnection } from '../configs/test-database.config';
+import { OperationMapper } from '../../infra/driven/operation.mapper';
 
 describe('operation adapter', () => {
   let container: TestContainersType;
@@ -34,7 +35,7 @@ describe('operation adapter', () => {
   test('save() should save an operation', async () => {
     const operation = OperationBuilder()
       .withId('transfer-id-1')
-      .withAccount('12312312312')
+      .withAccountId('2')
       .withLabel("Participation in Anna's gift")
       .withAmount(1000)
       .withType(OperationType.TRANSFER)
@@ -43,22 +44,18 @@ describe('operation adapter', () => {
       .build();
     await operationAdapter.save(operation);
 
-    const result = await connection
+    const entity = await connection
       .getRepository(OperationEntity)
       .findOne({ where: { id: operation.data.id } });
 
-    expect(result).toEqual({
-      id: 'transfer-id-1',
-      amount: 1000,
-      label: "Participation in Anna's gift",
-      date: new Date('2023-07-14T22:00:00.000Z'),
-    });
+    const expectedOperation = OperationMapper.toDomain(entity);
+    expect(expectedOperation).toEqual(operation);
   });
 
   test('getAllByAccountNumber() should return all account operations', async () => {
     const operation1 = OperationBuilder()
       .withId('transfer-id-1')
-      .withAccount('12312312312')
+      .withAccountId('2')
       .withLabel("Participation in Anna's gift")
       .withAmount(1000)
       .withType(OperationType.TRANSFER)
@@ -68,7 +65,7 @@ describe('operation adapter', () => {
 
     const operation2 = OperationBuilder()
       .withId('transfer-id-2')
-      .withAccount('12312312312')
+      .withAccountId('2')
       .withLabel("Participation in Anna's gift")
       .withAmount(1000)
       .withType(OperationType.TRANSFER)
@@ -77,8 +74,8 @@ describe('operation adapter', () => {
       .build();
 
     await Promise.all([
-      await operationAdapter.save(operation1),
-      await operationAdapter.save(operation2),
+      operationAdapter.save(operation1),
+      operationAdapter.save(operation2),
     ]);
 
     const results = await operationAdapter.getAllByAccountNumber('12312312312');
