@@ -1,5 +1,5 @@
-import { IAccountPort } from '../../application/_ports/repositories/account.iport';
-import Account from '../../domain/account';
+import { IAccountPort } from '../../../application/_ports/repositories/account.iport';
+import Account from '../../../domain/account';
 
 class FakeAccountRepository implements IAccountPort {
   private fakeAccountEntityManager: Map<string, Account> = new Map();

@@ -1,5 +1,5 @@
-import { IOperationPort } from '../../application/_ports/repositories/operation.iport';
-import { Operation } from '../../domain/operation';
+import { IOperationPort } from '../../../application/_ports/repositories/operation.iport';
+import { Operation } from '../../../domain/operation';
 
 class FakeOperationRepository implements IOperationPort {
   getAllByAccountNumber(accountNumber: string): Promise<Operation[]> {

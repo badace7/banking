@@ -1,4 +1,4 @@
-import { IDateProvider } from '../../application/_ports/repositories/date-provider.iport';
+import { IDateProvider } from '../../../application/_ports/repositories/date-provider.iport';
 
 export class StubDateProvider implements IDateProvider {
   toFormatedDate(date: Date): string {

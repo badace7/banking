@@ -2,9 +2,9 @@ import { MoneyTransfer } from 'src/modules/banking/application/commands/moneytra
 import Account from 'src/modules/banking/domain/account';
 import { MoneyTransferCommand } from 'src/modules/banking/application/commands/transfer.command';
 import { Operation } from 'src/modules/banking/domain/operation';
-import FakeAccountRepository from '../../infra/driven/account.fake.adapter';
-import FakeOperationRepository from '../../infra/driven/operation.fake.adapter';
-import { StubDateProvider } from '../../infra/driven/date-provider.fake.adapter';
+import FakeAccountRepository from '../../infra/driven/in-memory/account.fake.adapter';
+import FakeOperationRepository from '../../infra/driven/in-memory/operation.fake.adapter';
+import { StubDateProvider } from '../../infra/driven/in-memory/date-provider.fake.adapter';
 
 export const createTransferFixture = () => {
   const accountRepository = new FakeAccountRepository();

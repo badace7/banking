@@ -1,5 +1,5 @@
-import { Operation } from '../../domain/operation';
-import { OperationEntity } from './operation.entity';
+import { Operation } from '../../../domain/operation';
+import { OperationEntity } from '../entities/operation.entity';
 
 export class OperationMapper {
   static toEntity(operation: Operation): OperationEntity {

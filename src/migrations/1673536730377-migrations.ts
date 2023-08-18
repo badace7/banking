@@ -1,7 +1,7 @@
 import { UserEntity } from 'src/modules/authentication/infra/customer/user.entity';
-import { AccountEntity } from 'src/modules/banking/infra/driven/account.entity';
-import { FlowIndicatorEntity } from 'src/modules/banking/infra/driven/flow-indicator.entity';
-import { OperationTypeEntity } from 'src/modules/banking/infra/driven/operation-type.entity';
+import { AccountEntity } from 'src/modules/banking/infra/driven/entities/account.entity';
+import { FlowIndicatorEntity } from 'src/modules/banking/infra/driven/entities/flow-indicator.entity';
+import { OperationTypeEntity } from 'src/modules/banking/infra/driven/entities/operation-type.entity';
 
 import {
   MigrationInterface,
@@ -61,6 +61,7 @@ export class migrations1673536730377 implements MigrationInterface {
           {
             name: 'overdraftFacility',
             type: 'integer',
+            isNullable: true,
           },
         ],
       }),
