@@ -39,7 +39,7 @@ export const createDepositFixture = () => {
     },
     async AndTransferOperationShouldBeRecorded(expectedOperation: Operation) {
       const operations = await operationRepository.getAllOfAccount(
-        accountToCredit.data.number,
+        accountToCredit.data.id,
       );
       expect(operations).toContainEqual(expectedOperation);
     },

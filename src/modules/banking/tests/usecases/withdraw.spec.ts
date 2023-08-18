@@ -34,7 +34,7 @@ describe('Feature: Withdraw money', () => {
       await uat.AndTransferOperationShouldBeRecorded(
         OperationBuilder()
           .withId('withdraw-id-1')
-          .withAccount('12312312312')
+          .withAccountId('account-id')
           .withLabel('Withdraw')
           .withAmount(500)
           .withType(OperationType.WITHDRAW)
@@ -76,7 +76,7 @@ describe('Feature: Withdraw money', () => {
       await uat.AndTransferOperationShouldBeRecorded(
         OperationBuilder()
           .withId('withdraw-id-1')
-          .withAccount('12312312312')
+          .withAccountId('account-id')
           .withLabel('Withdraw')
           .withAmount(700)
           .withType(OperationType.WITHDRAW)

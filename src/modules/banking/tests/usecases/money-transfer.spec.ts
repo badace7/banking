@@ -54,7 +54,7 @@ describe('Feature: Money transfer between two customers', () => {
       await uat.AndTransferOperationShouldBeRecorded(
         OperationBuilder()
           .withId('transfer-id-1')
-          .withAccount('12312312312')
+          .withAccountId('jack-account-id')
           .withLabel("Participation in Anna's gift")
           .withAmount(1000)
           .withType(OperationType.TRANSFER)
@@ -140,7 +140,7 @@ describe('Feature: Money transfer between two customers', () => {
       await uat.AndTransferOperationShouldBeRecorded(
         OperationBuilder()
           .withId('transfer-id-1')
-          .withAccount('12312312312')
+          .withAccountId('jack-account-id')
           .withLabel('Spain holiday')
           .withAmount(2500)
           .withType(OperationType.TRANSFER)

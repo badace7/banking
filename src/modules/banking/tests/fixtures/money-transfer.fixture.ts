@@ -57,7 +57,7 @@ export const createTransferFixture = () => {
     },
     async AndTransferOperationShouldBeRecorded(expectedOperation: Operation) {
       const operations = await operationRepository.getAllOfAccount(
-        accountAtOrigin.data.number,
+        accountAtOrigin.data.id,
       );
       expect(operations).toContainEqual(expectedOperation);
     },

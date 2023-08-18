@@ -34,7 +34,7 @@ describe('Feature: Deposit money', () => {
       await uat.AndTransferOperationShouldBeRecorded(
         OperationBuilder()
           .withId('deposit-id-2')
-          .withAccount('12312312312')
+          .withAccountId('account-id')
           .withLabel('Deposit')
           .withAmount(500)
           .withType(OperationType.DEPOSIT)

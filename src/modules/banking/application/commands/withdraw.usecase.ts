@@ -27,7 +27,7 @@ export class Withdraw {
       id: `${command.id}-1`,
       label: 'Withdraw',
       amount: command.amount,
-      account: command.origin,
+      account: account.data.id,
       type: OperationType.WITHDRAW,
       flow: FlowIndicator.DEBIT,
       date: this.dateProvider.getNow(),

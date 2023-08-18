@@ -28,7 +28,7 @@ export class Deposit {
       id: `${command.id}-2`,
       label: 'Deposit',
       amount: command.amount,
-      account: command.origin,
+      account: account.data.id,
       type: OperationType.DEPOSIT,
       flow: FlowIndicator.CREDIT,
       date: this.dateProvider.getNow(),

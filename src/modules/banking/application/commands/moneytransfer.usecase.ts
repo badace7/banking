@@ -24,25 +24,11 @@ export class MoneyTransfer implements IMoneyTransfer {
     const sourceAccount = await this.getAccount(command.origin);
     const destinationAccount = await this.getAccount(command.destination);
 
-    const { sourceOperation, destinationOperation } =
-      this.createOperations(command);
-
-    sourceAccount.debit(sourceOperation.data.amount);
-    destinationAccount.credit(sourceOperation.data.amount);
-
-    await this.updateAccount(sourceAccount);
-    await this.updateAccount(destinationAccount);
-
-    await this.operationAdapter.save(sourceOperation);
-    await this.operationAdapter.save(destinationOperation);
-  }
-
-  private createOperations(command: MoneyTransferCommand) {
     const sourceOperation = Operation.create({
       id: `${command.id}-1`,
       label: command.label,
       amount: command.amount,
-      account: command.origin,
+      account: sourceAccount.data.id,
       type: OperationType.TRANSFER,
       flow: FlowIndicator.DEBIT,
       date: this.dateProvider.getNow(),
@@ -52,12 +38,20 @@ export class MoneyTransfer implements IMoneyTransfer {
       id: `${command.id}-2`,
       label: command.label,
       amount: command.amount,
-      account: command.destination,
+      account: destinationAccount.data.id,
       type: OperationType.TRANSFER,
       flow: FlowIndicator.CREDIT,
       date: this.dateProvider.getNow(),
     });
-    return { sourceOperation, destinationOperation };
+
+    sourceAccount.debit(sourceOperation.data.amount);
+    destinationAccount.credit(sourceOperation.data.amount);
+
+    await this.updateAccount(sourceAccount);
+    await this.updateAccount(destinationAccount);
+
+    await this.operationAdapter.save(sourceOperation);
+    await this.operationAdapter.save(destinationOperation);
   }
 
   private async getAccount(accountNumber: string): Promise<Account> {
