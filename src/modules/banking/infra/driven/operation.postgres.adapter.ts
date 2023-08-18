@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { OperationEntity } from './operation.entity';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
+import { EntityManager } from 'typeorm';
 
 import {
   FlowIndicator,
@@ -15,19 +14,10 @@ import { IOperationPort } from '../../application/_ports/repositories/operation.
 
 @Injectable()
 export class OperationPostgresAdapter implements IOperationPort {
-  constructor(
-    @InjectRepository(OperationEntity)
-    private readonly operationRepository: Repository<OperationEntity>,
-    @InjectRepository(OperationTypeEntity)
-    private readonly operationTypeRepository: Repository<OperationTypeEntity>,
-    @InjectRepository(FlowIndicatorEntity)
-    private readonly FlowIndicatorRepository: Repository<FlowIndicatorEntity>,
-    @InjectRepository(AccountEntity)
-    private readonly AccountRepository: Repository<AccountEntity>,
-  ) {}
+  constructor(private readonly manager: EntityManager) {}
   async getAllByAccountNumber(accountNumber: string): Promise<Operation[]> {
-    const operations = await this.operationRepository
-      .createQueryBuilder('operation')
+    const operations = await this.manager
+      .createQueryBuilder(OperationEntity, 'operation')
       .innerJoinAndSelect('operation.account', 'account')
       .innerJoinAndSelect('operation.operationType', 'operationType')
       .innerJoinAndSelect('operation.flowIndicator', 'flowIndicator')
@@ -38,15 +28,15 @@ export class OperationPostgresAdapter implements IOperationPort {
     return operations.map((operation) => this.toDomain(operation));
   }
   async save(operation: Operation): Promise<void> {
-    const operationType = await this.operationTypeRepository.findOne({
+    const operationType = await this.manager.findOne(OperationTypeEntity, {
       where: { type: operation.data.type },
     });
 
-    const flowIndicator = await this.FlowIndicatorRepository.findOne({
+    const flowIndicator = await this.manager.findOne(FlowIndicatorEntity, {
       where: { indicator: operation.data.flow },
     });
 
-    const account = await this.AccountRepository.findOne({
+    const account = await this.manager.findOne(AccountEntity, {
       where: { number: operation.data.account },
     });
 
@@ -57,16 +47,7 @@ export class OperationPostgresAdapter implements IOperationPort {
       flowIndicator: flowIndicator,
     });
 
-    await this.operationRepository.save(entity);
-  }
-  async getAllOfAccount(accountNumber: string): Promise<Operation[]> {
-    const operations = await this.operationRepository
-      .createQueryBuilder('operation')
-      .innerJoin('operation.account', 'account')
-      .where('account.number = :number', { number: accountNumber })
-      .getMany();
-
-    return operations.map((operation) => this.toDomain(operation));
+    await this.manager.save(OperationEntity, entity);
   }
 
   private toEntity(operation: {

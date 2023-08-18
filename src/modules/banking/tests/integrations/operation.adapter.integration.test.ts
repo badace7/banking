@@ -1,8 +1,5 @@
 import { DataSource } from 'typeorm';
 import { OperationEntity } from '../../infra/driven/operation.entity';
-import { OperationTypeEntity } from '../../infra/driven/operation-type.entity';
-import { FlowIndicatorEntity } from '../../infra/driven/flow-indicator.entity';
-import { AccountEntity } from '../../infra/driven/account.entity';
 import { OperationPostgresAdapter } from '../../infra/driven/operation.postgres.adapter';
 import { OperationBuilder } from '../builders/operation.builder';
 import { FlowIndicator, OperationType } from '../../domain/operation';
@@ -25,19 +22,7 @@ describe('operation adapter', () => {
       container.getMappedPort(5432),
     );
 
-    const operationRepository = connection.getRepository(OperationEntity);
-    const operationTypeRepository =
-      connection.getRepository(OperationTypeEntity);
-    const flowIndicatorRepository =
-      connection.getRepository(FlowIndicatorEntity);
-    const accountRepository = connection.getRepository(AccountEntity);
-
-    operationAdapter = new OperationPostgresAdapter(
-      operationRepository,
-      operationTypeRepository,
-      flowIndicatorRepository,
-      accountRepository,
-    );
+    operationAdapter = new OperationPostgresAdapter(connection.manager);
     await connection.initialize();
   });
 
