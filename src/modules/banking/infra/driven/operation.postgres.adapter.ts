@@ -2,15 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { OperationEntity } from './operation.entity';
 import { EntityManager } from 'typeorm';
 
-import {
-  FlowIndicator,
-  Operation,
-  OperationType,
-} from '../../domain/operation';
-import { OperationTypeEntity } from './operation-type.entity';
-import { FlowIndicatorEntity } from './flow-indicator.entity';
-import { AccountEntity } from './account.entity';
+import { Operation } from '../../domain/operation';
 import { IOperationPort } from '../../application/_ports/repositories/operation.iport';
+import { OperationMapper } from './operation.mapper';
 
 @Injectable()
 export class OperationPostgresAdapter implements IOperationPort {
@@ -25,62 +19,10 @@ export class OperationPostgresAdapter implements IOperationPort {
       .where('account.number = :number', { number: accountNumber })
       .getMany();
 
-    return operations.map((operation) => this.toDomain(operation));
+    return operations.map((operation) => OperationMapper.toDomain(operation));
   }
   async save(operation: Operation): Promise<void> {
-    const operationType = await this.manager.findOne(OperationTypeEntity, {
-      where: { type: operation.data.type },
-    });
-
-    const flowIndicator = await this.manager.findOne(FlowIndicatorEntity, {
-      where: { indicator: operation.data.flow },
-    });
-
-    const account = await this.manager.findOne(AccountEntity, {
-      where: { number: operation.data.account },
-    });
-
-    const entity = this.toEntity({
-      ...operation.data,
-      account: account,
-      operationType: operationType,
-      flowIndicator: flowIndicator,
-    });
-
+    const entity = OperationMapper.toEntity(operation);
     await this.manager.save(OperationEntity, entity);
-  }
-
-  private toEntity(operation: {
-    id: string;
-    label: string;
-    amount: number;
-    account: AccountEntity;
-    operationType: OperationTypeEntity;
-    flowIndicator: FlowIndicatorEntity;
-    date: Date;
-  }): OperationEntity {
-    const entity = new OperationEntity();
-    entity.id = operation.id;
-    entity.label = operation.label;
-    entity.amount = operation.amount;
-    entity.account = operation.account;
-    entity.operationType = operation.operationType;
-    entity.flowIndicator = operation.flowIndicator;
-    entity.date = operation.date;
-    return entity;
-  }
-
-  private toDomain(operation: OperationEntity): Operation {
-    const domain = Operation.create({
-      id: operation.id,
-      label: operation.label,
-      amount: operation.amount,
-      account: operation.account.number,
-      type: operation.operationType.type as OperationType,
-      flow: operation.flowIndicator.indicator as FlowIndicator,
-      date: operation.date,
-    });
-
-    return domain;
   }
 }
