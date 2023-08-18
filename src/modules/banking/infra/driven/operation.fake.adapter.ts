@@ -11,25 +11,15 @@ class FakeOperationRepository implements IOperationPort {
     this.fakeOperationEntityManager.set(operation.data.id, operation);
     return Promise.resolve();
   }
-  getAllOfAccount(accountNumber: string): Promise<Operation[]> {
+  getAllOfAccount(id: string): Promise<Operation[]> {
     return Promise.resolve(
-      [...this.fakeOperationEntityManager.values()]
-        .filter((operation) => operation.data.account === accountNumber)
-        .map((operation) =>
-          Operation.create({
-            id: operation.data.id,
-            label: operation.data.label,
-            amount: operation.data.amount,
-            account: operation.data.account,
-            type: operation.data.type,
-            flow: operation.data.flow,
-            date: operation.data.date,
-          }),
-        ),
+      [...this.fakeOperationEntityManager.values()].filter(
+        (operation) => operation.data.account === id,
+      ),
     );
   }
-  async findOperation(id: string): Promise<Operation> {
-    return this.fakeOperationEntityManager.get(id);
+  findOperation(id: string): Promise<Operation> {
+    return Promise.resolve(this.fakeOperationEntityManager.get(id));
   }
 }
 
