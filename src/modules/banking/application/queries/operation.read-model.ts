@@ -1,10 +1,12 @@
+import { FlowIndicator } from '../../domain/operation';
+
 export class OperationReadModel {
   private constructor(
     private readonly _id: string,
     private readonly _label: string,
     private readonly _debit: string,
     private readonly _credit: string,
-    private readonly _type: string,
+    private readonly _type: number,
     private readonly _date: string,
   ) {}
 
@@ -23,15 +25,12 @@ export class OperationReadModel {
     id: string;
     label: string;
     amount: number;
-    type: string;
-    flow: string;
+    type: number;
+    flow: number;
     date: string;
   }) {
-    const DEBIT = 'DEBIT';
-    const CREDIT = 'CREDIT';
     const ZERO = '0';
-
-    if (operation.flow === DEBIT) {
+    if (operation.flow === FlowIndicator.DEBIT) {
       return new OperationReadModel(
         operation.id,
         operation.label,
@@ -42,7 +41,7 @@ export class OperationReadModel {
       );
     }
 
-    if (operation.flow === CREDIT) {
+    if (operation.flow === FlowIndicator.CREDIT) {
       return new OperationReadModel(
         operation.id,
         operation.label,

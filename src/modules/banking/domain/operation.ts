@@ -1,12 +1,12 @@
 export enum FlowIndicator {
-  DEBIT = 'DEBIT',
-  CREDIT = 'CREDIT',
+  DEBIT = 1,
+  CREDIT = 2,
 }
 
 export enum OperationType {
-  WITHDRAW = 'WITHDRAW',
-  DEPOSIT = 'DEPOSIT',
-  TRANSFER = 'TRANSFER',
+  WITHDRAW = 1,
+  DEPOSIT = 2,
+  TRANSFER = 3,
 }
 
 export class Operation {
@@ -33,10 +33,6 @@ export class Operation {
   }
 
   static create(operation: Operation['data']) {
-    if (operation.amount <= 0) {
-      throw new Error('Amount must be positive');
-    }
-
     return new Operation(
       operation.id,
       operation.label,
