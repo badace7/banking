@@ -51,7 +51,7 @@ export class BankingController {
     private readonly getBalanceUsecase: IGetBalance,
   ) {}
 
-  @Get('account/:accountNumber')
+  @Get('account/balance/:accountNumber')
   async getBalance(
     @Param('accountNumber') accountNumber: string,
     @Res() response: Response,
