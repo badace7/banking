@@ -1,18 +1,20 @@
-import { DataSource } from 'typeorm';
-import { OperationEntity } from '../../infra/driven/operation.entity';
-import { OperationPostgresAdapter } from '../../infra/driven/operation.postgres.adapter';
-import { OperationBuilder } from '../builders/operation.builder';
 import { FlowIndicator, OperationType } from '../../domain/operation';
+import { OperationEntity } from '../../infra/driven/entities/operation.entity';
+import { OperationMapper } from '../../infra/driven/mappers/operation.mapper';
+import { OperationPostgresAdapter } from '../../infra/driven/postgres/operation.postgres.adapter';
+import { OperationBuilder } from '../builders/operation.builder';
 import {
   CreateTestContainer,
   TestContainersType,
 } from '../configs/test-containers.config';
-import { createDatabaseConnection } from '../configs/test-database.config';
-import { OperationMapper } from '../../infra/driven/operation.mapper';
+import {
+  TestingDatabase,
+  createDatabaseConnection,
+} from '../configs/test-database.config';
 
 describe('operation adapter', () => {
   let container: TestContainersType;
-  let connection: DataSource;
+  let connection: TestingDatabase;
   let operationAdapter: OperationPostgresAdapter;
 
   beforeAll(async () => {
