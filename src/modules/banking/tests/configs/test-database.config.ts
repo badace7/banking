@@ -16,3 +16,5 @@ export const createDatabaseConnection = (host = 'localhost', port = 5432) => {
     migrationsRun: true,
   });
 };
+
+export type TestingDatabase = ReturnType<typeof createDatabaseConnection>;
