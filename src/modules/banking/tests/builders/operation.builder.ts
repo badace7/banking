@@ -41,7 +41,7 @@ export const OperationBuilder = ({
         amount: _amount,
       });
     },
-    withAccount(_origin: string) {
+    withAccountId(_origin: string) {
       return OperationBuilder({
         ...props,
         account: _origin,
