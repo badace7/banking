@@ -47,11 +47,12 @@ export class MoneyTransfer implements IMoneyTransfer {
     sourceAccount.debit(sourceOperation.data.amount);
     destinationAccount.credit(sourceOperation.data.amount);
 
-    await this.updateAccount(sourceAccount);
-    await this.updateAccount(destinationAccount);
-
-    await this.operationAdapter.save(sourceOperation);
-    await this.operationAdapter.save(destinationOperation);
+    await Promise.all([
+      this.updateAccount(sourceAccount),
+      this.updateAccount(destinationAccount),
+      this.operationAdapter.save(sourceOperation),
+      this.operationAdapter.save(destinationOperation),
+    ]);
   }
 
   private async getAccount(accountNumber: string): Promise<Account> {
