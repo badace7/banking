@@ -1,3 +1,5 @@
+import { EntityManager } from 'typeorm';
+
 export const DB_DEV = 'developpment';
 
 export default () => ({
@@ -17,3 +19,9 @@ export default () => ({
     migrationsRun: true,
   },
 });
+
+export const createEntityManagerProvider = {
+  provide: 'DATABASE_CONNECTION',
+  useFactory: async (entityManager: EntityManager) => entityManager.connection,
+  inject: [EntityManager],
+};

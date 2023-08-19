@@ -6,7 +6,7 @@ import {
   CreateTestContainer,
   TestContainersType,
 } from '../configs/test-containers.config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TestDatabaseModule } from '../configs/test-database.module';
 
 describe('Banking Controller (e2e)', () => {
   let app: INestApplication;
@@ -16,20 +16,7 @@ describe('Banking Controller (e2e)', () => {
     container = await CreateTestContainer();
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [
-        TypeOrmModule.forRoot({
-          type: 'postgres',
-          host: container.getHost(),
-          port: container.getMappedPort(5432),
-          username: 'user',
-          password: 'password',
-          database: 'testdb',
-          entities: ['src/**/*.entity.ts'],
-          migrations: ['src/migrations/*.ts'],
-          migrationsRun: true,
-        }),
-        BankingModule,
-      ],
+      imports: [TestDatabaseModule.forRoot(container), BankingModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();

@@ -1,33 +1,31 @@
+import { Test, TestingModule } from '@nestjs/testing';
 import { AccountPostgresAdapter } from '../../infra/driven/postgres/account.postgres.adapter';
 import { AccountBuilder } from '../builders/account.builder';
 import {
   CreateTestContainer,
   TestContainersType,
 } from '../configs/test-containers.config';
-import {
-  TestingDatabase,
-  createDatabaseConnection,
-} from '../configs/test-database.config';
+import { TestDatabaseModule } from '../configs/test-database.module';
+import { createEntityManagerProvider } from 'src/config/postgres.config';
 
 describe('account adapter', () => {
   let container: TestContainersType;
-  let connection: TestingDatabase;
   let accountAdapter: AccountPostgresAdapter;
 
   beforeAll(async () => {
     container = await CreateTestContainer();
 
-    connection = createDatabaseConnection(
-      container.getHost(),
-      container.getMappedPort(5432),
-    );
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [TestDatabaseModule.forRoot(container)],
+      providers: [AccountPostgresAdapter, createEntityManagerProvider],
+    }).compile();
 
-    accountAdapter = new AccountPostgresAdapter(connection.manager);
-    await connection.initialize();
+    accountAdapter = moduleFixture.get<AccountPostgresAdapter>(
+      AccountPostgresAdapter,
+    );
   });
 
   afterAll(async () => {
-    await connection.destroy();
     await container.stop();
   });
 

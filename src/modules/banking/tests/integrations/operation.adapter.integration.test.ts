@@ -1,3 +1,4 @@
+import { EntityManager } from 'typeorm';
 import { FlowIndicator, OperationType } from '../../domain/operation';
 import { OperationEntity } from '../../infra/driven/entities/operation.entity';
 import { OperationMapper } from '../../infra/driven/mappers/operation.mapper';
@@ -7,30 +8,31 @@ import {
   CreateTestContainer,
   TestContainersType,
 } from '../configs/test-containers.config';
-import {
-  TestingDatabase,
-  createDatabaseConnection,
-} from '../configs/test-database.config';
+import { Test, TestingModule } from '@nestjs/testing';
+import { TestDatabaseModule } from '../configs/test-database.module';
+import { createEntityManagerProvider } from 'src/config/postgres.config';
 
 describe('operation adapter', () => {
   let container: TestContainersType;
-  let connection: TestingDatabase;
+  let connection: EntityManager;
   let operationAdapter: OperationPostgresAdapter;
 
   beforeAll(async () => {
     container = await CreateTestContainer();
 
-    connection = createDatabaseConnection(
-      container.getHost(),
-      container.getMappedPort(5432),
-    );
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [TestDatabaseModule.forRoot(container)],
+      providers: [OperationPostgresAdapter, createEntityManagerProvider],
+    }).compile();
 
-    operationAdapter = new OperationPostgresAdapter(connection.manager);
-    await connection.initialize();
+    connection = moduleFixture.get<EntityManager>(EntityManager);
+
+    operationAdapter = moduleFixture.get<OperationPostgresAdapter>(
+      OperationPostgresAdapter,
+    );
   });
 
   afterAll(async () => {
-    await connection.destroy();
     await container.stop();
   });
 
