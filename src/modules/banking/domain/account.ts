@@ -1,10 +1,11 @@
-import { OperationRejectedError } from 'src/libs/exceptions/money-transfer-reject.error';
+import { ErrorMessage } from 'src/libs/exceptions/message-error';
+import { OperationRejectedError } from 'src/libs/exceptions/operation.error';
 
 export default class Account {
   public debit(amount: number) {
     if (this.isNotAuthorizedToPerformOperation(amount)) {
       throw new OperationRejectedError(
-        `You cannot make this operation because your balance is insufficient`,
+        ErrorMessage.REQUESTED_AMOUNT_EXCEEDS_YOUR_BALANCE,
       );
     }
 

@@ -1,4 +1,4 @@
-import { UsecaseError } from 'src/libs/exceptions/usecase.error';
+import { NotFound, Unprocessable } from 'src/libs/exceptions/usecase.error';
 import Account from '../../domain/account';
 import {
   FlowIndicator,
@@ -12,6 +12,7 @@ import { MoneyTransferCommand } from './transfer.command';
 import { IMoneyTransfer } from '../_ports/usecases/money-transfer.iport';
 import { IAccountPort } from '../_ports/repositories/account.iport';
 import { IOperationPort } from '../_ports/repositories/operation.iport';
+import { ErrorMessage } from 'src/libs/exceptions/message-error';
 
 export class MoneyTransfer implements IMoneyTransfer {
   constructor(
@@ -21,6 +22,12 @@ export class MoneyTransfer implements IMoneyTransfer {
   ) {}
 
   async execute(command: MoneyTransferCommand): Promise<void> {
+    if (command.origin === command.destination) {
+      throw new Unprocessable(
+        ErrorMessage.SOURCE_AND_DESTINATION_ACCOUNTS_CANNOT_BE_THE_SAME,
+      );
+    }
+
     const sourceAccount = await this.getAccount(command.origin);
     const destinationAccount = await this.getAccount(command.destination);
 
@@ -59,7 +66,9 @@ export class MoneyTransfer implements IMoneyTransfer {
     const account = await this.accountAdapter.findBankAccount(accountNumber);
 
     if (!account) {
-      throw new UsecaseError(`Account ${accountNumber} not found.`);
+      throw new NotFound(
+        `${ErrorMessage.ACCOUNT_IS_NOT_FOUND} n° ${accountNumber}`,
+      );
     }
     return account;
   }
@@ -71,9 +80,7 @@ export class MoneyTransfer implements IMoneyTransfer {
     );
 
     if (!isAccountUpdated) {
-      throw new UsecaseError(
-        `Cannot update the account ${account.data.number}`,
-      );
+      throw new Error(`Cannot update the account ${account.data.number}`);
     }
   }
 }

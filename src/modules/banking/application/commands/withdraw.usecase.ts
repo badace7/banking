@@ -1,5 +1,5 @@
 import { WithdrawCommand } from './withdraw.command';
-import { UsecaseError } from 'src/libs/exceptions/usecase.error';
+import { NotFound, Unprocessable } from 'src/libs/exceptions/usecase.error';
 import Account from '../../domain/account';
 import {
   FlowIndicator,
@@ -9,6 +9,7 @@ import {
 import { IDateProvider } from '../_ports/repositories/date-provider.iport';
 import { IAccountPort } from '../_ports/repositories/account.iport';
 import { IOperationPort } from '../_ports/repositories/operation.iport';
+import { ErrorMessage } from 'src/libs/exceptions/message-error';
 
 export class Withdraw {
   constructor(
@@ -17,6 +18,9 @@ export class Withdraw {
     private dateProvider: IDateProvider,
   ) {}
   async execute(command: WithdrawCommand): Promise<void> {
+    if (command.amount < 10) {
+      throw new Unprocessable(ErrorMessage.CANNOT_WITHDRAW_UNDER_10);
+    }
     const account = await this.getAccount(command.origin);
 
     account.debit(command.amount);
@@ -40,7 +44,9 @@ export class Withdraw {
     const account = await this.accountAdapter.findBankAccount(accountNumber);
 
     if (!account) {
-      throw new UsecaseError(`The account ${accountNumber} not found.`);
+      throw new NotFound(
+        `${ErrorMessage.ACCOUNT_IS_NOT_FOUND} n° ${accountNumber}`,
+      );
     }
     return account;
   }
@@ -52,9 +58,7 @@ export class Withdraw {
     );
 
     if (!isAccountUpdated) {
-      throw new UsecaseError(
-        `Cannot update the account ${account.data.number}`,
-      );
+      throw new Error(`Cannot update the account ${account.data.number}`);
     }
   }
 }

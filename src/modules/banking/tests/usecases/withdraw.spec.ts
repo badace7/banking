@@ -1,4 +1,4 @@
-import { OperationRejectedError } from 'src/libs/exceptions/money-transfer-reject.error';
+import { OperationRejectedError } from 'src/libs/exceptions/operation.error';
 import { WithdrawCommand } from 'src/modules/banking/application/commands/withdraw.command';
 import {
   FlowIndicator,
