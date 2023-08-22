@@ -7,7 +7,7 @@ export class AccountEntity {
   id: string;
   @Column()
   number: string;
-  @Column('decimal', { precision: 10, scale: 2 })
+  @Column()
   balance: number;
   @Column()
   user: string;
