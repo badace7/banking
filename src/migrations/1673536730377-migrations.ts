@@ -52,7 +52,9 @@ export class migrations1673536730377 implements MigrationInterface {
           },
           {
             name: 'balance',
-            type: 'varchar',
+            type: 'decimal',
+            precision: 10,
+            scale: 2,
           },
           {
             name: 'user',
@@ -60,7 +62,9 @@ export class migrations1673536730377 implements MigrationInterface {
           },
           {
             name: 'overdraftFacility',
-            type: 'integer',
+            type: 'decimal',
+            precision: 10,
+            scale: 2,
             isNullable: true,
           },
         ],
@@ -116,7 +120,9 @@ export class migrations1673536730377 implements MigrationInterface {
           },
           {
             name: 'amount',
-            type: 'float',
+            type: 'decimal',
+            precision: 10,
+            scale: 2,
           },
           {
             name: 'date',

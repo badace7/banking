@@ -9,7 +9,7 @@ export class OperationEntity {
   id: string;
   @Column()
   label: string;
-  @Column()
+  @Column('decimal', { precision: 10, scale: 2 })
   amount: number;
   @Column()
   date: Date;
