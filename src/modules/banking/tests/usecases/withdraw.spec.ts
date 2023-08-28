@@ -1,4 +1,3 @@
-import { OperationRejectedError } from 'src/libs/exceptions/operation.error';
 import { WithdrawCommand } from 'src/modules/banking/application/commands/withdraw.command';
 import {
   FlowIndicator,
@@ -10,6 +9,7 @@ import {
 } from '../fixtures/withdraw.fixture';
 import { AccountBuilder } from '../builders/account.builder';
 import { OperationBuilder } from '../builders/operation.builder';
+import { OperationRejectedError } from '../../domain/error/operation.error';
 
 describe('Feature: Withdraw money', () => {
   let uat: WithdrawFixture;

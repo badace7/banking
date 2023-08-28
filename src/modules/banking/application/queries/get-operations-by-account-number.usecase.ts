@@ -9,7 +9,7 @@ export class GetOperationsByAccountNumber
 {
   constructor(
     private operationAdapter: IOperationPort,
-    private dateProvider: IDateProvider,
+    private dateAdapter: IDateProvider,
   ) {}
   async execute(
     query: GetOperationsByNumberQuery,
@@ -25,7 +25,7 @@ export class GetOperationsByAccountNumber
         amount: operation.data.amount,
         type: operation.data.type,
         flow: operation.data.flow,
-        date: this.dateProvider.toFormatedDate(operation.data.date),
+        date: this.dateAdapter.toFormatedDate(operation.data.date),
       }),
     );
   }

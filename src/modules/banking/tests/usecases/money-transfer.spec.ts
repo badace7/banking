@@ -1,5 +1,3 @@
-import { OperationRejectedError } from 'src/libs/exceptions/operation.error';
-
 import { MoneyTransferCommand } from 'src/modules/banking/application/commands/transfer.command';
 import {
   TransferFixture,
@@ -8,6 +6,7 @@ import {
 import { AccountBuilder } from '../builders/account.builder';
 import { OperationBuilder } from '../builders/operation.builder';
 import { FlowIndicator, OperationType } from '../../domain/operation';
+import { OperationRejectedError } from '../../domain/error/operation.error';
 
 describe('Feature: Money transfer between two customers', () => {
   let uat: TransferFixture;

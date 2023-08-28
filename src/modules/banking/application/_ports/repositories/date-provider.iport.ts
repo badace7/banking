@@ -1,4 +1,4 @@
-export const DATE_PORT = 'IDateProvider';
+export const DATE_PORT = 'IDateAdapter';
 
 export interface IDateProvider {
   getNow(): Date;

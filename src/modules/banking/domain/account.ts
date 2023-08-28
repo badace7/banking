@@ -1,5 +1,5 @@
-import { ErrorMessage } from 'src/libs/exceptions/message-error';
-import { OperationRejectedError } from 'src/libs/exceptions/operation.error';
+import { ErrorMessage } from './error/operation-message-error';
+import { OperationRejectedError } from './error/operation.error';
 
 export default class Account {
   public debit(amount: number) {

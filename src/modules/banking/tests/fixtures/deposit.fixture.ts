@@ -3,18 +3,18 @@ import { Deposit } from 'src/modules/banking/application/commands/deposit.usecas
 import Account from 'src/modules/banking/domain/account';
 import { Operation } from 'src/modules/banking/domain/operation';
 import FakeOperationRepository from '../../infra/driven/in-memory/operation.fake.adapter';
-import { StubDateProvider } from '../../infra/driven/in-memory/date-provider.fake.adapter';
+import { FakeDateAdapter } from '../../infra/driven/in-memory/date-provider.fake.adapter';
 import FakeAccountRepository from '../../infra/driven/in-memory/account.fake.adapter';
 
 export const createDepositFixture = () => {
   const accountRepository = new FakeAccountRepository();
   const operationRepository = new FakeOperationRepository();
-  const dateProvider = new StubDateProvider();
+  const dateAdapter = new FakeDateAdapter();
 
   const depositUsecase = new Deposit(
     accountRepository,
     operationRepository,
-    dateProvider,
+    dateAdapter,
   );
 
   let accountToCredit: Account;
@@ -25,7 +25,7 @@ export const createDepositFixture = () => {
       accountRepository.saveBankAccount(account);
     },
     andJackWantsToDepositMoneyNow(date: Date) {
-      dateProvider.now = date;
+      dateAdapter.now = date;
     },
     async whenJackDepositMoney(command: DepositCommand) {
       await depositUsecase.execute(command);

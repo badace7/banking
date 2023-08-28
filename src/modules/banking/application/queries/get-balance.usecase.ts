@@ -7,19 +7,19 @@ import { GetBalanceQuery } from './get-balance.query';
 export class GetBalance implements IGetBalance {
   constructor(
     private accountAdapter: IAccountPort,
-    private dateProvider: IDateProvider,
+    private dateAdapter: IDateProvider,
   ) {}
   async execute(query: GetBalanceQuery): Promise<BalanceReadModel> {
     const account = await this.accountAdapter.findBankAccount(
       query.accountNumber,
     );
 
-    const date = this.dateProvider.getNow();
+    const date = this.dateAdapter.getNow();
 
     return BalanceReadModel.create({
       accountNumber: account.data.number,
       balance: account.data.balance,
-      date: this.dateProvider.toFormatedDate(date),
+      date: this.dateAdapter.toFormatedDate(date),
     });
   }
 }

@@ -16,19 +16,11 @@ class Account {
 
 class User {
   - id: string
-  - accountNumber: string
+  - identifier: string
   - password: string
-  + User()
-}
-
-class Identity {
-  - id: string
-  - name: string
   - firstName: string
-  - address: string
-  - email: string
-  - profession: string
-  + Identity()
+  - lastName: string
+  + User()
 }
 
 class Operation {
@@ -63,6 +55,5 @@ Operation "0.*" o-- "1" Account
 Operation "0.*" o-- "1" OperationType
 Operation "0.*" o-- "1" FlowIndicator
 Account "0.*" o-- "0.*" User
-User "1" o-- "1" Identity
 
 @enduml

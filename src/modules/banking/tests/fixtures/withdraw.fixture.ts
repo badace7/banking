@@ -4,16 +4,16 @@ import { WithdrawCommand } from 'src/modules/banking/application/commands/withdr
 import { Operation } from 'src/modules/banking/domain/operation';
 import FakeAccountRepository from '../../infra/driven/in-memory/account.fake.adapter';
 import FakeOperationRepository from '../../infra/driven/in-memory/operation.fake.adapter';
-import { StubDateProvider } from '../../infra/driven/in-memory/date-provider.fake.adapter';
+import { FakeDateAdapter } from '../../infra/driven/in-memory/date-provider.fake.adapter';
 
 export const createWithdrawFixture = () => {
   const accountRepository = new FakeAccountRepository();
   const operationRepository = new FakeOperationRepository();
-  const dateProvider = new StubDateProvider();
+  const dateAdapter = new FakeDateAdapter();
   const withdrawUsecase = new Withdraw(
     accountRepository,
     operationRepository,
-    dateProvider,
+    dateAdapter,
   );
 
   let accountToDebit: Account;
@@ -26,7 +26,7 @@ export const createWithdrawFixture = () => {
       accountRepository.saveBankAccount(account);
     },
     andJackWantsToWithdrawMoneyNow(date: Date) {
-      dateProvider.now = date;
+      dateAdapter.now = date;
     },
     async whenJackMakesAWithdraw(command: WithdrawCommand) {
       try {

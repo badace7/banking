@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { createInjectableProvider } from 'src/provider.factory';
-import { UserEntity } from '../authentication/infra/customer/user.entity';
+import { UserEntity } from '../authentication/infra/driven/entities/user.entity';
 
 import { DATE_PORT } from './application/_ports/repositories/date-provider.iport';
 import { DEPOSIT_PORT } from './application/_ports/usecases/deposit.iport';
@@ -11,7 +11,7 @@ import { MoneyTransfer } from './application/commands/moneytransfer.usecase';
 import { Withdraw } from './application/commands/withdraw.usecase';
 import { AccountEntity } from './infra/driven/entities/account.entity';
 import { AccountPostgresAdapter } from './infra/driven/postgres/account.postgres.adapter';
-import { DateProvider } from './infra/driven/date-provider.adapter';
+import { DateProvider } from './infra/driven/providers/date-provider.adapter';
 import { FlowIndicatorEntity } from './infra/driven/entities/flow-indicator.entity';
 import { OperationTypeEntity } from './infra/driven/entities/operation-type.entity';
 import { OperationEntity } from './infra/driven/entities/operation.entity';

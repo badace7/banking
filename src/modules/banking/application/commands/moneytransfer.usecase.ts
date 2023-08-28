@@ -1,4 +1,7 @@
-import { NotFound, Unprocessable } from 'src/libs/exceptions/usecase.error';
+import {
+  NotFoundException,
+  UnprocessableException,
+} from 'src/libs/exceptions/usecase.error';
 import Account from '../../domain/account';
 import {
   FlowIndicator,
@@ -12,18 +15,18 @@ import { MoneyTransferCommand } from './transfer.command';
 import { IMoneyTransfer } from '../_ports/usecases/money-transfer.iport';
 import { IAccountPort } from '../_ports/repositories/account.iport';
 import { IOperationPort } from '../_ports/repositories/operation.iport';
-import { ErrorMessage } from 'src/libs/exceptions/message-error';
+import { ErrorMessage } from '../../domain/error/operation-message-error';
 
 export class MoneyTransfer implements IMoneyTransfer {
   constructor(
     private accountAdapter: IAccountPort,
     private operationAdapter: IOperationPort,
-    private dateProvider: IDateProvider,
+    private dateAdapter: IDateProvider,
   ) {}
 
   async execute(command: MoneyTransferCommand): Promise<void> {
     if (command.origin === command.destination) {
-      throw new Unprocessable(
+      throw new UnprocessableException(
         ErrorMessage.SOURCE_AND_DESTINATION_ACCOUNTS_CANNOT_BE_THE_SAME,
       );
     }
@@ -38,7 +41,7 @@ export class MoneyTransfer implements IMoneyTransfer {
       account: sourceAccount.data.id,
       type: OperationType.TRANSFER,
       flow: FlowIndicator.DEBIT,
-      date: this.dateProvider.getNow(),
+      date: this.dateAdapter.getNow(),
     });
 
     const destinationOperation = Operation.create({
@@ -48,7 +51,7 @@ export class MoneyTransfer implements IMoneyTransfer {
       account: destinationAccount.data.id,
       type: OperationType.TRANSFER,
       flow: FlowIndicator.CREDIT,
-      date: this.dateProvider.getNow(),
+      date: this.dateAdapter.getNow(),
     });
 
     sourceAccount.debit(sourceOperation.data.amount);
@@ -66,7 +69,7 @@ export class MoneyTransfer implements IMoneyTransfer {
     const account = await this.accountAdapter.findBankAccount(accountNumber);
 
     if (!account) {
-      throw new NotFound(
+      throw new NotFoundException(
         `${ErrorMessage.ACCOUNT_IS_NOT_FOUND} n° ${accountNumber}`,
       );
     }

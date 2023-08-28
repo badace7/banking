@@ -1,4 +1,7 @@
-import { NotFound, Unprocessable } from 'src/libs/exceptions/usecase.error';
+import {
+  NotFoundException,
+  UnprocessableException,
+} from 'src/libs/exceptions/usecase.error';
 import Account from '../../domain/account';
 import { DepositCommand } from './deposit.command';
 import {
@@ -10,17 +13,17 @@ import {
 import { IDateProvider } from '../_ports/repositories/date-provider.iport';
 import { IAccountPort } from '../_ports/repositories/account.iport';
 import { IOperationPort } from '../_ports/repositories/operation.iport';
-import { ErrorMessage } from 'src/libs/exceptions/message-error';
+import { ErrorMessage } from '../../domain/error/operation-message-error';
 
 export class Deposit {
   constructor(
     private accountAdapter: IAccountPort,
     private operationAdapter: IOperationPort,
-    private dateProvider: IDateProvider,
+    private dateAdapter: IDateProvider,
   ) {}
   async execute(command: DepositCommand): Promise<void> {
     if (command.amount < 10) {
-      throw new Unprocessable(ErrorMessage.CANNOT_DEPOSIT_UNDER_10);
+      throw new UnprocessableException(ErrorMessage.CANNOT_DEPOSIT_UNDER_10);
     }
     const account = await this.getAccount(command.origin);
 
@@ -35,7 +38,7 @@ export class Deposit {
       account: account.data.id,
       type: OperationType.DEPOSIT,
       flow: FlowIndicator.CREDIT,
-      date: this.dateProvider.getNow(),
+      date: this.dateAdapter.getNow(),
     });
 
     await this.operationAdapter.save(operation);
@@ -45,7 +48,7 @@ export class Deposit {
     const account = await this.accountAdapter.findBankAccount(accountNumber);
 
     if (!account) {
-      throw new NotFound(
+      throw new NotFoundException(
         `${ErrorMessage.ACCOUNT_IS_NOT_FOUND} n° ${accountNumber}`,
       );
     }

@@ -1,4 +1,5 @@
-import { UserEntity } from 'src/modules/authentication/infra/customer/user.entity';
+import { RoleEntity } from 'src/modules/authentication/infra/driven/entities/role.entity';
+import { UserEntity } from 'src/modules/authentication/infra/driven/entities/user.entity';
 import { AccountEntity } from 'src/modules/banking/infra/driven/entities/account.entity';
 import { FlowIndicatorEntity } from 'src/modules/banking/infra/driven/entities/flow-indicator.entity';
 import { OperationTypeEntity } from 'src/modules/banking/infra/driven/entities/operation-type.entity';
@@ -14,12 +15,38 @@ export class migrations1673536730377 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
+        name: 'roles',
+        columns: [
+          {
+            name: 'id',
+            type: 'integer',
+            isPrimary: true,
+          },
+          {
+            name: 'role',
+            type: 'varchar',
+          },
+        ],
+      }),
+    );
+
+    await queryRunner.createTable(
+      new Table({
         name: 'users',
         columns: [
           {
             name: 'id',
             type: 'varchar',
             isPrimary: true,
+          },
+          {
+            name: 'identifier',
+            isUnique: true,
+            type: 'varchar',
+          },
+          {
+            name: 'password',
+            type: 'varchar',
           },
           {
             name: 'firstName',
@@ -30,8 +57,8 @@ export class migrations1673536730377 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'accountNumber',
-            type: 'varchar',
+            name: 'roleId',
+            type: 'integer',
           },
         ],
       }),
@@ -163,21 +190,40 @@ export class migrations1673536730377 implements MigrationInterface {
       }),
     ]);
 
+    await queryRunner.createForeignKeys('users', [
+      new TableForeignKey({
+        columnNames: ['roleId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'roles',
+      }),
+    ]);
+
+    await queryRunner.manager.save(
+      queryRunner.manager.create<RoleEntity>(RoleEntity, {
+        id: 1,
+        role: 'CUSTOMER',
+      }),
+    );
+
     await queryRunner.manager.save(
       queryRunner.manager.create<UserEntity>(UserEntity, {
         id: '1',
-        firstName: 'Bob',
-        lastName: 'Dylan',
-        accountNumber: '98797897897',
+        identifier: '98797897897',
+        password: '987978',
+        firstName: 'Jack',
+        lastName: 'Sparrow',
+        roleId: 1,
       }),
     );
 
     await queryRunner.manager.save(
       queryRunner.manager.create<UserEntity>(UserEntity, {
         id: '2',
-        firstName: 'Jack',
-        lastName: 'Fisher',
-        accountNumber: '12312312312',
+        identifier: '12312312312',
+        password: '123123',
+        firstName: 'Bob',
+        lastName: 'Dylan',
+        roleId: 1,
       }),
     );
 
@@ -237,6 +283,7 @@ export class migrations1673536730377 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`DELETE FROM roles`);
     await queryRunner.query(`DELETE FROM users`);
     await queryRunner.query(`DELETE FROM accounts`);
     await queryRunner.query(`DELETE FROM operations_types`);

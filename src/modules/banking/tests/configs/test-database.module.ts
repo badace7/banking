@@ -1,7 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TestContainersType } from './test-containers.config';
-import { TestingModule } from '@nestjs/testing';
 
 @Module({})
 export class TestDatabaseModule {
