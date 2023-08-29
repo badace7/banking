@@ -1,4 +1,4 @@
-import { ICredentialProvider } from '../../tests/create-user.spec';
+import { ICredentialProvider } from 'src/modules/authentication/application/_ports/repositories/credential-provider.iport';
 
 export class CredentialProvider implements ICredentialProvider {
   generateIdentifier(): string {

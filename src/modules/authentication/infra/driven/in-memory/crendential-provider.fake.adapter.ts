@@ -1,4 +1,4 @@
-import { ICredentialProvider } from '../../../application/_ports/credential-provider.iport';
+import { ICredentialProvider } from '../../../application/_ports/repositories/credential-provider.iport';
 
 export class FakeCredientialProvider implements ICredentialProvider {
   generateIdentifier(): string {

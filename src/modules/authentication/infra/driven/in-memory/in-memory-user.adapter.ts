@@ -1,4 +1,4 @@
-import { IUserPort } from 'src/modules/authentication/application/_ports/user.iport';
+import { IUserPort } from 'src/modules/authentication/application/_ports/repositories/user.iport';
 import { User } from 'src/modules/authentication/domain/user';
 
 export class InMemoryUserAdapter implements IUserPort {

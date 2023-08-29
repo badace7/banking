@@ -5,7 +5,7 @@ import { NotValidException } from 'src/libs/exceptions/usecase.error';
 import {
   IJwtProvider,
   JwtPayload,
-} from 'src/modules/authentication/application/_ports/jwt-provider.iport';
+} from 'src/modules/authentication/application/_ports/repositories/jwt-provider.iport';
 
 @Injectable()
 export class JwtProvider implements IJwtProvider {

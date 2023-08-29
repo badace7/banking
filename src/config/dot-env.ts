@@ -1,2 +1,5 @@
 import * as dotenv from 'dotenv';
-dotenv.config();
+
+export const dotenvConfig = (envFile: string) => {
+  dotenv.config({ path: envFile });
+};

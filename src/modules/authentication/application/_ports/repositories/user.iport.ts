@@ -1,4 +1,6 @@
-import { User } from '../../domain/user';
+import { User } from '../../../domain/user';
+
+export const USER_PORT = 'IUserPort';
 
 export interface IUserPort {
   save(user: User): Promise<void>;

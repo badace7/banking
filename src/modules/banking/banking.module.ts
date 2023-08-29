@@ -62,7 +62,6 @@ export const usecases = [
   imports: [
     TypeOrmModule.forFeature([
       AccountEntity,
-      UserEntity,
       OperationEntity,
       OperationTypeEntity,
       FlowIndicatorEntity,

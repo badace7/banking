@@ -1,8 +1,8 @@
-import { CreateUser } from '../application/commands/create-user.usecase';
-import { CreateUserCommand } from '../application/commands/create-user.command';
+import { CreateUser } from '../application/usecases/create-user.usecase';
+import { CreateUserRequest } from '../application/usecases/create-user.request';
 import { InMemoryUserAdapter } from '../infra/driven/in-memory/in-memory-user.adapter';
 import { BcryptProvider } from '../infra/driven/providers/bcrypt-provider.adapter';
-import { ICredentialProvider } from '../application/_ports/credential-provider.iport';
+import { ICredentialProvider } from '../application/_ports/repositories/credential-provider.iport';
 import { FakeCredientialProvider } from '../infra/driven/in-memory/crendential-provider.fake.adapter';
 
 describe('Feature: create a user', () => {
@@ -25,24 +25,21 @@ describe('Feature: create a user', () => {
   describe('Rule: create a user', () => {
     it('should create a user with hashed password', async () => {
       // Arrange
-      const createUserCommand: CreateUserCommand = new CreateUserCommand(
+      const createUserCommand: CreateUserRequest = new CreateUserRequest(
         'abc',
-        '12312312312',
-        '123123',
         'Jack',
         'Sparrow',
       );
+      const passwordGenerated = '123123';
+
       // Act
       await createUserUsecase.execute(createUserCommand);
 
       // Assert
       const user = await userRepository.findById(createUserCommand.id);
-
+      expect(user.data).toMatchObject(createUserCommand);
       expect(
-        await bcryptAdapter.compare(
-          createUserCommand.password,
-          user.data.password,
-        ),
+        await bcryptAdapter.compare(passwordGenerated, user.data.password),
       ).toBe(true);
     });
   });

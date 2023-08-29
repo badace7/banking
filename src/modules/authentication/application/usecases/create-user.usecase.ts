@@ -1,31 +1,37 @@
+import { Credentials } from '../../domain/credential';
 import { Role, User } from '../../domain/user';
 import { InMemoryUserAdapter } from '../../infra/driven/in-memory/in-memory-user.adapter';
 import { BcryptProvider } from '../../infra/driven/providers/bcrypt-provider.adapter';
 
-import { ICredentialProvider } from '../_ports/credential-provider.iport';
-import { CreateUserCommand } from './create-user.command';
+import { ICredentialProvider } from '../_ports/repositories/credential-provider.iport';
+import { ICreateUser } from '../_ports/usecases/create-user.iport';
+import { CreateUserRequest } from './create-user.request';
 
-export class CreateUser {
+export class CreateUser implements ICreateUser {
   constructor(
     private readonly userRepository: InMemoryUserAdapter,
     private readonly bcryptAdapter: BcryptProvider,
     private readonly credentialProvider: ICredentialProvider,
   ) {}
-  async execute(command: CreateUserCommand) {
+  async execute(request: CreateUserRequest): Promise<Credentials> {
     const identifier = this.credentialProvider.generateIdentifier();
     const password = this.credentialProvider.generatePassword();
 
-    const hashedPassword = await this.bcryptAdapter.hash(password);
+    const credentials = new Credentials(identifier, password);
+
+    const hashedPassword = await this.bcryptAdapter.hash(credentials.password);
 
     const user = new User(
-      command.id,
-      identifier,
+      request.id,
+      credentials.identifier,
       hashedPassword,
-      command.firstName,
-      command.lastName,
+      request.firstName,
+      request.lastName,
       Role.CUSTOMER,
     );
 
     await this.userRepository.save(user);
+
+    return credentials;
   }
 }

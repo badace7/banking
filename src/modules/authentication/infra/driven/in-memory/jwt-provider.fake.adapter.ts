@@ -1,7 +1,7 @@
 import {
   IJwtProvider,
   JwtPayload,
-} from 'src/modules/authentication/application/_ports/jwt-provider.iport';
+} from 'src/modules/authentication/application/_ports/repositories/jwt-provider.iport';
 
 export class FakeJwtProvider implements IJwtProvider {
   decodeToken(token: string): JwtPayload {

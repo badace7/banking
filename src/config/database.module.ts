@@ -7,6 +7,7 @@ import postgresConfig, { DB_DEV } from './postgres.config';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: '.env',
       load: [postgresConfig],
     }),
     TypeOrmModule.forRootAsync({

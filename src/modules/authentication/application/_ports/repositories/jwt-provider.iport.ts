@@ -3,6 +3,8 @@ export type JwtPayload = {
   role: number;
 };
 
+export const JWT_PROVIDER_PORT = 'IJwtProvider';
+
 export interface IJwtProvider {
   getJwtSecret(): string;
   getJwtExpirationTime(): string;

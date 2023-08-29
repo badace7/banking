@@ -1,3 +1,4 @@
+import { hash } from 'bcrypt';
 import { RoleEntity } from 'src/modules/authentication/infra/driven/entities/role.entity';
 import { UserEntity } from 'src/modules/authentication/infra/driven/entities/user.entity';
 import { AccountEntity } from 'src/modules/banking/infra/driven/entities/account.entity';
@@ -209,7 +210,7 @@ export class migrations1673536730377 implements MigrationInterface {
       queryRunner.manager.create<UserEntity>(UserEntity, {
         id: '1',
         identifier: '98797897897',
-        password: '987978',
+        password: await hash('987978', 12),
         firstName: 'Jack',
         lastName: 'Sparrow',
         roleId: 1,
@@ -220,7 +221,7 @@ export class migrations1673536730377 implements MigrationInterface {
       queryRunner.manager.create<UserEntity>(UserEntity, {
         id: '2',
         identifier: '12312312312',
-        password: '123123',
+        password: await hash('123123', 12),
         firstName: 'Bob',
         lastName: 'Dylan',
         roleId: 1,

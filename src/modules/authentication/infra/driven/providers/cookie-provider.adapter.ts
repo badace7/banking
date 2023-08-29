@@ -1,4 +1,4 @@
-import { ICookieProvider } from 'src/modules/authentication/application/_ports/cookie-provider.iport';
+import { ICookieProvider } from 'src/modules/authentication/application/_ports/repositories/cookie-provider.iport';
 
 export class CookieProvider implements ICookieProvider {
   createCookieWithToken(token: string, expirationTime: string): string {

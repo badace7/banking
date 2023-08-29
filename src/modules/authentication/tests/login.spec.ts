@@ -1,15 +1,15 @@
-import { Login } from '../application/commands/login.usecase';
+import { Login } from '../application/usecases/login.usecase';
 
-import { IJwtProvider } from '../application/_ports/jwt-provider.iport';
+import { IJwtProvider } from '../application/_ports/repositories/jwt-provider.iport';
 import { Role, User } from '../domain/user';
 import {
   NotFoundException,
   NotValidException,
 } from 'src/libs/exceptions/usecase.error';
-import { IUserPort } from '../application/_ports/user.iport';
-import { ICookieProvider } from '../application/_ports/cookie-provider.iport';
-import { IBcryptProvider } from '../application/_ports/bcrypt-provider.iport';
-import { LoginCommand } from '../application/commands/login.command';
+import { IUserPort } from '../application/_ports/repositories/user.iport';
+import { ICookieProvider } from '../application/_ports/repositories/cookie-provider.iport';
+import { IBcryptProvider } from '../application/_ports/repositories/bcrypt-provider.iport';
+import { LoginRequest } from '../application/usecases/login.request';
 import { InMemoryUserAdapter } from '../infra/driven/in-memory/in-memory-user.adapter';
 import { FakeJwtProvider } from '../infra/driven/in-memory/jwt-provider.fake.adapter';
 import { BcryptProvider } from '../infra/driven/providers/bcrypt-provider.adapter';
@@ -38,7 +38,7 @@ describe('Feature: user', () => {
   describe('Rule: login is not authorized', () => {
     it('should return "User not found"', async () => {
       //Arrange
-      const credentials = new LoginCommand('12312312312', '123123');
+      const credentials = new LoginRequest('12312312312', '123123');
       //Act
       const tryToLogin = () => loginUsecase.execute(credentials);
       //Assert
@@ -58,7 +58,7 @@ describe('Feature: user', () => {
           Role.CUSTOMER,
         ),
       );
-      const credentials = new LoginCommand('12312312312', '456456');
+      const credentials = new LoginRequest('12312312312', '456456');
 
       //Act
       const tryToLogin = () => loginUsecase.execute(credentials);
@@ -82,7 +82,7 @@ describe('Feature: user', () => {
           Role.CUSTOMER,
         ),
       );
-      const credentials = new LoginCommand('12312312312', '123123');
+      const credentials = new LoginRequest('12312312312', '123123');
 
       //Act
       const expectedCookie = await loginUsecase.execute(credentials);
