@@ -12,6 +12,7 @@ export default () => ({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     synchronize: false,
+    logging: true,
     entities: [process.env.DB_ENTITIES],
     migrations: [process.env.DB_MIGRATIONS],
     migrationTableName: process.env.DB_MIGRATION_TABLE_NAME,

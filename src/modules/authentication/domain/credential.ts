@@ -1,6 +1,13 @@
 export class Credentials {
   constructor(
-    public readonly identifier: string,
-    public readonly password: string,
+    private readonly identifier: string,
+    private readonly password: string,
   ) {}
+
+  get data() {
+    return {
+      identifier: this.identifier,
+      password: this.password,
+    };
+  }
 }

@@ -47,8 +47,10 @@ export class AuthenticationController {
         body.lastName,
       );
       const credentials = await this.createUserUsecase.execute(command);
-      response.status(HttpStatus.CREATED).send(credentials);
+      response.status(HttpStatus.CREATED).send(credentials.data);
     } catch (err: any) {
+      console.log(err);
+
       response.status(HttpStatus.CONFLICT).send(err.message);
     }
   }

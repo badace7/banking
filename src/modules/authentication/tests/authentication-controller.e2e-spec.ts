@@ -11,6 +11,7 @@ import { AuthenticationModule } from '../authentication.module';
 describe('Authentication Controller (e2e)', () => {
   let app: INestApplication;
   let container: TestContainersType;
+  let credentials: { identifier: string; password: string };
 
   beforeAll(async () => {
     container = await CreateTestContainer();
@@ -31,14 +32,15 @@ describe('Authentication Controller (e2e)', () => {
   describe('success case', () => {
     test('create user (POST)', async () => {
       const user = {
-        firstName: 'Jack',
-        lastName: 'Sparrow',
+        firstName: 'Jacky',
+        lastName: 'Brown',
       };
       const response = await request(app.getHttpServer())
         .post('/auth/create-user/')
         .send(user)
         .expect(HttpStatus.CREATED);
 
+      credentials = response.body;
       expect(response.body.identifier).toBeDefined();
       expect(response.body.password).toBeDefined();
       expect(typeof response.body.identifier).toBe('string');
@@ -46,7 +48,6 @@ describe('Authentication Controller (e2e)', () => {
     });
 
     test('login (POST)', async () => {
-      const credentials = { identifier: '98797897897', password: '987978' };
       const response = await request(app.getHttpServer())
         .post('/auth/login/')
         .send(credentials)

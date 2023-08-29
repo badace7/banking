@@ -44,7 +44,7 @@ services:
       - ./src:/usr/app/src
     networks:
       - db_network
-
+      
 volumes:
   db_volume:
   pgadmin-data:

@@ -50,6 +50,8 @@ $ npm run start:dev
 # watch mode in container with docker-compose
 $ docker-compose -f docker-compose.dev.yml up -d --build
 
+docker run --name db -e POSTGRES_USER=bankuser -e POSTGRES_PASSWORD=bankpassword -e POSTGRES_DB=banking_db -p 5432:5432 -d postgres:14-alpine
+
 # production mode
 $ npm run start:prod
 ```
