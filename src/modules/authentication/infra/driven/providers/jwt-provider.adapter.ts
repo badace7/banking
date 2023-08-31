@@ -6,7 +6,7 @@ import {
   IJwtProvider,
   JwtPayload,
 } from 'src/modules/authentication/application/_ports/repositories/jwt-provider.iport';
-
+//TODO DELETE checkToken(), decodeToken()
 @Injectable()
 export class JwtProvider implements IJwtProvider {
   constructor(

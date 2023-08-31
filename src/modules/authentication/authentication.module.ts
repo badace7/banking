@@ -18,8 +18,8 @@ import { CreateUser } from './application/usecases/create-user.usecase';
 import { UserEntity } from './infra/driven/entities/user.entity';
 import { RoleEntity } from './infra/driven/entities/role.entity';
 import { createInjectableProvider } from 'src/provider.factory';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from 'src/libs/strategies/jwt.strategy';
 
 export const respositories = [
   {
@@ -59,9 +59,15 @@ export const usecases = [
 ];
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity, RoleEntity])],
+  imports: [
+    TypeOrmModule.forFeature([UserEntity, RoleEntity]),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: process.env.JWT_EXPIRATION_TIME },
+    }),
+  ],
   controllers: [AuthenticationController],
-  providers: [...usecases, ...respositories, JwtService, ConfigService],
+  providers: [...usecases, ...respositories, JwtStrategy],
   exports: [...usecases, ...respositories, TypeOrmModule],
 })
 export class AuthenticationModule {}

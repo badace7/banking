@@ -2,7 +2,7 @@ import {
   IJwtProvider,
   JwtPayload,
 } from 'src/modules/authentication/application/_ports/repositories/jwt-provider.iport';
-
+//TODO DELETE checkToken(), decodeToken()
 export class FakeJwtProvider implements IJwtProvider {
   decodeToken(token: string): JwtPayload {
     throw new Error('Method not implemented.');

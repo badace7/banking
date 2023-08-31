@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Role } from '../domain/user';
 import { NotValidException } from 'src/libs/exceptions/usecase.error';
 
+//TODO DELETE checkToken(), decodeToken()
 describe('jwt-provider adapter', () => {
   let provider: JwtProvider;
   let configService: ConfigService;
@@ -59,7 +60,7 @@ describe('jwt-provider adapter', () => {
     expect(verifiedPayload).toMatchObject(payload);
   });
 
-  test('should throw an error for an invalid token', async () => {
+  test('checkToken() should throw an error for an invalid token', async () => {
     //Arrange
     const invalidToken = 'invalid-token';
 

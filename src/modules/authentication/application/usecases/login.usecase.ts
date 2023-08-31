@@ -44,6 +44,6 @@ export class Login implements ILogin {
 
     const token = this.jwtProvider.createToken(payload, secret, expiresIn);
 
-    return await this.cookieProvider.createCookieWithToken(token, expiresIn);
+    return this.cookieProvider.createCookieWithToken(token, expiresIn);
   }
 }

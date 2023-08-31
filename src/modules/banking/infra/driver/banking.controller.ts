@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
@@ -19,6 +20,14 @@ import {
   IDeposit,
 } from '../../application/_ports/usecases/deposit.iport';
 import {
+  GET_BALANCE_PORT,
+  IGetBalance,
+} from '../../application/_ports/usecases/get-balance.iport';
+import {
+  GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT,
+  IGetOperationByAccountNumber,
+} from '../../application/_ports/usecases/get-operations-by-account-number.iport';
+import {
   IMoneyTransfer,
   MONEY_TRANSFER_PORT,
 } from '../../application/_ports/usecases/money-transfer.iport';
@@ -27,15 +36,14 @@ import {
   WITHDRAW_PORT,
 } from '../../application/_ports/usecases/withdraw.iport';
 import { GetOperationsByNumberQuery } from '../../application/queries/get-operations-by-account-number.query';
-import {
-  GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT,
-  IGetOperationByAccountNumber,
-} from '../../application/_ports/usecases/get-operations-by-account-number.iport';
-import {
-  GET_BALANCE_PORT,
-  IGetBalance,
-} from '../../application/_ports/usecases/get-balance.iport';
 
+import { Roles } from 'src/libs/decorators/roles.decorator';
+import { JwtAuthGuard } from 'src/libs/guards/jwt.guard';
+import { RolesGuard } from 'src/libs/guards/roles.guard';
+import { Role } from 'src/modules/authentication/domain/user';
+
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.CUSTOMER)
 @Controller('banking')
 export class BankingController {
   constructor(

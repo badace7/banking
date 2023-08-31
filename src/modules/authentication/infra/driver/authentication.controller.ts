@@ -54,4 +54,10 @@ export class AuthenticationController {
       response.status(HttpStatus.CONFLICT).send(err.message);
     }
   }
+
+  @Post('logout')
+  async logout(@Res() response: Response) {
+    response.clearCookie('Authentication');
+    response.status(HttpStatus.OK).send('Logout successful');
+  }
 }
