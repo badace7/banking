@@ -18,6 +18,8 @@ import {
 } from '../../application/_ports/usecases/login.iport';
 import { LoginRequest } from '../../application/usecases/login.request';
 import { CreateUserRequest } from '../../application/usecases/create-user.request';
+import { LoginDTO } from './login.dto';
+import { CreateUserDTO } from './create-user.dto';
 
 @Controller('auth')
 export class AuthenticationController {
@@ -27,7 +29,7 @@ export class AuthenticationController {
   ) {}
 
   @Post('login')
-  async login(@Body() body: any, @Res() response: Response) {
+  async login(@Body() body: LoginDTO, @Res() response: Response) {
     try {
       const command = new LoginRequest(body.identifier, body.password);
       const token = await this.loginUsecase.execute(command);
@@ -39,7 +41,7 @@ export class AuthenticationController {
   }
 
   @Post('create-user')
-  async createUser(@Body() body: any, @Res() response: Response) {
+  async createUser(@Body() body: CreateUserDTO, @Res() response: Response) {
     try {
       const command = new CreateUserRequest(
         uuidv4(),

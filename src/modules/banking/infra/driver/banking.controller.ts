@@ -42,6 +42,9 @@ import { JwtAuthGuard } from 'src/libs/guards/jwt.guard';
 import { RolesGuard } from 'src/libs/guards/roles.guard';
 import { Role } from 'src/modules/authentication/domain/user';
 import { RessourceOwnerGuard } from 'src/libs/guards/ressource-owner.guard';
+import { MoneyTransferDTO } from './money-transfer.dto';
+import { DepositDTO } from './deposit.dto';
+import { WithdrawDTO } from './withdraw.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard, RessourceOwnerGuard)
 @Roles(Role.CUSTOMER)
@@ -91,7 +94,10 @@ export class BankingController {
   }
 
   @Post('account/operation/transfer')
-  async transferMoney(@Body() body: any, @Res() response: Response) {
+  async transferMoney(
+    @Body() body: MoneyTransferDTO,
+    @Res() response: Response,
+  ) {
     try {
       const command = new MoneyTransferCommand(
         uuidv4(),
@@ -108,7 +114,7 @@ export class BankingController {
   }
 
   @Post('account/operation/deposit')
-  async depositMoney(@Body() body: any, @Res() response: Response) {
+  async depositMoney(@Body() body: DepositDTO, @Res() response: Response) {
     try {
       const command = new DepositCommand(uuidv4(), body.origin, body.amount);
       await this.depositUsecase.execute(command);
@@ -119,7 +125,7 @@ export class BankingController {
   }
 
   @Post('account/operation/withdraw')
-  async withdrawMoney(@Body() body: any, @Res() response: Response) {
+  async withdrawMoney(@Body() body: WithdrawDTO, @Res() response: Response) {
     try {
       const command = new WithdrawCommand(uuidv4(), body.origin, body.amount);
       await this.withdrawUsecase.execute(command);
