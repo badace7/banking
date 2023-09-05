@@ -45,10 +45,11 @@ import { RessourceOwnerGuard } from 'src/libs/guards/ressource-owner.guard';
 import { MoneyTransferDTO } from './money-transfer.dto';
 import { DepositDTO } from './deposit.dto';
 import { WithdrawDTO } from './withdraw.dto';
+import { Banking } from './banking.routes';
 
 @UseGuards(JwtAuthGuard, RolesGuard, RessourceOwnerGuard)
 @Roles(Role.CUSTOMER)
-@Controller('banking')
+@Controller(Banking.ROOT)
 export class BankingController {
   constructor(
     @Inject(MONEY_TRANSFER_PORT)
@@ -63,7 +64,7 @@ export class BankingController {
     private readonly getBalanceUsecase: IGetBalance,
   ) {}
 
-  @Get('account/balance/:accountNumber')
+  @Get(Banking.BALANCE)
   async getBalance(
     @Param('accountNumber') accountNumber: string,
     @Res() response: Response,
@@ -77,7 +78,7 @@ export class BankingController {
     }
   }
 
-  @Get('account/operations/:accountNumber')
+  @Get(Banking.OPERATIONS)
   async findAllOperations(
     @Param('accountNumber') accountNumber: string,
     @Res() response: Response,
@@ -93,7 +94,7 @@ export class BankingController {
     }
   }
 
-  @Post('account/operation/transfer')
+  @Post(Banking.TRANSFER)
   async transferMoney(
     @Body() body: MoneyTransferDTO,
     @Res() response: Response,
@@ -113,7 +114,7 @@ export class BankingController {
     }
   }
 
-  @Post('account/operation/deposit')
+  @Post(Banking.DEPOSIT)
   async depositMoney(@Body() body: DepositDTO, @Res() response: Response) {
     try {
       const command = new DepositCommand(uuidv4(), body.origin, body.amount);
@@ -124,7 +125,7 @@ export class BankingController {
     }
   }
 
-  @Post('account/operation/withdraw')
+  @Post(Banking.WITHDRAW)
   async withdrawMoney(@Body() body: WithdrawDTO, @Res() response: Response) {
     try {
       const command = new WithdrawCommand(uuidv4(), body.origin, body.amount);

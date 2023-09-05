@@ -20,15 +20,16 @@ import { LoginRequest } from '../../application/usecases/login.request';
 import { CreateUserRequest } from '../../application/usecases/create-user.request';
 import { LoginDTO } from './login.dto';
 import { CreateUserDTO } from './create-user.dto';
+import { Auth } from './authentication.routes';
 
-@Controller('auth')
+@Controller(Auth.ROOT)
 export class AuthenticationController {
   constructor(
     @Inject(CREATE_USER_PORT) private readonly createUserUsecase: ICreateUser,
     @Inject(LOGIN_PORT) private readonly loginUsecase: ILogin,
   ) {}
 
-  @Post('login')
+  @Post(Auth.LOGIN)
   async login(@Body() body: LoginDTO, @Res() response: Response) {
     try {
       const command = new LoginRequest(body.identifier, body.password);
@@ -40,7 +41,7 @@ export class AuthenticationController {
     }
   }
 
-  @Post('create-user')
+  @Post(Auth.CREATE_USER)
   async createUser(@Body() body: CreateUserDTO, @Res() response: Response) {
     try {
       const command = new CreateUserRequest(
@@ -57,7 +58,7 @@ export class AuthenticationController {
     }
   }
 
-  @Post('logout')
+  @Post(Auth.LOGOUT)
   async logout(@Res() response: Response) {
     response.clearCookie('Authentication');
     response.status(HttpStatus.OK).send('Logout successful');
