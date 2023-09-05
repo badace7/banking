@@ -1,12 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
-import { JwtPayload } from 'src/modules/authentication/application/_ports/repositories/jwt-provider.iport';
+import { UserPostgresAdapter } from 'src/modules/authentication/infra/driven/postgres/user.postgres.adapter';
+import { USER_PORT } from 'src/modules/authentication/application/_ports/repositories/user.iport';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+  constructor(
+    @Inject(USER_PORT) private readonly userAdapter: UserPostgresAdapter,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => {
@@ -18,7 +21,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtPayload) {
-    return payload;
+  async validate(payload: any) {
+    const userAccountNumber = await this.userAdapter.findAccountNumberByUserId(
+      payload.id,
+    );
+    return {
+      id: payload.id,
+      role: payload.role,
+      accountNumber: userAccountNumber,
+    };
   }
 }

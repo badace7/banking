@@ -3,10 +3,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryColumn,
   RelationId,
 } from 'typeorm';
 import { RoleEntity } from './role.entity';
+import { AccountEntity } from 'src/modules/banking/infra/driven/entities/account.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -21,13 +23,14 @@ export class UserEntity {
   @Column()
   lastName: string;
 
-  @ManyToOne(() => RoleEntity, (role) => role.user, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(() => RoleEntity, (role) => role.users)
   @JoinColumn({ name: 'roleId' })
   role: RoleEntity;
 
   @RelationId((user: UserEntity) => user.role)
   @Column({ name: 'roleId' })
   roleId: number;
+
+  @OneToMany(() => AccountEntity, (accounts) => accounts.user)
+  accounts: AccountEntity[];
 }

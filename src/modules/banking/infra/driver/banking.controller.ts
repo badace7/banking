@@ -41,8 +41,9 @@ import { Roles } from 'src/libs/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/libs/guards/jwt.guard';
 import { RolesGuard } from 'src/libs/guards/roles.guard';
 import { Role } from 'src/modules/authentication/domain/user';
+import { RessourceOwnerGuard } from 'src/libs/guards/ressource-owner.guard';
 
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, RolesGuard, RessourceOwnerGuard)
 @Roles(Role.CUSTOMER)
 @Controller('banking')
 export class BankingController {

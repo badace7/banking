@@ -22,4 +22,15 @@ export class UserPostgresAdapter implements IUserPort {
     });
     return UserMapper.toDomain(entity);
   }
+
+  async findAccountNumberByUserId(userId: string): Promise<string | null> {
+    const result = await this.manager
+      .createQueryBuilder(UserEntity, 'user')
+      .innerJoinAndSelect('user.accounts', 'account')
+      .select('account.number')
+      .where('user.id = :userId', { userId })
+      .getRawOne();
+
+    return result.account_number || null;
+  }
 }

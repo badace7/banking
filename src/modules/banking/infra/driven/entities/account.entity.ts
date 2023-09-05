@@ -1,5 +1,13 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+  RelationId,
+} from 'typeorm';
 import { OperationEntity } from './operation.entity';
+import { UserEntity } from 'src/modules/authentication/infra/driven/entities/user.entity';
 
 @Entity('accounts')
 export class AccountEntity {
@@ -10,10 +18,15 @@ export class AccountEntity {
   @Column()
   balance: number;
   @Column()
-  user: string;
-  @Column()
   overdraftFacility: number;
 
   @OneToMany(() => OperationEntity, (operation) => operation.account)
   operations: OperationEntity[];
+
+  @ManyToOne(() => UserEntity, (user) => user.accounts)
+  user: UserEntity;
+
+  @RelationId((account: AccountEntity) => account.user)
+  @Column({ name: 'userId' })
+  userId: string;
 }

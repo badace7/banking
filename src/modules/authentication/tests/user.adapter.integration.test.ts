@@ -91,4 +91,15 @@ describe('user adapter', () => {
     //assert
     expect(result).toEqual(user);
   });
+
+  test('findAccountNumberByUserId() should return user account number', async () => {
+    //arrange
+    const userId = '1';
+
+    //act
+    const result = await userAdapter.findAccountNumberByUserId(userId);
+
+    //assert
+    expect(result).toBe('98797897897');
+  });
 });

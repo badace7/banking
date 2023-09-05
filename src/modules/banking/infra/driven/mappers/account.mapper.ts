@@ -7,7 +7,7 @@ export class AccountMapper {
       id: account.id,
       number: account.number,
       balance: account.balance,
-      user: account.user,
+      user: account.userId,
       overdraftFacility: account.overdraftFacility,
     });
   }
@@ -16,7 +16,7 @@ export class AccountMapper {
     const accountEntity = new AccountEntity();
     accountEntity.number = account.data.number;
     accountEntity.balance = account.data.balance;
-    accountEntity.user = account.data.user;
+    accountEntity.userId = account.data.user;
     accountEntity.overdraftFacility = account.data.overdraftFacility;
     accountEntity.id = account.data.id;
 

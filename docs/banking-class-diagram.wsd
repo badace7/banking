@@ -8,7 +8,7 @@ title Digi'bank - Class Diagram
 class Account {
   - id: string
   - number: string
-  - customer: string
+  - user: string
   - balance: number
   - overdraftFacility: number
   + Account()
@@ -54,6 +54,6 @@ User "0.*" o-- "1" Role
 Operation "0.*" o-- "1" Account
 Operation "0.*" o-- "1" OperationType
 Operation "0.*" o-- "1" FlowIndicator
-Account "0.*" o-- "0.*" User
+Account "0.*" o-- "1" User
 
 @enduml

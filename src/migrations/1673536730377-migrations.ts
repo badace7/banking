@@ -85,7 +85,7 @@ export class migrations1673536730377 implements MigrationInterface {
             scale: 2,
           },
           {
-            name: 'user',
+            name: 'userId',
             type: 'varchar',
           },
           {
@@ -199,6 +199,14 @@ export class migrations1673536730377 implements MigrationInterface {
       }),
     ]);
 
+    await queryRunner.createForeignKeys('accounts', [
+      new TableForeignKey({
+        columnNames: ['userId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'users',
+      }),
+    ]);
+
     await queryRunner.manager.save(
       queryRunner.manager.create<RoleEntity>(RoleEntity, {
         id: 1,
@@ -267,7 +275,7 @@ export class migrations1673536730377 implements MigrationInterface {
         id: '1',
         number: '98797897897',
         balance: 1000,
-        user: '1',
+        userId: '1',
         overdraftFacility: 500,
       }),
     );
@@ -277,7 +285,7 @@ export class migrations1673536730377 implements MigrationInterface {
         id: '2',
         number: '12312312312',
         balance: 1000,
-        user: '2',
+        userId: '2',
         overdraftFacility: 500,
       }),
     );
