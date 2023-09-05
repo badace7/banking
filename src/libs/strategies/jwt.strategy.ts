@@ -4,6 +4,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
 import { UserPostgresAdapter } from 'src/modules/authentication/infra/driven/postgres/user.postgres.adapter';
 import { USER_PORT } from 'src/modules/authentication/application/_ports/repositories/user.iport';
+import { JwtPayload } from 'src/modules/authentication/application/_ports/repositories/jwt-provider.iport';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -21,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
+  async validate(payload: JwtPayload) {
     const userAccountNumber = await this.userAdapter.findAccountNumberByUserId(
       payload.id,
     );
