@@ -5,7 +5,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Role } from '../domain/user';
 import { NotValidException } from 'src/libs/exceptions/usecase.error';
 
-//TODO DELETE checkToken(), decodeToken()
 describe('jwt-provider adapter', () => {
   let provider: JwtProvider;
   let configService: ConfigService;
@@ -69,19 +68,5 @@ describe('jwt-provider adapter', () => {
 
     //Assert
     await expect(tryInvalidToken).rejects.toThrow(NotValidException);
-  });
-
-  test('decodeToken() should decode a token', () => {
-    //Arrange
-    const payload = { id: '1', role: Role.CUSTOMER };
-    const secret = configService.get<string>('JWT_SECRET');
-    const expiresIn = configService.get<string>('JWT_EXPIRATION_TIME');
-    const token = provider.createToken(payload, secret, expiresIn);
-
-    //Act
-    const decodedToken = provider.decodeToken(token);
-
-    //Assert
-    expect(decodedToken).toMatchObject(payload);
   });
 });
