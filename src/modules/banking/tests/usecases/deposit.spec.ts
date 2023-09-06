@@ -1,8 +1,8 @@
 import { WithdrawCommand } from 'src/modules/banking/application/commands/withdraw.command';
 
 import {
-  FlowIndicator,
-  OperationType,
+  FlowIndicatorEnum,
+  OperationTypeEnum,
 } from 'src/modules/banking/domain/operation';
 import {
   DepositFixture,
@@ -37,8 +37,8 @@ describe('Feature: Deposit money', () => {
           .withAccountId('account-id')
           .withLabel('Deposit')
           .withAmount(500)
-          .withType(OperationType.DEPOSIT)
-          .withFlow(FlowIndicator.CREDIT)
+          .withType(OperationTypeEnum.DEPOSIT)
+          .withFlow(FlowIndicatorEnum.CREDIT)
           .build(),
       );
     });

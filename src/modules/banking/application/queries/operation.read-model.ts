@@ -1,4 +1,4 @@
-import { FlowIndicator } from '../../domain/operation';
+import { FlowIndicatorEnum } from '../../domain/operation';
 
 export class OperationReadModel {
   private constructor(
@@ -30,7 +30,7 @@ export class OperationReadModel {
     date: string;
   }) {
     const ZERO = '0';
-    if (operation.flow === FlowIndicator.DEBIT) {
+    if (operation.flow === FlowIndicatorEnum.DEBIT) {
       return new OperationReadModel(
         operation.id,
         operation.label,
@@ -41,7 +41,7 @@ export class OperationReadModel {
       );
     }
 
-    if (operation.flow === FlowIndicator.CREDIT) {
+    if (operation.flow === FlowIndicatorEnum.CREDIT) {
       return new OperationReadModel(
         operation.id,
         operation.label,

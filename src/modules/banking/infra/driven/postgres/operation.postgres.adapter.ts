@@ -5,6 +5,10 @@ import { EntityManager } from 'typeorm';
 import { Operation } from '../../../domain/operation';
 import { IOperationPort } from '../../../application/_ports/repositories/operation.iport';
 import { OperationMapper } from '../mappers/operation.mapper';
+import { FlowIndicatorEntity } from '../entities/flow-indicator.entity';
+import { FlowIndicator } from 'src/modules/banking/domain/flow-indicator';
+import { OperationTypeEntity } from '../entities/operation-type.entity';
+import { OperationType } from 'src/modules/banking/domain/operation-type';
 
 @Injectable()
 export class OperationPostgresAdapter implements IOperationPort {
@@ -24,5 +28,19 @@ export class OperationPostgresAdapter implements IOperationPort {
   async save(operation: Operation): Promise<void> {
     const entity = OperationMapper.toEntity(operation);
     await this.manager.save(OperationEntity, entity);
+  }
+
+  async getFlowIndicatorById(id: number) {
+    const entity = await this.manager.findOne(FlowIndicatorEntity, {
+      where: { id },
+    });
+    return new FlowIndicator(entity.id, entity.indicator);
+  }
+
+  async getOperationTypeById(id: number) {
+    const entity = await this.manager.findOne(OperationTypeEntity, {
+      where: { id },
+    });
+    return new OperationType(entity.id, entity.type);
   }
 }

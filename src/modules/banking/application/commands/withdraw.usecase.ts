@@ -5,9 +5,9 @@ import {
 } from 'src/libs/exceptions/usecase.error';
 import Account from '../../domain/account';
 import {
-  FlowIndicator,
+  FlowIndicatorEnum,
   Operation,
-  OperationType,
+  OperationTypeEnum,
 } from '../../domain/operation';
 import { IDateProvider } from '../_ports/repositories/date-provider.iport';
 import { IAccountPort } from '../_ports/repositories/account.iport';
@@ -30,13 +30,20 @@ export class Withdraw {
 
     await this.saveAccountChanges(account);
 
+    const operationType = await this.operationAdapter.getOperationTypeById(
+      OperationTypeEnum.WITHDRAW,
+    );
+    const flowIndicator = await this.operationAdapter.getFlowIndicatorById(
+      FlowIndicatorEnum.DEBIT,
+    );
+
     const operation = Operation.create({
       id: `${command.id}-1`,
       label: 'Withdraw',
       amount: command.amount,
       account: account.data.id,
-      type: OperationType.WITHDRAW,
-      flow: FlowIndicator.DEBIT,
+      type: operationType,
+      flow: flowIndicator,
       date: this.dateAdapter.getNow(),
     });
 

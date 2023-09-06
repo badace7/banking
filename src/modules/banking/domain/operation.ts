@@ -1,9 +1,12 @@
-export enum FlowIndicator {
+import { FlowIndicator } from './flow-indicator';
+import { OperationType } from './operation-type';
+
+export enum FlowIndicatorEnum {
   DEBIT = 1,
   CREDIT = 2,
 }
 
-export enum OperationType {
+export enum OperationTypeEnum {
   WITHDRAW = 1,
   DEPOSIT = 2,
   TRANSFER = 3,

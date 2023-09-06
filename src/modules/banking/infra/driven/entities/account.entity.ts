@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryColumn,
-  RelationId,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { OperationEntity } from './operation.entity';
 import { UserEntity } from 'src/modules/authentication/infra/driven/entities/user.entity';
 

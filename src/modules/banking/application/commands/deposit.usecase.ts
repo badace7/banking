@@ -5,9 +5,9 @@ import {
 import Account from '../../domain/account';
 import { DepositCommand } from './deposit.command';
 import {
-  FlowIndicator,
+  FlowIndicatorEnum,
   Operation,
-  OperationType,
+  OperationTypeEnum,
 } from '../../domain/operation';
 
 import { IDateProvider } from '../_ports/repositories/date-provider.iport';
@@ -31,13 +31,20 @@ export class Deposit {
 
     await this.saveAccountChanges(account);
 
+    const operationType = await this.operationAdapter.getOperationTypeById(
+      OperationTypeEnum.DEPOSIT,
+    );
+    const flowIndicator = await this.operationAdapter.getFlowIndicatorById(
+      FlowIndicatorEnum.CREDIT,
+    );
+
     const operation = Operation.create({
       id: `${command.id}-2`,
       label: 'Deposit',
       amount: command.amount,
       account: account.data.id,
-      type: OperationType.DEPOSIT,
-      flow: FlowIndicator.CREDIT,
+      type: operationType,
+      flow: flowIndicator,
       date: this.dateAdapter.getNow(),
     });
 

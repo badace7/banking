@@ -5,7 +5,7 @@ import {
 } from '../fixtures/money-transfer.fixture';
 import { AccountBuilder } from '../builders/account.builder';
 import { OperationBuilder } from '../builders/operation.builder';
-import { FlowIndicator, OperationType } from '../../domain/operation';
+import { FlowIndicatorEnum, OperationTypeEnum } from '../../domain/operation';
 import { OperationRejectedError } from '../../domain/error/operation.error';
 
 describe('Feature: Money transfer between two customers', () => {
@@ -56,8 +56,8 @@ describe('Feature: Money transfer between two customers', () => {
           .withAccountId('jack-account-id')
           .withLabel("Participation in Anna's gift")
           .withAmount(1000)
-          .withType(OperationType.TRANSFER)
-          .withFlow(FlowIndicator.DEBIT)
+          .withType(OperationTypeEnum.TRANSFER)
+          .withFlow(FlowIndicatorEnum.DEBIT)
           .build(),
       );
     });
@@ -142,8 +142,8 @@ describe('Feature: Money transfer between two customers', () => {
           .withAccountId('jack-account-id')
           .withLabel('Spain holiday')
           .withAmount(2500)
-          .withType(OperationType.TRANSFER)
-          .withFlow(FlowIndicator.DEBIT)
+          .withType(OperationTypeEnum.TRANSFER)
+          .withFlow(FlowIndicatorEnum.DEBIT)
           .build(),
       );
     });

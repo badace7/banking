@@ -1,5 +1,5 @@
 import { EntityManager } from 'typeorm';
-import { FlowIndicator, OperationType } from '../../domain/operation';
+import { FlowIndicatorEnum, OperationTypeEnum } from '../../domain/operation';
 import { OperationEntity } from '../../infra/driven/entities/operation.entity';
 import { OperationMapper } from '../../infra/driven/mappers/operation.mapper';
 import { OperationPostgresAdapter } from '../../infra/driven/postgres/operation.postgres.adapter';
@@ -11,6 +11,8 @@ import {
 import { Test, TestingModule } from '@nestjs/testing';
 import { TestDatabaseModule } from '../configs/test-database.module';
 import { createEntityManagerProvider } from 'src/config/postgres.config';
+import { OperationTypeEntity } from '../../infra/driven/entities/operation-type.entity';
+import { FlowIndicatorEntity } from '../../infra/driven/entities/flow-indicator.entity';
 
 describe('operation adapter', () => {
   let container: TestContainersType;
@@ -42,15 +44,16 @@ describe('operation adapter', () => {
       .withAccountId('2')
       .withLabel("Participation in Anna's gift")
       .withAmount(1000)
-      .withType(OperationType.TRANSFER)
-      .withFlow(FlowIndicator.DEBIT)
+      .withType(OperationTypeEnum.TRANSFER)
+      .withFlow(FlowIndicatorEnum.DEBIT)
       .withDate(new Date('2023-07-14T22:00:00.000Z'))
       .build();
     await operationAdapter.save(operation);
 
-    const entity = await connection
-      .getRepository(OperationEntity)
-      .findOne({ where: { id: operation.data.id } });
+    const entity = await connection.getRepository(OperationEntity).findOne({
+      where: { id: operation.data.id },
+      relations: ['operationType', 'flowIndicator'],
+    });
 
     const expectedOperation = OperationMapper.toDomain(entity);
     expect(expectedOperation).toEqual(operation);
@@ -62,8 +65,8 @@ describe('operation adapter', () => {
       .withAccountId('2')
       .withLabel("Participation in Anna's gift")
       .withAmount(1000)
-      .withType(OperationType.TRANSFER)
-      .withFlow(FlowIndicator.DEBIT)
+      .withType(OperationTypeEnum.TRANSFER)
+      .withFlow(FlowIndicatorEnum.DEBIT)
       .withDate(new Date('2023-07-14T22:00:00.000Z'))
       .build();
 
@@ -72,8 +75,8 @@ describe('operation adapter', () => {
       .withAccountId('2')
       .withLabel("Participation in Anna's gift")
       .withAmount(1000)
-      .withType(OperationType.TRANSFER)
-      .withFlow(FlowIndicator.DEBIT)
+      .withType(OperationTypeEnum.TRANSFER)
+      .withFlow(FlowIndicatorEnum.DEBIT)
       .withDate(new Date('2023-07-14T22:00:00.000Z'))
       .build();
 

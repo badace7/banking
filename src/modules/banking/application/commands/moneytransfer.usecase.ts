@@ -4,9 +4,9 @@ import {
 } from 'src/libs/exceptions/usecase.error';
 import Account from '../../domain/account';
 import {
-  FlowIndicator,
+  FlowIndicatorEnum,
   Operation,
-  OperationType,
+  OperationTypeEnum,
 } from '../../domain/operation';
 
 import { IDateProvider } from '../_ports/repositories/date-provider.iport';
@@ -34,13 +34,29 @@ export class MoneyTransfer implements IMoneyTransfer {
     const sourceAccount = await this.getAccount(command.origin);
     const destinationAccount = await this.getAccount(command.destination);
 
+    const operationTypeSource =
+      await this.operationAdapter.getOperationTypeById(
+        OperationTypeEnum.TRANSFER,
+      );
+    const flowIndicatorSource =
+      await this.operationAdapter.getFlowIndicatorById(FlowIndicatorEnum.DEBIT);
+
+    const operationTypeDestination =
+      await this.operationAdapter.getOperationTypeById(
+        OperationTypeEnum.TRANSFER,
+      );
+    const flowIndicatorDestination =
+      await this.operationAdapter.getFlowIndicatorById(
+        FlowIndicatorEnum.CREDIT,
+      );
+
     const sourceOperation = Operation.create({
       id: `${command.id}-1`,
       label: command.label,
       amount: command.amount,
       account: sourceAccount.data.id,
-      type: OperationType.TRANSFER,
-      flow: FlowIndicator.DEBIT,
+      type: operationTypeSource,
+      flow: flowIndicatorSource,
       date: this.dateAdapter.getNow(),
     });
 
@@ -49,8 +65,8 @@ export class MoneyTransfer implements IMoneyTransfer {
       label: command.label,
       amount: command.amount,
       account: destinationAccount.data.id,
-      type: OperationType.TRANSFER,
-      flow: FlowIndicator.CREDIT,
+      type: operationTypeDestination,
+      flow: flowIndicatorDestination,
       date: this.dateAdapter.getNow(),
     });
 

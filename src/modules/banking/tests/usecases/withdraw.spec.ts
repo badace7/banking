@@ -1,7 +1,7 @@
 import { WithdrawCommand } from 'src/modules/banking/application/commands/withdraw.command';
 import {
-  FlowIndicator,
-  OperationType,
+  FlowIndicatorEnum,
+  OperationTypeEnum,
 } from 'src/modules/banking/domain/operation';
 import {
   WithdrawFixture,
@@ -37,8 +37,8 @@ describe('Feature: Withdraw money', () => {
           .withAccountId('account-id')
           .withLabel('Withdraw')
           .withAmount(500)
-          .withType(OperationType.WITHDRAW)
-          .withFlow(FlowIndicator.DEBIT)
+          .withType(OperationTypeEnum.WITHDRAW)
+          .withFlow(FlowIndicatorEnum.DEBIT)
           .build(),
       );
     });
@@ -79,8 +79,8 @@ describe('Feature: Withdraw money', () => {
           .withAccountId('account-id')
           .withLabel('Withdraw')
           .withAmount(700)
-          .withType(OperationType.WITHDRAW)
-          .withFlow(FlowIndicator.DEBIT)
+          .withType(OperationTypeEnum.WITHDRAW)
+          .withFlow(FlowIndicatorEnum.DEBIT)
           .build(),
       );
     });

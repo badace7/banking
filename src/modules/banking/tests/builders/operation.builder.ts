@@ -1,8 +1,10 @@
 import {
-  FlowIndicator,
+  FlowIndicatorEnum,
   Operation,
-  OperationType,
+  OperationTypeEnum,
 } from 'src/modules/banking/domain/operation';
+import { OperationType } from '../../domain/operation-type';
+import { FlowIndicator } from '../../domain/flow-indicator';
 
 export const OperationBuilder = ({
   id = 'operation-id',
@@ -47,16 +49,16 @@ export const OperationBuilder = ({
         account: _origin,
       });
     },
-    withType(_type: OperationType) {
+    withType(_type: OperationTypeEnum) {
       return OperationBuilder({
         ...props,
-        type: _type,
+        type: getOperationType(_type),
       });
     },
-    withFlow(_flow: FlowIndicator) {
+    withFlow(_flow: FlowIndicatorEnum) {
       return OperationBuilder({
         ...props,
-        flow: _flow,
+        flow: getFlowIndicatorType(_flow),
       });
     },
     withDate(_date: Date) {
@@ -78,3 +80,22 @@ export const OperationBuilder = ({
     },
   };
 };
+
+function getOperationType(value: number) {
+  const operationTypes: any = {
+    1: new OperationType(1, 'WITHDRAW'),
+    2: new OperationType(2, 'DEPOSIT'),
+    3: new OperationType(3, 'TRANSFER'),
+  };
+
+  return operationTypes[value];
+}
+
+function getFlowIndicatorType(value: number) {
+  const flowIndicators: any = {
+    1: new FlowIndicator(1, 'DEBIT'),
+    2: new FlowIndicator(2, 'CREDIT'),
+  };
+
+  return flowIndicators[value];
+}
