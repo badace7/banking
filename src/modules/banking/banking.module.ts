@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { createInjectableProvider } from 'src/provider.factory';
-import { UserEntity } from '../authentication/infra/driven/entities/user.entity';
 
 import { DATE_PORT } from './application/_ports/repositories/date-provider.iport';
 import { DEPOSIT_PORT } from './application/_ports/usecases/deposit.iport';

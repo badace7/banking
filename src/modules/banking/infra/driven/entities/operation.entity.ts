@@ -17,7 +17,6 @@ export class OperationEntity {
   @ManyToOne(() => AccountEntity, (account) => account.operations)
   account: AccountEntity;
 
-  @RelationId((operation: OperationEntity) => operation.account)
   @Column({ name: 'accountId' })
   accountId: string;
 
@@ -27,7 +26,6 @@ export class OperationEntity {
   )
   operationType: OperationTypeEntity;
 
-  @RelationId((operation: OperationEntity) => operation.operationType)
   @Column({ name: 'operationTypeId' })
   operationTypeId: number;
 
@@ -37,7 +35,6 @@ export class OperationEntity {
   )
   flowIndicator: FlowIndicatorEntity;
 
-  @RelationId((operation: OperationEntity) => operation.flowIndicator)
   @Column({ name: 'flowIndicatorId' })
   flowIndicatorId: number;
 }

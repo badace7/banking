@@ -26,7 +26,6 @@ export class AccountEntity {
   @ManyToOne(() => UserEntity, (user) => user.accounts)
   user: UserEntity;
 
-  @RelationId((account: AccountEntity) => account.user)
   @Column({ name: 'userId' })
   userId: string;
 }

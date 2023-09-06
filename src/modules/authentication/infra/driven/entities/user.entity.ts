@@ -5,7 +5,6 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryColumn,
-  RelationId,
 } from 'typeorm';
 import { RoleEntity } from './role.entity';
 import { AccountEntity } from 'src/modules/banking/infra/driven/entities/account.entity';
@@ -27,7 +26,6 @@ export class UserEntity {
   @JoinColumn({ name: 'roleId' })
   role: RoleEntity;
 
-  @RelationId((user: UserEntity) => user.role)
   @Column({ name: 'roleId' })
   roleId: number;
 
