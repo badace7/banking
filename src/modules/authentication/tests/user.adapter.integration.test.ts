@@ -9,7 +9,7 @@ import { EntityManager } from 'typeorm';
 import { RoleEnum, User } from '../domain/user';
 import { UserEntity } from '../infra/driven/entities/user.entity';
 import { UserPostgresAdapter } from '../infra/driven/postgres/user.postgres.adapter';
-import { UserMapper } from '../infra/driven/mappers/user-mapper';
+import { UserMapper } from '../infra/driven/mappers/user.mapper';
 import { Role } from '../domain/role';
 
 describe('user adapter', () => {
@@ -105,7 +105,7 @@ describe('user adapter', () => {
     expect(result).toBe('98797897897');
   });
 
-  test.only('findRoleById() should return a role', async () => {
+  test('findRoleById() should return a role', async () => {
     //arrange
     const roleId = 1;
 

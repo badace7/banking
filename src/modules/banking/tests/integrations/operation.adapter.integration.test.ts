@@ -11,8 +11,6 @@ import {
 import { Test, TestingModule } from '@nestjs/testing';
 import { TestDatabaseModule } from '../configs/test-database.module';
 import { createEntityManagerProvider } from 'src/config/postgres.config';
-import { OperationTypeEntity } from '../../infra/driven/entities/operation-type.entity';
-import { FlowIndicatorEntity } from '../../infra/driven/entities/flow-indicator.entity';
 import { FlowIndicator } from '../../domain/flow-indicator';
 import { OperationType } from '../../domain/operation-type';
 

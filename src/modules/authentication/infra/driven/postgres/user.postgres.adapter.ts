@@ -3,9 +3,10 @@ import { EntityManager } from 'typeorm';
 import { IUserPort } from '../../../application/_ports/repositories/user.iport';
 import { User } from '../../../domain/user';
 import { UserEntity } from '../entities/user.entity';
-import { UserMapper } from '../mappers/user-mapper';
+import { UserMapper } from '../mappers/user.mapper';
 import { RoleEntity } from '../entities/role.entity';
 import { Role } from 'src/modules/authentication/domain/role';
+import { RoleMapper } from '../mappers/role.mapper';
 
 @Injectable()
 export class UserPostgresAdapter implements IUserPort {
@@ -42,6 +43,6 @@ export class UserPostgresAdapter implements IUserPort {
 
   async findRoleById(id: number) {
     const entity = await this.manager.findOne(RoleEntity, { where: { id } });
-    return new Role(entity.id, entity.role);
+    return RoleMapper.toDomain(entity);
   }
 }
