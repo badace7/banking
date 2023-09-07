@@ -3,24 +3,14 @@ import {
   UnprocessableException,
 } from 'src/libs/exceptions/usecase.error';
 import Account from '../../domain/account';
-import { DepositCommand } from './deposit.command';
-import {
-  FlowIndicatorEnum,
-  Operation,
-  OperationTypeEnum,
-} from '../../domain/operation';
-
-import { IDateProvider } from '../_ports/repositories/date-provider.iport';
-import { IAccountPort } from '../_ports/repositories/account.iport';
-import { IOperationPort } from '../_ports/repositories/operation.iport';
 import { ErrorMessage } from '../../domain/error/operation-message-error';
 import { IEventPublisher } from '../_ports/event-publisher.iport';
+import { IAccountPort } from '../_ports/repositories/account.iport';
+import { DepositCommand } from './deposit.command';
 
 export class Deposit {
   constructor(
     private accountAdapter: IAccountPort,
-    private operationAdapter: IOperationPort,
-    private dateAdapter: IDateProvider,
     private eventPublisher: IEventPublisher,
   ) {}
   async execute(command: DepositCommand): Promise<void> {
@@ -32,25 +22,6 @@ export class Deposit {
     account.deposit(command.amount);
 
     await this.saveAccountChanges(account);
-
-    const operationType = await this.operationAdapter.getOperationTypeById(
-      OperationTypeEnum.DEPOSIT,
-    );
-    const flowIndicator = await this.operationAdapter.getFlowIndicatorById(
-      FlowIndicatorEnum.CREDIT,
-    );
-
-    const operation = Operation.create({
-      id: `${command.id}-2`,
-      label: 'Deposit',
-      amount: command.amount,
-      account: account.data.id,
-      type: operationType,
-      flow: flowIndicator,
-      date: this.dateAdapter.getNow(),
-    });
-
-    await this.operationAdapter.save(operation);
   }
 
   private async getAccount(accountNumber: string): Promise<Account> {
@@ -66,6 +37,7 @@ export class Deposit {
 
   private async saveAccountChanges(account: Account) {
     await this.eventPublisher.publish(account.getDomainEvents());
+    account.clearEvents();
     const isAccountUpdated = await this.accountAdapter.updateBankAccount(
       account.data.id,
       account,

@@ -25,7 +25,7 @@ import { GetOperationsByAccountNumber } from './application/queries/get-operatio
 import { GET_BALANCE_PORT } from './application/_ports/usecases/get-balance.iport';
 import { GetBalance } from './application/queries/get-balance.usecase';
 import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
-import { EventPublisher } from './infra/driven/event-publisher';
+import { EventPublisher } from '../shared/event-publisher';
 export const respositories = [
   {
     provide: 'IEventPublisher',

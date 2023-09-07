@@ -11,12 +11,7 @@ export const createDepositFixture = () => {
   const operationRepository = new FakeOperationRepository();
   const dateAdapter = new FakeDateAdapter();
 
-  const depositUsecase = new Deposit(
-    accountRepository,
-    operationRepository,
-    dateAdapter,
-    null,
-  );
+  const depositUsecase = new Deposit(accountRepository, null);
 
   let accountToCredit: Account;
 

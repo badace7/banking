@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { IEventPublisher } from '../../application/_ports/event-publisher.iport';
+import { IEventPublisher } from '../banking/application/_ports/event-publisher.iport';
 
 @Injectable()
 export class EventPublisher implements IEventPublisher {
