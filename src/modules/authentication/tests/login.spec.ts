@@ -1,7 +1,7 @@
 import { Login } from '../application/usecases/login.usecase';
 
 import { IJwtProvider } from '../application/_ports/repositories/jwt-provider.iport';
-import { Role, User } from '../domain/user';
+import { RoleEnum, User } from '../domain/user';
 import {
   NotFoundException,
   NotValidException,
@@ -14,6 +14,7 @@ import { InMemoryUserAdapter } from '../infra/driven/in-memory/in-memory-user.ad
 import { FakeJwtProvider } from '../infra/driven/in-memory/jwt-provider.fake.adapter';
 import { BcryptProvider } from '../infra/driven/providers/bcrypt-provider.adapter';
 import { CookieProvider } from '../infra/driven/providers/cookie-provider.adapter';
+import { Role } from '../domain/role';
 
 describe('Feature: user', () => {
   let userRepository: IUserPort;
@@ -55,7 +56,7 @@ describe('Feature: user', () => {
           password,
           'Jack',
           'Sparrow',
-          Role.CUSTOMER,
+          new Role(1, 'CUSTOMER'),
         ),
       );
       const credentials = new LoginRequest('12312312312', '456456');
@@ -79,7 +80,7 @@ describe('Feature: user', () => {
           password,
           'Jack',
           'Sparrow',
-          Role.CUSTOMER,
+          new Role(1, 'CUSTOMER'),
         ),
       );
       const credentials = new LoginRequest('12312312312', '123123');

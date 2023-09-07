@@ -40,7 +40,7 @@ import { GetOperationsByNumberQuery } from '../../application/queries/get-operat
 import { Roles } from 'src/libs/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/libs/guards/jwt.guard';
 import { RolesGuard } from 'src/libs/guards/roles.guard';
-import { Role } from 'src/modules/authentication/domain/user';
+import { RoleEnum } from 'src/modules/authentication/domain/user';
 import { RessourceOwnerGuard } from 'src/libs/guards/ressource-owner.guard';
 import { MoneyTransferDTO } from './money-transfer.dto';
 import { DepositDTO } from './deposit.dto';
@@ -48,7 +48,7 @@ import { WithdrawDTO } from './withdraw.dto';
 import { Banking } from './banking.routes';
 
 @UseGuards(JwtAuthGuard, RolesGuard, RessourceOwnerGuard)
-@Roles(Role.CUSTOMER)
+@Roles(RoleEnum.CUSTOMER)
 @Controller(Banking.ROOT)
 export class BankingController {
   constructor(

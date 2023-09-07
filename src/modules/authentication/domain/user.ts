@@ -1,4 +1,6 @@
-export enum Role {
+import { Role } from './role';
+
+export enum RoleEnum {
   CUSTOMER = 1,
 }
 

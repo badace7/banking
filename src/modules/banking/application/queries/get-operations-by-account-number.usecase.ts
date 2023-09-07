@@ -23,8 +23,8 @@ export class GetOperationsByAccountNumber
         id: operation.data.id,
         label: operation.data.label,
         amount: operation.data.amount,
-        type: operation.data.type,
-        flow: operation.data.flow,
+        type: operation.data.type.data.id,
+        flow: operation.data.flow.data.id,
         date: this.dateAdapter.toFormatedDate(operation.data.date),
       }),
     );

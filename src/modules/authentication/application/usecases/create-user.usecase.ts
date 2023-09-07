@@ -1,15 +1,15 @@
 import { Credentials } from '../../domain/credential';
-import { Role, User } from '../../domain/user';
-import { InMemoryUserAdapter } from '../../infra/driven/in-memory/in-memory-user.adapter';
+import { RoleEnum, User } from '../../domain/user';
 import { IBcryptProvider } from '../_ports/repositories/bcrypt-provider.iport';
 
 import { ICredentialProvider } from '../_ports/repositories/credential-provider.iport';
+import { IUserPort } from '../_ports/repositories/user.iport';
 import { ICreateUser } from '../_ports/usecases/create-user.iport';
 import { CreateUserRequest } from './create-user.request';
 
 export class CreateUser implements ICreateUser {
   constructor(
-    private readonly userRepository: InMemoryUserAdapter,
+    private readonly userRepository: IUserPort,
     private readonly bcryptAdapter: IBcryptProvider,
     private readonly credentialProvider: ICredentialProvider,
   ) {}
@@ -23,13 +23,15 @@ export class CreateUser implements ICreateUser {
       credentials.data.password,
     );
 
+    const role = await this.userRepository.findRoleById(RoleEnum.CUSTOMER);
+
     const user = new User(
       request.id,
       credentials.data.identifier,
       hashedPassword,
       request.firstName,
       request.lastName,
-      Role.CUSTOMER,
+      role,
     );
 
     await this.userRepository.save(user);

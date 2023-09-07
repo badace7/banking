@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { JwtProvider } from '../infra/driven/providers/jwt-provider.adapter';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { Role } from '../domain/user';
+import { RoleEnum } from '../domain/user';
 import { NotValidException } from 'src/libs/exceptions/usecase.error';
 
 describe('jwt-provider adapter', () => {
@@ -33,7 +33,7 @@ describe('jwt-provider adapter', () => {
 
   test('createToken() should create a token', () => {
     //Arrange
-    const payload = { id: '1', role: Role.CUSTOMER };
+    const payload = { id: '1', role: RoleEnum.CUSTOMER };
     const secret = configService.get<string>('JWT_SECRET');
     const expiresIn = configService.get<string>('JWT_EXPIRATION_TIME');
 
@@ -47,7 +47,7 @@ describe('jwt-provider adapter', () => {
 
   test('checkToken() should verify a token', async () => {
     //Arrange
-    const payload = { id: '1', role: Role.CUSTOMER };
+    const payload = { id: '1', role: RoleEnum.CUSTOMER };
     const secret = configService.get<string>('JWT_SECRET');
     const expiresIn = configService.get<string>('JWT_EXPIRATION_TIME');
 

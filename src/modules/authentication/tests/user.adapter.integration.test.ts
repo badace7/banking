@@ -6,10 +6,11 @@ import {
 } from 'src/modules/banking/tests/configs/test-containers.config';
 import { TestDatabaseModule } from 'src/modules/banking/tests/configs/test-database.module';
 import { EntityManager } from 'typeorm';
-import { Role, User } from '../domain/user';
+import { RoleEnum, User } from '../domain/user';
 import { UserEntity } from '../infra/driven/entities/user.entity';
 import { UserPostgresAdapter } from '../infra/driven/postgres/user.postgres.adapter';
 import { UserMapper } from '../infra/driven/mappers/user-mapper';
+import { Role } from '../domain/role';
 
 describe('user adapter', () => {
   let container: TestContainersType;
@@ -41,7 +42,7 @@ describe('user adapter', () => {
       '456456',
       'John',
       'Do',
-      Role.CUSTOMER,
+      new Role(1, 'CUSTOMER'),
     );
 
     //act
@@ -50,6 +51,7 @@ describe('user adapter', () => {
     //assert
     const result = await entityManager.getRepository(UserEntity).findOne({
       where: { id: user.data.id },
+      relations: ['role'],
     });
 
     const expected = UserMapper.toDomain(result);
@@ -64,7 +66,7 @@ describe('user adapter', () => {
       '456456',
       'John',
       'Do',
-      Role.CUSTOMER,
+      new Role(1, 'CUSTOMER'),
     );
 
     //act
@@ -82,7 +84,7 @@ describe('user adapter', () => {
       '456456',
       'John',
       'Do',
-      Role.CUSTOMER,
+      new Role(1, 'CUSTOMER'),
     );
 
     //act

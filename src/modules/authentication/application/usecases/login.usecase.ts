@@ -36,7 +36,7 @@ export class Login implements ILogin {
 
     const payload: JwtPayload = {
       id: user.data.id,
-      role: user.data.role,
+      role: user.data.role.data.id,
     };
 
     const secret = this.jwtProvider.getJwtSecret();

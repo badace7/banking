@@ -4,6 +4,8 @@ import { IUserPort } from '../../../application/_ports/repositories/user.iport';
 import { User } from '../../../domain/user';
 import { UserEntity } from '../entities/user.entity';
 import { UserMapper } from '../mappers/user-mapper';
+import { RoleEntity } from '../entities/role.entity';
+import { Role } from 'src/modules/authentication/domain/role';
 
 @Injectable()
 export class UserPostgresAdapter implements IUserPort {
@@ -13,12 +15,16 @@ export class UserPostgresAdapter implements IUserPort {
     await this.manager.save(UserEntity, entity);
   }
   async findById(id: string): Promise<User> {
-    const entity = await this.manager.findOne(UserEntity, { where: { id } });
+    const entity = await this.manager.findOne(UserEntity, {
+      where: { id },
+      relations: ['role'],
+    });
     return UserMapper.toDomain(entity);
   }
   async findByIdentifier(identifier: string): Promise<User> {
     const entity = await this.manager.findOne(UserEntity, {
       where: { identifier: identifier },
+      relations: ['role'],
     });
     return UserMapper.toDomain(entity);
   }
@@ -32,5 +38,10 @@ export class UserPostgresAdapter implements IUserPort {
       .getRawOne();
 
     return result.account_number || null;
+  }
+
+  async findRoleById(id: number) {
+    const entity = await this.manager.findOne(RoleEntity, { where: { id } });
+    return new Role(entity.id, entity.role);
   }
 }
