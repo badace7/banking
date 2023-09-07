@@ -15,6 +15,7 @@ export const createDepositFixture = () => {
     accountRepository,
     operationRepository,
     dateAdapter,
+    null,
   );
 
   let accountToCredit: Account;

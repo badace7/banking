@@ -1,7 +1,9 @@
+import { AggregateRoot } from 'src/libs/domain/aggregate.root';
 import { ErrorMessage } from './error/operation-message-error';
 import { OperationRejectedError } from './error/operation.error';
+import { DepositEvent } from './event/deposit.event';
 
-export default class Account {
+export default class Account extends AggregateRoot {
   public debit(amount: number) {
     if (this.isNotAuthorizedToPerformOperation(amount)) {
       throw new OperationRejectedError(
@@ -14,6 +16,18 @@ export default class Account {
 
   public credit(amount: number) {
     this._balance += amount;
+  }
+
+  public deposit(amount: number) {
+    this._balance += amount;
+
+    this.addDomainEvent(
+      new DepositEvent(this._id, {
+        label: 'Deposit',
+        amount: amount,
+        account: this._id,
+      }),
+    );
   }
 
   public get data() {
@@ -47,7 +61,9 @@ export default class Account {
     private _balance: number,
     private _user: string,
     private _overdraftFacility: number,
-  ) {}
+  ) {
+    super();
+  }
 
   static create(data: Account['data']): Account {
     return new Account(

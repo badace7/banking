@@ -24,8 +24,13 @@ import { GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT } from './application/_ports/usec
 import { GetOperationsByAccountNumber } from './application/queries/get-operations-by-account-number.usecase';
 import { GET_BALANCE_PORT } from './application/_ports/usecases/get-balance.iport';
 import { GetBalance } from './application/queries/get-balance.usecase';
-
+import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
+import { EventPublisher } from './infra/driven/event-publisher';
 export const respositories = [
+  {
+    provide: 'IEventPublisher',
+    useClass: EventPublisher,
+  },
   {
     provide: ACCOUNT_PORT,
     useClass: AccountPostgresAdapter,
@@ -45,7 +50,10 @@ const PORTS = [ACCOUNT_PORT, OPERATION_PORT, DATE_PORT];
 export const usecases = [
   createInjectableProvider(MONEY_TRANSFER_PORT, MoneyTransfer, PORTS),
   createInjectableProvider(WITHDRAW_PORT, Withdraw, PORTS),
-  createInjectableProvider(DEPOSIT_PORT, Deposit, PORTS),
+  createInjectableProvider(DEPOSIT_PORT, Deposit, [
+    ...PORTS,
+    'IEventPublisher',
+  ]),
   createInjectableProvider(
     GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT,
     GetOperationsByAccountNumber,

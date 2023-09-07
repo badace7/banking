@@ -14,12 +14,14 @@ import { IDateProvider } from '../_ports/repositories/date-provider.iport';
 import { IAccountPort } from '../_ports/repositories/account.iport';
 import { IOperationPort } from '../_ports/repositories/operation.iport';
 import { ErrorMessage } from '../../domain/error/operation-message-error';
+import { IEventPublisher } from '../_ports/event-publisher.iport';
 
 export class Deposit {
   constructor(
     private accountAdapter: IAccountPort,
     private operationAdapter: IOperationPort,
     private dateAdapter: IDateProvider,
+    private eventPublisher: IEventPublisher,
   ) {}
   async execute(command: DepositCommand): Promise<void> {
     if (command.amount < 10) {
@@ -27,7 +29,7 @@ export class Deposit {
     }
     const account = await this.getAccount(command.origin);
 
-    account.credit(command.amount);
+    account.deposit(command.amount);
 
     await this.saveAccountChanges(account);
 
@@ -63,6 +65,7 @@ export class Deposit {
   }
 
   private async saveAccountChanges(account: Account) {
+    await this.eventPublisher.publish(account.getDomainEvents());
     const isAccountUpdated = await this.accountAdapter.updateBankAccount(
       account.data.id,
       account,
