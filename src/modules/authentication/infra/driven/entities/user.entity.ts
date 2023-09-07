@@ -21,13 +21,12 @@ export class UserEntity {
   firstName: string;
   @Column()
   lastName: string;
+  @Column()
+  roleId: number;
 
   @ManyToOne(() => RoleEntity, (role) => role.users)
   @JoinColumn({ name: 'roleId' })
   role: RoleEntity;
-
-  @Column({ name: 'roleId' })
-  roleId: number;
 
   @OneToMany(() => AccountEntity, (accounts) => accounts.user)
   accounts: AccountEntity[];

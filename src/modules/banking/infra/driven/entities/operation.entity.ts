@@ -13,12 +13,15 @@ export class OperationEntity {
   amount: number;
   @Column()
   date: Date;
+  @Column()
+  accountId: string;
+  @Column()
+  operationTypeId: number;
+  @Column()
+  flowIndicatorId: number;
 
   @ManyToOne(() => AccountEntity, (account) => account.operations)
   account: AccountEntity;
-
-  @Column({ name: 'accountId' })
-  accountId: string;
 
   @ManyToOne(
     () => OperationTypeEntity,
@@ -26,15 +29,9 @@ export class OperationEntity {
   )
   operationType: OperationTypeEntity;
 
-  @Column({ name: 'operationTypeId' })
-  operationTypeId: number;
-
   @ManyToOne(
     () => FlowIndicatorEntity,
     (flowIndicator) => flowIndicator.operations,
   )
   flowIndicator: FlowIndicatorEntity;
-
-  @Column({ name: 'flowIndicatorId' })
-  flowIndicatorId: number;
 }

@@ -104,4 +104,15 @@ describe('user adapter', () => {
     //assert
     expect(result).toBe('98797897897');
   });
+
+  test.only('findRoleById() should return a role', async () => {
+    //arrange
+    const roleId = 1;
+
+    //act
+    const result = await userAdapter.findRoleById(roleId);
+
+    //assert
+    expect(result).toEqual(new Role(1, 'CUSTOMER'));
+  });
 });

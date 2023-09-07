@@ -13,6 +13,8 @@ import { TestDatabaseModule } from '../configs/test-database.module';
 import { createEntityManagerProvider } from 'src/config/postgres.config';
 import { OperationTypeEntity } from '../../infra/driven/entities/operation-type.entity';
 import { FlowIndicatorEntity } from '../../infra/driven/entities/flow-indicator.entity';
+import { FlowIndicator } from '../../domain/flow-indicator';
+import { OperationType } from '../../domain/operation-type';
 
 describe('operation adapter', () => {
   let container: TestContainersType;
@@ -88,5 +90,25 @@ describe('operation adapter', () => {
     const results = await operationAdapter.getAllByAccountNumber('12312312312');
 
     expect(results).toEqual([operation1, operation2]);
+  });
+
+  test('getFlowIndicatorById() should return flow indicator', async () => {
+    const flowId = 1;
+
+    const flowIndicator = await operationAdapter.getFlowIndicatorById(flowId);
+
+    expect(flowIndicator).toEqual(new FlowIndicator(flowId, 'DEBIT'));
+  });
+
+  test('getOperationTypeById() should return operation type', async () => {
+    const operationTypeId = 1;
+
+    const operationType = await operationAdapter.getOperationTypeById(
+      operationTypeId,
+    );
+
+    expect(operationType).toEqual(
+      new OperationType(operationTypeId, 'WITHDRAW'),
+    );
   });
 });
