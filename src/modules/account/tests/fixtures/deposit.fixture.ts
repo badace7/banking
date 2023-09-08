@@ -4,7 +4,7 @@ import { Deposit } from '../../application/commands/deposit.usecase';
 import Account from '../../domain/account';
 import FakeAccountRepository from '../../infra/driven/in-memory/account.fake.adapter';
 import { FakeDateAdapter } from '../../infra/driven/in-memory/date-provider.fake.adapter';
-import FakeOperationRepository from '../../infra/driven/in-memory/operation.fake.adapter';
+import FakeOperationRepository from 'src/modules/operation/infra/operation.fake.adapter';
 
 export const createDepositFixture = () => {
   const accountRepository = new FakeAccountRepository();

@@ -5,7 +5,7 @@ import FakeAccountRepository from '../../infra/driven/in-memory/account.fake.ada
 
 import { Operation } from 'src/modules/operation/domain/operation';
 import { FakeDateAdapter } from '../../infra/driven/in-memory/date-provider.fake.adapter';
-import FakeOperationRepository from '../../infra/driven/in-memory/operation.fake.adapter';
+import FakeOperationRepository from 'src/modules/operation/infra/operation.fake.adapter';
 
 export const createTransferFixture = () => {
   const accountRepository = new FakeAccountRepository();
