@@ -8,10 +8,15 @@ import { FlowIndicatorEntity } from './infra/flow-indicator.entity';
 import { OperationTypeEntity } from './infra/operation-type.entity';
 import { OperationEntity } from './infra/operation.entity';
 import { OperationPostgresAdapter } from './infra/operation.postgres.adapter';
-import { createInjectableProvider } from 'src/provider.factory';
+
 import { CreateOperationWhenDepositIsDone } from './application/create-operation-when-deposit-is-done.event-handler';
-import { CREATE_OPERATION_PORT } from './application/_ports/create-operation-when-deposit-is-done.iport';
+import { CREATE_DEPOSIT_OPERATION_PORT } from './application/_ports/create-operation-when-deposit-is-done.iport';
 import { DATE_PORT } from './application/_ports/date-provider.iport';
+import { CREATE_WITHDRAW_OPERATION_PORT } from './application/_ports/create-operation-when-withdraw-is-done.iport';
+import { CreateOperationWhenWithdrawIsDone } from './application/create-operation-when-withdraw-is-done.event-handler';
+import { CreateOperationWhenTransferIsDone } from './application/create-operation-when-transfer-is-done.event-handler';
+import { CREATE_TRANSFER_OPERATION_PORT } from './application/_ports/create-operation-when-transfer-is-done';
+import { createInjectableProvider } from '../shared/provider.factory';
 
 const repositories = [
   {
@@ -26,8 +31,19 @@ const repositories = [
 
 const usecases = [
   createInjectableProvider(
-    CREATE_OPERATION_PORT,
+    CREATE_DEPOSIT_OPERATION_PORT,
     CreateOperationWhenDepositIsDone,
+    [OPERATION_PORT, DATE_PORT],
+  ),
+  createInjectableProvider(
+    CREATE_WITHDRAW_OPERATION_PORT,
+    CreateOperationWhenWithdrawIsDone,
+    [OPERATION_PORT, DATE_PORT],
+  ),
+
+  createInjectableProvider(
+    CREATE_TRANSFER_OPERATION_PORT,
+    CreateOperationWhenTransferIsDone,
     [OPERATION_PORT, DATE_PORT],
   ),
 ];

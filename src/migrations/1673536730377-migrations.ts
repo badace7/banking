@@ -1,9 +1,10 @@
 import * as bcrypt from 'bcryptjs';
+import { AccountEntity } from 'src/modules/account/infra/driven/entities/account.entity';
 import { RoleEntity } from 'src/modules/authentication/infra/driven/entities/role.entity';
 import { UserEntity } from 'src/modules/authentication/infra/driven/entities/user.entity';
-import { AccountEntity } from 'src/modules/banking/infra/driven/entities/account.entity';
-import { FlowIndicatorEntity } from 'src/modules/banking/infra/driven/entities/flow-indicator.entity';
-import { OperationTypeEntity } from 'src/modules/banking/infra/driven/entities/operation-type.entity';
+
+import { FlowIndicatorEntity } from 'src/modules/operation/infra/flow-indicator.entity';
+import { OperationTypeEntity } from 'src/modules/operation/infra/operation-type.entity';
 
 import {
   MigrationInterface,

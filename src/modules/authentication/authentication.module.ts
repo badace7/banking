@@ -17,9 +17,10 @@ import { CREATE_USER_PORT } from './application/_ports/usecases/create-user.ipor
 import { CreateUser } from './application/usecases/create-user.usecase';
 import { UserEntity } from './infra/driven/entities/user.entity';
 import { RoleEntity } from './infra/driven/entities/role.entity';
-import { createInjectableProvider } from 'src/provider.factory';
+
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from 'src/libs/strategies/jwt.strategy';
+import { createInjectableProvider } from '../shared/provider.factory';
 
 export const respositories = [
   {

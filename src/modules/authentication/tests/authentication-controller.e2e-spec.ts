@@ -1,12 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import {
-  CreateTestContainer,
-  TestContainersType,
-} from 'src/modules/banking/tests/configs/test-containers.config';
-import { TestDatabaseModule } from 'src/modules/banking/tests/configs/test-database.module';
+
 import { AuthenticationModule } from '../authentication.module';
+import {
+  TestContainersType,
+  CreateTestContainer,
+} from 'src/modules/account/tests/configs/test-containers.config';
+import { TestDatabaseModule } from 'src/modules/account/tests/configs/test-database.module';
 
 describe('Authentication Controller (e2e)', () => {
   let app: INestApplication;

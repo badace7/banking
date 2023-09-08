@@ -4,17 +4,18 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { BankingModule } from './modules/banking/banking.module';
+
 import { DatabaseModule } from './config/database.module';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { LoggingMiddleware } from './libs/middlewares/logging.middleware';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { OperationModule } from './modules/operation/operation.module';
+import { AccountModule } from './modules/account/account.module';
 
 @Module({
   imports: [
     DatabaseModule,
-    BankingModule,
+    AccountModule,
     AuthenticationModule,
     OperationModule,
     EventEmitterModule.forRoot(),

@@ -1,7 +1,8 @@
-import { DepositEvent } from 'src/modules/banking/domain/event/deposit.event';
+import { DepositDoneEvent } from 'src/modules/account/domain/event/deposit-done.event';
 
-export const CREATE_OPERATION_PORT = 'ICreateOperationWhenDepositIsDone';
+export const CREATE_DEPOSIT_OPERATION_PORT =
+  'ICreateOperationWhenDepositIsDone';
 
 export interface ICreateOperationWhenDepositIsDone {
-  execute(event: DepositEvent): Promise<void>;
+  execute(event: DepositDoneEvent): Promise<void>;
 }

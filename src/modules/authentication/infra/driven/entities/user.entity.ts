@@ -7,7 +7,7 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 import { RoleEntity } from './role.entity';
-import { AccountEntity } from 'src/modules/banking/infra/driven/entities/account.entity';
+import { AccountEntity } from 'src/modules/account/infra/driven/entities/account.entity';
 
 @Entity('users')
 export class UserEntity {

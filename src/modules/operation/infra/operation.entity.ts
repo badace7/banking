@@ -3,7 +3,7 @@ import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { FlowIndicatorEntity } from './flow-indicator.entity';
 
 import { OperationTypeEntity } from './operation-type.entity';
-import { AccountEntity } from 'src/modules/banking/infra/driven/entities/account.entity';
+import { AccountEntity } from 'src/modules/account/infra/driven/entities/account.entity';
 
 @Entity('operations')
 export class OperationEntity {
