@@ -41,7 +41,7 @@ export class CreateOperationWhenTransferIsDone
       id: uuidv4(),
       label: event.payload.label,
       amount: event.payload.amount,
-      account: event.payload.sourceAccount,
+      account: event.payload.originAccount,
       type: operationTypeSource,
       flow: flowIndicatorSource,
       date: this.dateProvider.getNow(),

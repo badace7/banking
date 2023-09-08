@@ -31,7 +31,7 @@ export default class Account extends AggregateRoot {
         label: payload.label,
         amount: payload.amount,
         originAccount: this._id,
-        destinationAccount: account._id,
+        destinationAccount: account.data.id,
       }),
     );
   }
