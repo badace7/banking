@@ -11,24 +11,25 @@ import { AccountEntity } from './infra/driven/entities/account.entity';
 import { AccountPostgresAdapter } from './infra/driven/postgres/account.postgres.adapter';
 import { DateProvider } from './infra/driven/providers/date-provider.adapter';
 
-import { BankingController } from './infra/driver/banking.controller';
 import { ACCOUNT_PORT } from './application/_ports/repositories/account.iport';
+import { BankingController } from './infra/driver/banking.controller';
 
+import { GET_BALANCE_PORT } from './application/_ports/usecases/get-balance.iport';
+import { GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT } from './application/_ports/usecases/get-operations-by-account-number.iport';
 import { MONEY_TRANSFER_PORT } from './application/_ports/usecases/money-transfer.iport';
 import { WITHDRAW_PORT } from './application/_ports/usecases/withdraw.iport';
-import { GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT } from './application/_ports/usecases/get-operations-by-account-number.iport';
-import { GetOperationsByAccountNumber } from './application/queries/get-operations-by-account-number.usecase';
-import { GET_BALANCE_PORT } from './application/_ports/usecases/get-balance.iport';
 import { GetBalance } from './application/queries/get-balance.usecase';
+import { GetOperationsByAccountNumber } from './application/queries/get-operations-by-account-number.usecase';
 
-import { EventPublisher } from '../shared/event-publisher';
-import { EVENT_PUBLISHER_PORT } from './application/_ports/event-publisher.iport';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { OPERATION_PORT } from '../operation/application/_ports/operation.iport';
 import { FlowIndicatorEntity } from '../operation/infra/flow-indicator.entity';
 import { OperationTypeEntity } from '../operation/infra/operation-type.entity';
 import { OperationEntity } from '../operation/infra/operation.entity';
 import { OperationPostgresAdapter } from '../operation/infra/operation.postgres.adapter';
+import { EventPublisher } from '../shared/event-publisher';
 import { createInjectableProvider } from '../shared/provider.factory';
+import { EVENT_PUBLISHER_PORT } from './application/_ports/event-publisher.iport';
 
 export const respositories = [
   {
@@ -76,7 +77,7 @@ export const usecases = [
     ]),
   ],
   controllers: [BankingController],
-  providers: [...usecases, ...respositories],
+  providers: [...usecases, ...respositories, EventEmitter2],
   exports: [...usecases, ...respositories, TypeOrmModule],
 })
 export class AccountModule {}

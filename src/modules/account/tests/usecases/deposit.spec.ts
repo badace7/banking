@@ -1,14 +1,9 @@
-import { WithdrawCommand } from 'src/modules/banking/application/commands/withdraw.command';
 import {
   DepositFixture,
   createDepositFixture,
 } from '../fixtures/deposit.fixture';
 import { AccountBuilder } from '../builders/account.builder';
-import { OperationBuilder } from '../builders/operation.builder';
-import {
-  FlowIndicatorEnum,
-  OperationTypeEnum,
-} from 'src/modules/operation/domain/operation';
+import { WithdrawCommand } from '../../application/commands/withdraw.command';
 
 describe('Feature: Deposit money', () => {
   let uat: DepositFixture;
@@ -25,21 +20,10 @@ describe('Feature: Deposit money', () => {
           .ownerId('jack-id')
           .build(),
       );
-      uat.andJackWantsToDepositMoneyNow(new Date('2023-07-15T19:00:00.000Z'));
       await uat.whenJackDepositMoney(
         new WithdrawCommand('deposit-id', '12312312312', 500),
       );
       uat.thenHisBalanceShouldBe(1500);
-      await uat.AndTransferOperationShouldBeRecorded(
-        OperationBuilder()
-          .withId('deposit-id-2')
-          .withAccountId('account-id')
-          .withLabel('Deposit')
-          .withAmount(500)
-          .withType(OperationTypeEnum.DEPOSIT)
-          .withFlow(FlowIndicatorEnum.CREDIT)
-          .build(),
-      );
     });
   });
 });

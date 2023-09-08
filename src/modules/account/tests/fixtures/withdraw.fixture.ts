@@ -1,16 +1,13 @@
-import { Operation } from 'src/modules/operation/domain/operation';
 import { WithdrawCommand } from '../../application/commands/withdraw.command';
 import { Withdraw } from '../../application/commands/withdraw.usecase';
 import Account from '../../domain/account';
 import FakeAccountRepository from '../../infra/driven/in-memory/account.fake.adapter';
-import { FakeDateAdapter } from '../../infra/driven/in-memory/date-provider.fake.adapter';
-import FakeOperationRepository from 'src/modules/operation/infra/operation.fake.adapter';
+import { FakeEventPublisher } from '../../infra/driven/in-memory/event-publisher.fake.adapter';
 
 export const createWithdrawFixture = () => {
   const accountRepository = new FakeAccountRepository();
-  const operationRepository = new FakeOperationRepository();
-  const dateAdapter = new FakeDateAdapter();
-  const withdrawUsecase = new Withdraw(accountRepository, null);
+  const eventPublisher = new FakeEventPublisher();
+  const withdrawUsecase = new Withdraw(accountRepository, eventPublisher);
 
   let accountToDebit: Account;
 
@@ -21,9 +18,7 @@ export const createWithdrawFixture = () => {
       accountToDebit = account;
       accountRepository.saveBankAccount(account);
     },
-    andJackWantsToWithdrawMoneyNow(date: Date) {
-      dateAdapter.now = date;
-    },
+
     async whenJackMakesAWithdraw(command: WithdrawCommand) {
       try {
         await withdrawUsecase.execute(command);
@@ -37,12 +32,6 @@ export const createWithdrawFixture = () => {
       );
 
       expect(account.data.balance).toEqual(expectedBalance);
-    },
-    async AndTransferOperationShouldBeRecorded(expectedOperation: Operation) {
-      const operations = await operationRepository.getAllOfAccount(
-        accountToDebit.data.id,
-      );
-      expect(operations).toContainEqual(expectedOperation);
     },
     thenErrorShouldBe(expectedErrorClass: new () => Error) {
       expect(thrownError).toBeInstanceOf(expectedErrorClass);

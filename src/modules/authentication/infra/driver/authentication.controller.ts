@@ -33,8 +33,8 @@ export class AuthenticationController {
   async login(@Body() body: LoginDTO, @Res() response: Response) {
     try {
       const command = new LoginRequest(body.identifier, body.password);
-      const token = await this.loginUsecase.execute(command);
-      response.setHeader('set-cookie', token);
+      const cookie = await this.loginUsecase.execute(command);
+      response.setHeader('set-cookie', cookie);
       response.status(HttpStatus.OK).send('Login successful');
     } catch (err: any) {
       response.status(HttpStatus.UNAUTHORIZED).send(err.message);

@@ -21,6 +21,7 @@ import { RoleEntity } from './infra/driven/entities/role.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from 'src/libs/strategies/jwt.strategy';
 import { createInjectableProvider } from '../shared/provider.factory';
+import { ConfigService } from '@nestjs/config';
 
 export const respositories = [
   {
@@ -68,7 +69,7 @@ export const usecases = [
     }),
   ],
   controllers: [AuthenticationController],
-  providers: [...usecases, ...respositories, JwtStrategy],
+  providers: [...usecases, ...respositories, JwtStrategy, ConfigService],
   exports: [...usecases, ...respositories, TypeOrmModule],
 })
 export class AuthenticationModule {}

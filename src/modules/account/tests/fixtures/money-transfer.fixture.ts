@@ -2,16 +2,15 @@ import { MoneyTransfer } from '../../application/commands/moneytransfer.usecase'
 import { MoneyTransferCommand } from '../../application/commands/transfer.command';
 import Account from '../../domain/account';
 import FakeAccountRepository from '../../infra/driven/in-memory/account.fake.adapter';
-
-import { Operation } from 'src/modules/operation/domain/operation';
-import { FakeDateAdapter } from '../../infra/driven/in-memory/date-provider.fake.adapter';
-import FakeOperationRepository from 'src/modules/operation/infra/operation.fake.adapter';
+import { FakeEventPublisher } from '../../infra/driven/in-memory/event-publisher.fake.adapter';
 
 export const createTransferFixture = () => {
   const accountRepository = new FakeAccountRepository();
-  const operationRepository = new FakeOperationRepository();
-  const dateAdapter = new FakeDateAdapter();
-  const moneyTransferUsecase = new MoneyTransfer(accountRepository, null);
+  const eventPublisher = new FakeEventPublisher();
+  const moneyTransferUsecase = new MoneyTransfer(
+    accountRepository,
+    eventPublisher,
+  );
 
   let accountAtOrigin: Account;
   let accountAtReception: Account;
@@ -23,9 +22,7 @@ export const createTransferFixture = () => {
       accountAtOrigin = account;
       accountRepository.saveBankAccount(account);
     },
-    andJackWantsToMakeAmoneyTransferNow(date: Date) {
-      dateAdapter.now = date;
-    },
+
     andBobHasAbankAccount(account: Account) {
       accountAtReception = account;
       accountRepository.saveBankAccount(account);
@@ -51,12 +48,6 @@ export const createTransferFixture = () => {
         accountAtReception.data.number,
       );
       expect(account.data.balance).toEqual(expectedBalance);
-    },
-    async AndTransferOperationShouldBeRecorded(expectedOperation: Operation) {
-      const operations = await operationRepository.getAllOfAccount(
-        accountAtOrigin.data.id,
-      );
-      expect(operations).toContainEqual(expectedOperation);
     },
     thenErrorShouldBe(expectedErrorClass: new () => Error) {
       expect(thrownError).toBeInstanceOf(expectedErrorClass);

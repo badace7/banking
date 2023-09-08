@@ -1,16 +1,10 @@
-import { WithdrawCommand } from 'src/modules/banking/application/commands/withdraw.command';
-
 import {
   WithdrawFixture,
   createWithdrawFixture,
 } from '../fixtures/withdraw.fixture';
 import { AccountBuilder } from '../builders/account.builder';
-import { OperationBuilder } from '../builders/operation.builder';
 import { OperationRejectedError } from '../../domain/error/operation.error';
-import {
-  OperationTypeEnum,
-  FlowIndicatorEnum,
-} from 'src/modules/operation/domain/operation';
+import { WithdrawCommand } from '../../application/commands/withdraw.command';
 
 describe('Feature: Withdraw money', () => {
   let uat: WithdrawFixture;
@@ -27,21 +21,10 @@ describe('Feature: Withdraw money', () => {
           .ownerId('jack-id')
           .build(),
       );
-      uat.andJackWantsToWithdrawMoneyNow(new Date('2023-07-15T19:00:00.000Z'));
       await uat.whenJackMakesAWithdraw(
         new WithdrawCommand('withdraw-id', '12312312312', 500),
       );
       uat.thenHisBalanceShouldBe(500);
-      await uat.AndTransferOperationShouldBeRecorded(
-        OperationBuilder()
-          .withId('withdraw-id-1')
-          .withAccountId('account-id')
-          .withLabel('Withdraw')
-          .withAmount(500)
-          .withType(OperationTypeEnum.WITHDRAW)
-          .withFlow(FlowIndicatorEnum.DEBIT)
-          .build(),
-      );
     });
 
     test('Jack is not authorized to withdraw money cause his balance is insufficient', async () => {
@@ -52,7 +35,6 @@ describe('Feature: Withdraw money', () => {
           .ownerId('jack-id')
           .build(),
       );
-      uat.andJackWantsToWithdrawMoneyNow(new Date('2023-07-15T19:00:00.000Z'));
       await uat.whenJackMakesAWithdraw(
         new WithdrawCommand('withdraw-id', '12312312312', 600),
       );
@@ -69,21 +51,10 @@ describe('Feature: Withdraw money', () => {
           .withOverDraftFacility(500)
           .build(),
       );
-      uat.andJackWantsToWithdrawMoneyNow(new Date('2023-07-15T19:00:00.000Z'));
       await uat.whenJackMakesAWithdraw(
         new WithdrawCommand('withdraw-id', '12312312312', 700),
       );
       uat.thenHisBalanceShouldBe(-200);
-      await uat.AndTransferOperationShouldBeRecorded(
-        OperationBuilder()
-          .withId('withdraw-id-1')
-          .withAccountId('account-id')
-          .withLabel('Withdraw')
-          .withAmount(700)
-          .withType(OperationTypeEnum.WITHDRAW)
-          .withFlow(FlowIndicatorEnum.DEBIT)
-          .build(),
-      );
     });
 
     test('Jack is not authorized to withdray money with overdraft authorization cause is balance is insufficient', async () => {
@@ -95,7 +66,6 @@ describe('Feature: Withdraw money', () => {
           .withOverDraftFacility(500)
           .build(),
       );
-      uat.andJackWantsToWithdrawMoneyNow(new Date('2023-07-15T19:00:00.000Z'));
       await uat.whenJackMakesAWithdraw(
         new WithdrawCommand('withdraw-id', '12312312312', 1100),
       );

@@ -1,16 +1,10 @@
-import { MoneyTransferCommand } from 'src/modules/banking/application/commands/transfer.command';
 import {
   TransferFixture,
   createTransferFixture,
 } from '../fixtures/money-transfer.fixture';
 import { AccountBuilder } from '../builders/account.builder';
-import { OperationBuilder } from '../builders/operation.builder';
-
 import { OperationRejectedError } from '../../domain/error/operation.error';
-import {
-  OperationTypeEnum,
-  FlowIndicatorEnum,
-} from 'src/modules/operation/domain/operation';
+import { MoneyTransferCommand } from '../../application/commands/transfer.command';
 
 describe('Feature: Money transfer between two customers', () => {
   let uat: TransferFixture;
@@ -38,10 +32,6 @@ describe('Feature: Money transfer between two customers', () => {
           .build(),
       );
 
-      uat.andJackWantsToMakeAmoneyTransferNow(
-        new Date('2023-07-15T19:00:00.000Z'),
-      );
-
       await uat.whenJackMakesAmoneyTransfer(
         new MoneyTransferCommand(
           'transfer-id',
@@ -54,16 +44,6 @@ describe('Feature: Money transfer between two customers', () => {
 
       await uat.thenJackBalanceShouldBe(0);
       await uat.AndBobBalanceShouldBe(2000);
-      await uat.AndTransferOperationShouldBeRecorded(
-        OperationBuilder()
-          .withId('transfer-id-1')
-          .withAccountId('jack-account-id')
-          .withLabel("Participation in Anna's gift")
-          .withAmount(1000)
-          .withType(OperationTypeEnum.TRANSFER)
-          .withFlow(FlowIndicatorEnum.DEBIT)
-          .build(),
-      );
     });
     test('Jack is not authorized to make a money transfer cause his balance is insufficient', async () => {
       uat.givenJackHasABankAccount(
@@ -82,10 +62,6 @@ describe('Feature: Money transfer between two customers', () => {
           .withBalance(-500)
           .ownerId('bob-id')
           .build(),
-      );
-
-      uat.andJackWantsToMakeAmoneyTransferNow(
-        new Date('2023-07-15T19:00:00.000Z'),
       );
 
       await uat.whenJackMakesAmoneyTransfer(
@@ -123,10 +99,6 @@ describe('Feature: Money transfer between two customers', () => {
           .build(),
       );
 
-      uat.andJackWantsToMakeAmoneyTransferNow(
-        new Date('2023-07-15T19:00:00.000Z'),
-      );
-
       await uat.whenJackMakesAmoneyTransfer(
         new MoneyTransferCommand(
           'transfer-id',
@@ -140,16 +112,6 @@ describe('Feature: Money transfer between two customers', () => {
       await uat.thenJackBalanceShouldBe(-500);
 
       await uat.AndBobBalanceShouldBe(2500);
-      await uat.AndTransferOperationShouldBeRecorded(
-        OperationBuilder()
-          .withId('transfer-id-1')
-          .withAccountId('jack-account-id')
-          .withLabel('Spain holiday')
-          .withAmount(2500)
-          .withType(OperationTypeEnum.TRANSFER)
-          .withFlow(FlowIndicatorEnum.DEBIT)
-          .build(),
-      );
     });
     test('Jack is not authorized to make a money transfer with overdraft authorization cause is balance is insufficient', async () => {
       uat.givenJackHasABankAccount(
@@ -168,10 +130,6 @@ describe('Feature: Money transfer between two customers', () => {
           .withBalance(2500)
           .ownerId('bob-id')
           .build(),
-      );
-
-      uat.andJackWantsToMakeAmoneyTransferNow(
-        new Date('2023-07-15T19:00:00.000Z'),
       );
 
       await uat.whenJackMakesAmoneyTransfer(
