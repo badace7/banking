@@ -3,28 +3,28 @@ import { Command, CommandRunner } from 'nest-commander';
 import {
   DEPOSIT_PORT,
   IDeposit,
-} from 'src/modules/account/application/_ports/usecases/deposit.iport';
+} from 'src/modules/account/core/_ports/usecases/deposit.iport';
 import {
   GET_BALANCE_PORT,
   IGetBalance,
-} from 'src/modules/account/application/_ports/usecases/get-balance.iport';
+} from 'src/modules/account/core/_ports/usecases/get-balance.iport';
 import {
   GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT,
   IGetOperationByAccountNumber,
-} from 'src/modules/account/application/_ports/usecases/get-operations-by-account-number.iport';
+} from 'src/modules/account/core/_ports/usecases/get-operations-by-account-number.iport';
 import {
   MONEY_TRANSFER_PORT,
   IMoneyTransfer,
-} from 'src/modules/account/application/_ports/usecases/money-transfer.iport';
+} from 'src/modules/account/core/_ports/usecases/money-transfer.iport';
 import {
   WITHDRAW_PORT,
   IWithdraw,
-} from 'src/modules/account/application/_ports/usecases/withdraw.iport';
-import { DepositCommand } from 'src/modules/account/application/commands/deposit.command';
-import { MoneyTransferCommand } from 'src/modules/account/application/commands/transfer.command';
-import { WithdrawCommand } from 'src/modules/account/application/commands/withdraw.command';
-import { GetBalanceQuery } from 'src/modules/account/application/queries/get-balance.query';
-import { GetOperationsByNumberQuery } from 'src/modules/account/application/queries/get-operations-by-account-number.query';
+} from 'src/modules/account/core/_ports/usecases/withdraw.iport';
+import { DepositCommand } from 'src/modules/account/core/commands/deposit.command';
+import { MoneyTransferCommand } from 'src/modules/account/core/commands/transfer.command';
+import { WithdrawCommand } from 'src/modules/account/core/commands/withdraw.command';
+import { GetBalanceQuery } from 'src/modules/account/core/queries/get-balance.query';
+import { GetOperationsByNumberQuery } from 'src/modules/account/core/queries/get-operations-by-account-number.query';
 import { CustomConsoleLogger } from './custom.console.logger';
 import { CustomPrompt } from './custom.prompt';
 import { v4 as uuidv4 } from 'uuid';

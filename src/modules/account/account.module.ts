@@ -1,35 +1,35 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { DATE_PORT } from './application/_ports/repositories/date-provider.iport';
-import { DEPOSIT_PORT } from './application/_ports/usecases/deposit.iport';
+import { DATE_PORT } from './core/_ports/repositories/date-provider.iport';
+import { DEPOSIT_PORT } from './core/_ports/usecases/deposit.iport';
 
-import { Deposit } from './application/commands/deposit.usecase';
-import { MoneyTransfer } from './application/commands/moneytransfer.usecase';
-import { Withdraw } from './application/commands/withdraw.usecase';
-import { AccountEntity } from './infra/driven/entities/account.entity';
-import { AccountPostgresAdapter } from './infra/driven/postgres/account.postgres.adapter';
-import { DateProvider } from './infra/driven/providers/date-provider.adapter';
+import { Deposit } from './core/commands/deposit.command-handler';
+import { MoneyTransfer } from './core/commands/moneytransfer.command-handler';
+import { Withdraw } from './core/commands/withdraw.command-handler';
 
-import { ACCOUNT_PORT } from './application/_ports/repositories/account.iport';
-import { BankingController } from './infra/driver/banking.controller';
-
-import { GET_BALANCE_PORT } from './application/_ports/usecases/get-balance.iport';
-import { GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT } from './application/_ports/usecases/get-operations-by-account-number.iport';
-import { MONEY_TRANSFER_PORT } from './application/_ports/usecases/money-transfer.iport';
-import { WITHDRAW_PORT } from './application/_ports/usecases/withdraw.iport';
-import { GetBalance } from './application/queries/get-balance.usecase';
-import { GetOperationsByAccountNumber } from './application/queries/get-operations-by-account-number.usecase';
+import { GET_BALANCE_PORT } from './core/_ports/usecases/get-balance.iport';
+import { GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT } from './core/_ports/usecases/get-operations-by-account-number.iport';
+import { MONEY_TRANSFER_PORT } from './core/_ports/usecases/money-transfer.iport';
+import { WITHDRAW_PORT } from './core/_ports/usecases/withdraw.iport';
+import { GetBalance } from './core/queries/get-balance.usecase';
+import { GetOperationsByAccountNumber } from './core/queries/get-operations-by-account-number.usecase';
 
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { OPERATION_PORT } from '../operation/application/_ports/operation.iport';
-import { FlowIndicatorEntity } from '../operation/infra/flow-indicator.entity';
-import { OperationTypeEntity } from '../operation/infra/operation-type.entity';
-import { OperationEntity } from '../operation/infra/operation.entity';
-import { OperationPostgresAdapter } from '../operation/infra/operation.postgres.adapter';
+import { OPERATION_PORT } from '../operation/core/_ports/operation.iport';
+
 import { EventPublisher } from '../shared/event-publisher';
 import { createInjectableProvider } from '../shared/provider.factory';
-import { EVENT_PUBLISHER_PORT } from './application/_ports/event-publisher.iport';
+import { EVENT_PUBLISHER_PORT } from './core/_ports/repositories/event-publisher.iport';
+import { DateProvider } from '../operation/adapters/date-provider.adapter';
+import { FlowIndicatorEntity } from '../operation/adapters/flow-indicator.entity';
+import { OperationTypeEntity } from '../operation/adapters/operation-type.entity';
+import { OperationEntity } from '../operation/adapters/operation.entity';
+import { OperationPostgresAdapter } from '../operation/adapters/operation.postgres.adapter';
+import { AccountEntity } from './adapters/secondary/entities/account.entity';
+import { AccountPostgresAdapter } from './adapters/secondary/postgres/account.postgres.adapter';
+import { BankingController } from './adapters/primary/banking.controller';
+import { ACCOUNT_PORT } from './core/_ports/repositories/account.iport';
 
 export const respositories = [
   {

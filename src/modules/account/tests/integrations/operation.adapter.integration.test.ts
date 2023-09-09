@@ -8,15 +8,15 @@ import {
 import { Test, TestingModule } from '@nestjs/testing';
 import { TestDatabaseModule } from '../configs/test-database.module';
 import { createEntityManagerProvider } from 'src/config/postgres.config';
-import { FlowIndicator } from 'src/modules/operation/domain/flow-indicator';
+import { FlowIndicator } from 'src/modules/operation/core/domain/flow-indicator';
 import {
   OperationTypeEnum,
   FlowIndicatorEnum,
-} from 'src/modules/operation/domain/operation';
-import { OperationType } from 'src/modules/operation/domain/operation-type';
-import { OperationEntity } from 'src/modules/operation/infra/operation.entity';
-import { OperationMapper } from 'src/modules/operation/infra/operation.mapper';
-import { OperationPostgresAdapter } from 'src/modules/operation/infra/operation.postgres.adapter';
+} from 'src/modules/operation/core/domain/operation';
+import { OperationType } from 'src/modules/operation/core/domain/operation-type';
+import { OperationEntity } from 'src/modules/operation/adapters/operation.entity';
+import { OperationMapper } from 'src/modules/operation/adapters/operation.mapper';
+import { OperationPostgresAdapter } from 'src/modules/operation/adapters/operation.postgres.adapter';
 
 describe('operation adapter', () => {
   let container: TestContainersType;

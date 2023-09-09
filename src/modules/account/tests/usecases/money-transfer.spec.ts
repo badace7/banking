@@ -3,8 +3,8 @@ import {
   createTransferFixture,
 } from '../fixtures/money-transfer.fixture';
 import { AccountBuilder } from '../builders/account.builder';
-import { OperationRejectedError } from '../../domain/error/operation.error';
-import { MoneyTransferCommand } from '../../application/commands/transfer.command';
+import { OperationRejectedError } from '../../core/domain/error/operation.error';
+import { MoneyTransferCommand } from '../../core/commands/transfer.command';
 
 describe('Feature: Money transfer between two customers', () => {
   let uat: TransferFixture;

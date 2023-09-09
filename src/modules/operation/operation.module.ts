@@ -2,21 +2,21 @@ import { Module } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { OPERATION_PORT } from './application/_ports/operation.iport';
-import { DateProvider } from './infra/date-provider.adapter';
-import { FlowIndicatorEntity } from './infra/flow-indicator.entity';
-import { OperationTypeEntity } from './infra/operation-type.entity';
-import { OperationEntity } from './infra/operation.entity';
-import { OperationPostgresAdapter } from './infra/operation.postgres.adapter';
+import { OPERATION_PORT } from './core/_ports/operation.iport';
 
-import { CreateOperationWhenDepositIsDone } from './application/create-operation-when-deposit-is-done.event-handler';
-import { CREATE_DEPOSIT_OPERATION_PORT } from './application/_ports/create-operation-when-deposit-is-done.iport';
-import { DATE_PORT } from './application/_ports/date-provider.iport';
-import { CREATE_WITHDRAW_OPERATION_PORT } from './application/_ports/create-operation-when-withdraw-is-done.iport';
-import { CreateOperationWhenWithdrawIsDone } from './application/create-operation-when-withdraw-is-done.event-handler';
-import { CreateOperationWhenTransferIsDone } from './application/create-operation-when-transfer-is-done.event-handler';
-import { CREATE_TRANSFER_OPERATION_PORT } from './application/_ports/create-operation-when-transfer-is-done';
+import { CreateOperationWhenDepositIsDone } from './core/create-operation-when-deposit-is-done.event-handler';
+import { CREATE_DEPOSIT_OPERATION_PORT } from './core/_ports/create-operation-when-deposit-is-done.iport';
+import { DATE_PORT } from './core/_ports/date-provider.iport';
+import { CREATE_WITHDRAW_OPERATION_PORT } from './core/_ports/create-operation-when-withdraw-is-done.iport';
+import { CreateOperationWhenWithdrawIsDone } from './core/create-operation-when-withdraw-is-done.event-handler';
+import { CreateOperationWhenTransferIsDone } from './core/create-operation-when-transfer-is-done.event-handler';
+import { CREATE_TRANSFER_OPERATION_PORT } from './core/_ports/create-operation-when-transfer-is-done';
 import { createInjectableProvider } from '../shared/provider.factory';
+import { DateProvider } from './adapters/date-provider.adapter';
+import { FlowIndicatorEntity } from './adapters/flow-indicator.entity';
+import { OperationTypeEntity } from './adapters/operation-type.entity';
+import { OperationEntity } from './adapters/operation.entity';
+import { OperationPostgresAdapter } from './adapters/operation.postgres.adapter';
 
 const repositories = [
   {

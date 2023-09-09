@@ -2,16 +2,17 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { createEntityManagerProvider } from 'src/config/postgres.config';
 
 import { EntityManager } from 'typeorm';
-import { User } from '../domain/user';
-import { UserEntity } from '../infra/driven/entities/user.entity';
-import { UserPostgresAdapter } from '../infra/driven/postgres/user.postgres.adapter';
-import { UserMapper } from '../infra/driven/mappers/user.mapper';
-import { Role } from '../domain/role';
+import { User } from '../core/domain/user';
+
+import { Role } from '../core/domain/role';
 import {
   TestContainersType,
   CreateTestContainer,
 } from 'src/modules/account/tests/configs/test-containers.config';
 import { TestDatabaseModule } from 'src/modules/account/tests/configs/test-database.module';
+import { UserEntity } from '../adapters/secondary/entities/user.entity';
+import { UserMapper } from '../adapters/secondary/mappers/user.mapper';
+import { UserPostgresAdapter } from '../adapters/secondary/postgres/user.postgres.adapter';
 
 describe('user adapter', () => {
   let container: TestContainersType;

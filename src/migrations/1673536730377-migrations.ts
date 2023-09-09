@@ -1,10 +1,9 @@
 import * as bcrypt from 'bcryptjs';
-import { AccountEntity } from 'src/modules/account/infra/driven/entities/account.entity';
-import { RoleEntity } from 'src/modules/authentication/infra/driven/entities/role.entity';
-import { UserEntity } from 'src/modules/authentication/infra/driven/entities/user.entity';
-
-import { FlowIndicatorEntity } from 'src/modules/operation/infra/flow-indicator.entity';
-import { OperationTypeEntity } from 'src/modules/operation/infra/operation-type.entity';
+import { AccountEntity } from 'src/modules/account/adapters/secondary/entities/account.entity';
+import { RoleEntity } from 'src/modules/authentication/adapters/secondary/entities/role.entity';
+import { UserEntity } from 'src/modules/authentication/adapters/secondary/entities/user.entity';
+import { FlowIndicatorEntity } from 'src/modules/operation/adapters/flow-indicator.entity';
+import { OperationTypeEntity } from 'src/modules/operation/adapters/operation-type.entity';
 
 import {
   MigrationInterface,

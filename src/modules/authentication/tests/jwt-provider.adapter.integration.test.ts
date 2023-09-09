@@ -1,9 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { JwtProvider } from '../infra/driven/providers/jwt-provider.adapter';
+
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { RoleEnum } from '../domain/user';
+import { RoleEnum } from '../core/domain/user';
 import { NotValidException } from 'src/libs/exceptions/usecase.error';
+import { JwtProvider } from '../adapters/secondary/providers/jwt-provider.adapter';
 
 describe('jwt-provider adapter', () => {
   let provider: JwtProvider;

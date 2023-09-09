@@ -2,9 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
-import { UserPostgresAdapter } from 'src/modules/authentication/infra/driven/postgres/user.postgres.adapter';
-import { USER_PORT } from 'src/modules/authentication/application/_ports/repositories/user.iport';
-import { JwtPayload } from 'src/modules/authentication/application/_ports/repositories/jwt-provider.iport';
+
+import { USER_PORT } from 'src/modules/authentication/core/_ports/repositories/user.iport';
+import { JwtPayload } from 'src/modules/authentication/core/_ports/repositories/jwt-provider.iport';
+import { UserPostgresAdapter } from 'src/modules/authentication/adapters/secondary/postgres/user.postgres.adapter';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

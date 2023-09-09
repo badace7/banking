@@ -1,9 +1,10 @@
-import { CreateUser } from '../application/usecases/create-user.usecase';
-import { CreateUserRequest } from '../application/usecases/create-user.request';
-import { InMemoryUserAdapter } from '../infra/driven/in-memory/in-memory-user.adapter';
-import { BcryptProvider } from '../infra/driven/providers/bcrypt-provider.adapter';
-import { ICredentialProvider } from '../application/_ports/repositories/credential-provider.iport';
-import { FakeCredientialProvider } from '../infra/driven/in-memory/crendential-provider.fake.adapter';
+import { CreateUser } from '../core/usecases/create-user.usecase';
+import { CreateUserRequest } from '../core/usecases/create-user.request';
+
+import { ICredentialProvider } from '../core/_ports/repositories/credential-provider.iport';
+import { FakeCredientialProvider } from '../adapters/secondary/in-memory/crendential-provider.fake.adapter';
+import { InMemoryUserAdapter } from '../adapters/secondary/in-memory/in-memory-user.adapter';
+import { BcryptProvider } from '../adapters/secondary/providers/bcrypt-provider.adapter';
 
 describe('Feature: create a user', () => {
   let userRepository: InMemoryUserAdapter;

@@ -1,20 +1,21 @@
-import { Login } from '../application/usecases/login.usecase';
+import { Login } from '../core/usecases/login.usecase';
 
-import { IJwtProvider } from '../application/_ports/repositories/jwt-provider.iport';
-import { RoleEnum, User } from '../domain/user';
+import { IJwtProvider } from '../core/_ports/repositories/jwt-provider.iport';
+import { User } from '../core/domain/user';
 import {
   NotFoundException,
   NotValidException,
 } from 'src/libs/exceptions/usecase.error';
-import { IUserPort } from '../application/_ports/repositories/user.iport';
-import { ICookieProvider } from '../application/_ports/repositories/cookie-provider.iport';
-import { IBcryptProvider } from '../application/_ports/repositories/bcrypt-provider.iport';
-import { LoginRequest } from '../application/usecases/login.request';
-import { InMemoryUserAdapter } from '../infra/driven/in-memory/in-memory-user.adapter';
-import { FakeJwtProvider } from '../infra/driven/in-memory/jwt-provider.fake.adapter';
-import { BcryptProvider } from '../infra/driven/providers/bcrypt-provider.adapter';
-import { CookieProvider } from '../infra/driven/providers/cookie-provider.adapter';
-import { Role } from '../domain/role';
+import { IUserPort } from '../core/_ports/repositories/user.iport';
+import { ICookieProvider } from '../core/_ports/repositories/cookie-provider.iport';
+import { IBcryptProvider } from '../core/_ports/repositories/bcrypt-provider.iport';
+import { LoginRequest } from '../core/usecases/login.request';
+
+import { Role } from '../core/domain/role';
+import { InMemoryUserAdapter } from '../adapters/secondary/in-memory/in-memory-user.adapter';
+import { FakeJwtProvider } from '../adapters/secondary/in-memory/jwt-provider.fake.adapter';
+import { BcryptProvider } from '../adapters/secondary/providers/bcrypt-provider.adapter';
+import { CookieProvider } from '../adapters/secondary/providers/cookie-provider.adapter';
 
 describe('Feature: user', () => {
   let userRepository: IUserPort;

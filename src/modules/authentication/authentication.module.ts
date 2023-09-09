@@ -1,27 +1,33 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthenticationController } from './infra/driver/authentication.controller';
+
 import { Module } from '@nestjs/common';
-import { UserPostgresAdapter } from './infra/driven/postgres/user.postgres.adapter';
-import { USER_PORT } from './application/_ports/repositories/user.iport';
-import { JWT_PROVIDER_PORT } from './application/_ports/repositories/jwt-provider.iport';
-import { JwtProvider } from './infra/driven/providers/jwt-provider.adapter';
-import { CREDENTIAL_PROVIDER_PORT } from './application/_ports/repositories/credential-provider.iport';
-import { CredentialProvider } from './infra/driven/providers/credential-provider.adapter';
-import { COOKIE_PROVIDER_PORT } from './application/_ports/repositories/cookie-provider.iport';
-import { CookieProvider } from './infra/driven/providers/cookie-provider.adapter';
-import { BCRYPT_PROVIDER_PORT } from './application/_ports/repositories/bcrypt-provider.iport';
-import { BcryptProvider } from './infra/driven/providers/bcrypt-provider.adapter';
-import { LOGIN_PORT } from './application/_ports/usecases/login.iport';
-import { Login } from './application/usecases/login.usecase';
-import { CREATE_USER_PORT } from './application/_ports/usecases/create-user.iport';
-import { CreateUser } from './application/usecases/create-user.usecase';
-import { UserEntity } from './infra/driven/entities/user.entity';
-import { RoleEntity } from './infra/driven/entities/role.entity';
+
+import { USER_PORT } from './core/_ports/repositories/user.iport';
+import { JWT_PROVIDER_PORT } from './core/_ports/repositories/jwt-provider.iport';
+
+import { CREDENTIAL_PROVIDER_PORT } from './core/_ports/repositories/credential-provider.iport';
+
+import { COOKIE_PROVIDER_PORT } from './core/_ports/repositories/cookie-provider.iport';
+
+import { BCRYPT_PROVIDER_PORT } from './core/_ports/repositories/bcrypt-provider.iport';
+
+import { LOGIN_PORT } from './core/_ports/usecases/login.iport';
+import { Login } from './core/usecases/login.usecase';
+import { CREATE_USER_PORT } from './core/_ports/usecases/create-user.iport';
+import { CreateUser } from './core/usecases/create-user.usecase';
 
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from 'src/libs/strategies/jwt.strategy';
 import { createInjectableProvider } from '../shared/provider.factory';
 import { ConfigService } from '@nestjs/config';
+import { AuthenticationController } from './adapters/primary/authentication.controller';
+import { RoleEntity } from './adapters/secondary/entities/role.entity';
+import { UserEntity } from './adapters/secondary/entities/user.entity';
+import { UserPostgresAdapter } from './adapters/secondary/postgres/user.postgres.adapter';
+import { BcryptProvider } from './adapters/secondary/providers/bcrypt-provider.adapter';
+import { CookieProvider } from './adapters/secondary/providers/cookie-provider.adapter';
+import { CredentialProvider } from './adapters/secondary/providers/credential-provider.adapter';
+import { JwtProvider } from './adapters/secondary/providers/jwt-provider.adapter';
 
 export const respositories = [
   {

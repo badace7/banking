@@ -1,8 +1,8 @@
-import { DepositCommand } from '../../application/commands/deposit.command';
-import { Deposit } from '../../application/commands/deposit.usecase';
-import Account from '../../domain/account';
-import FakeAccountRepository from '../../infra/driven/in-memory/account.fake.adapter';
-import { FakeEventPublisher } from '../../infra/driven/in-memory/event-publisher.fake.adapter';
+import FakeAccountRepository from '../../adapters/secondary/in-memory/account.fake.adapter';
+import { FakeEventPublisher } from '../../adapters/secondary/in-memory/event-publisher.fake.adapter';
+import { DepositCommand } from '../../core/commands/deposit.command';
+import { Deposit } from '../../core/commands/deposit.command-handler';
+import Account from '../../core/domain/account';
 
 export const createDepositFixture = () => {
   const accountRepository = new FakeAccountRepository();

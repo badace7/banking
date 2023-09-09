@@ -1,4 +1,4 @@
-import Account from '../../domain/account';
+import Account from '../../core/domain/account';
 
 export const AccountBuilder = ({
   id = 'account-id',
