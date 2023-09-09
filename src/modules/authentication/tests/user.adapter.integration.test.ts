@@ -38,14 +38,14 @@ describe('user adapter', () => {
 
   test('save() should save a user ', async () => {
     //arrange
-    const user = new User(
-      'abc',
-      '45645645645',
-      '456456',
-      'John',
-      'Do',
-      new Role(1, 'CUSTOMER'),
-    );
+    const user = User.create({
+      id: 'abc',
+      identifier: '45645645645',
+      password: '456456',
+      firstName: 'John',
+      lastName: 'Do',
+      role: new Role(1, 'CUSTOMER'),
+    });
 
     //act
     await userAdapter.save(user);
@@ -62,14 +62,14 @@ describe('user adapter', () => {
 
   test('findById() should return a user ', async () => {
     //arrange
-    const user = new User(
-      'abc',
-      '45645645645',
-      '456456',
-      'John',
-      'Do',
-      new Role(1, 'CUSTOMER'),
-    );
+    const user = User.create({
+      id: 'abc',
+      identifier: '45645645645',
+      password: '456456',
+      firstName: 'John',
+      lastName: 'Do',
+      role: new Role(1, 'CUSTOMER'),
+    });
 
     //act
     const result = await userAdapter.findById(user.data.id);
@@ -80,14 +80,14 @@ describe('user adapter', () => {
 
   test('findByIdentifier() should return a user', async () => {
     //arrange
-    const user = new User(
-      'abc',
-      '45645645645',
-      '456456',
-      'John',
-      'Do',
-      new Role(1, 'CUSTOMER'),
-    );
+    const user = User.create({
+      id: 'abc',
+      identifier: '45645645645',
+      password: '456456',
+      firstName: 'John',
+      lastName: 'Do',
+      role: new Role(1, 'CUSTOMER'),
+    });
 
     //act
     const result = await userAdapter.findByIdentifier(user.data.identifier);

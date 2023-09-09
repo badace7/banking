@@ -25,14 +25,14 @@ export class CreateUser implements ICreateUser {
 
     const role = await this.userRepository.findRoleById(RoleEnum.CUSTOMER);
 
-    const user = new User(
-      request.id,
-      credentials.data.identifier,
-      hashedPassword,
-      request.firstName,
-      request.lastName,
-      role,
-    );
+    const user = User.create({
+      id: request.id,
+      identifier: credentials.data.identifier,
+      password: hashedPassword,
+      firstName: request.firstName,
+      lastName: request.lastName,
+      role: role,
+    });
 
     await this.userRepository.save(user);
 

@@ -4,14 +4,14 @@ import { RoleMapper } from './role.mapper';
 
 export class UserMapper {
   static toDomain(entity: UserEntity): User {
-    return new User(
-      entity.id,
-      entity.identifier,
-      entity.password,
-      entity.firstName,
-      entity.lastName,
-      RoleMapper.toDomain(entity.role),
-    );
+    return User.create({
+      id: entity.id,
+      identifier: entity.identifier,
+      password: entity.password,
+      firstName: entity.firstName,
+      lastName: entity.lastName,
+      role: RoleMapper.toDomain(entity.role),
+    });
   }
   static toEntity(user: User): UserEntity {
     const entity = new UserEntity();

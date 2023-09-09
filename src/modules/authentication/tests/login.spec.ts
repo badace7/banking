@@ -51,14 +51,14 @@ describe('Feature: user', () => {
       //Arrange
       const password = await bcryptProvider.hash('123123');
       userRepository.save(
-        new User(
-          'abc',
-          '12312312312',
-          password,
-          'Jack',
-          'Sparrow',
-          new Role(1, 'CUSTOMER'),
-        ),
+        User.create({
+          id: 'abc',
+          identifier: '12312312312',
+          password: password,
+          firstName: 'Jack',
+          lastName: 'Sparrow',
+          role: new Role(1, 'CUSTOMER'),
+        }),
       );
       const credentials = new LoginRequest('12312312312', '456456');
 
@@ -75,14 +75,14 @@ describe('Feature: user', () => {
       //Arrange
       const password = await bcryptProvider.hash('123123');
       userRepository.save(
-        new User(
-          'abc',
-          '12312312312',
-          password,
-          'Jack',
-          'Sparrow',
-          new Role(1, 'CUSTOMER'),
-        ),
+        User.create({
+          id: 'abc',
+          identifier: '12312312312',
+          password: password,
+          firstName: 'Jack',
+          lastName: 'Sparrow',
+          role: new Role(1, 'CUSTOMER'),
+        }),
       );
       const credentials = new LoginRequest('12312312312', '123123');
 
