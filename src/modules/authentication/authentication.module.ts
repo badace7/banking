@@ -28,7 +28,6 @@ import { BcryptProvider } from './adapters/secondary/providers/bcrypt-provider.a
 import { CookieProvider } from './adapters/secondary/providers/cookie-provider.adapter';
 import { CredentialProvider } from './adapters/secondary/providers/credential-provider.adapter';
 import { JwtProvider } from './adapters/secondary/providers/jwt-provider.adapter';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EVENT_PUBLISHER_PORT } from './core/_ports/repositories/event-publisher.iport';
 import { EventPublisher } from '../shared/event-publisher';
 

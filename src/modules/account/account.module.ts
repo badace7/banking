@@ -15,7 +15,6 @@ import { WITHDRAW_PORT } from './core/_ports/usecases/withdraw.iport';
 import { GetBalance } from './core/queries/get-balance.usecase';
 import { GetOperationsByAccountNumber } from './core/queries/get-operations-by-account-number.usecase';
 
-import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
 import { OPERATION_PORT } from '../operation/core/_ports/operation.iport';
 
 import { EventPublisher } from '../shared/event-publisher';

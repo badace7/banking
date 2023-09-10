@@ -8,6 +8,7 @@ import {
   CreateTestContainer,
 } from 'src/modules/account/tests/configs/test-containers.config';
 import { TestDatabaseModule } from 'src/modules/account/tests/configs/test-database.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 describe('Authentication Controller (e2e)', () => {
   let app: INestApplication;
@@ -18,7 +19,11 @@ describe('Authentication Controller (e2e)', () => {
     container = await CreateTestContainer();
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [TestDatabaseModule.forRoot(container), AuthenticationModule],
+      imports: [
+        TestDatabaseModule.forRoot(container),
+        EventEmitterModule.forRoot(),
+        AuthenticationModule,
+      ],
     }).compile();
 
     app = moduleFixture.createNestApplication();

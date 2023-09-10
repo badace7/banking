@@ -10,6 +10,7 @@ import { TestDatabaseModule } from '../configs/test-database.module';
 import { JwtAuthGuard } from 'src/libs/guards/jwt.guard';
 import { RolesGuard } from 'src/libs/guards/roles.guard';
 import { RessourceOwnerGuard } from 'src/libs/guards/ressource-owner.guard';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 describe('Banking Controller (e2e)', () => {
   let app: INestApplication;
@@ -20,7 +21,11 @@ describe('Banking Controller (e2e)', () => {
     container = await CreateTestContainer();
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [TestDatabaseModule.forRoot(container), AccountModule],
+      imports: [
+        TestDatabaseModule.forRoot(container),
+        EventEmitterModule.forRoot(),
+        AccountModule,
+      ],
     })
       .overrideGuard(JwtAuthGuard)
       .useValue({ canActivate: jest.fn(() => true) })
