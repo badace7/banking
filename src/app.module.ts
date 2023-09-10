@@ -14,11 +14,11 @@ import { AccountModule } from './modules/account/account.module';
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot(),
     DatabaseModule,
     AccountModule,
     AuthenticationModule,
     OperationModule,
-    EventEmitterModule.forRoot(),
   ],
 })
 export class AppModule implements NestModule {

@@ -20,6 +20,7 @@ describe('Feature: create a user', () => {
       userRepository,
       bcryptAdapter,
       credentialProvider,
+      null,
     );
   });
 

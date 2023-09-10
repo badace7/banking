@@ -6,12 +6,14 @@ import { ICredentialProvider } from '../_ports/repositories/credential-provider.
 import { IUserPort } from '../_ports/repositories/user.iport';
 import { ICreateUser } from '../_ports/usecases/create-user.iport';
 import { CreateUserRequest } from './create-user.request';
+import { IEventPublisher } from '../_ports/repositories/event-publisher.iport';
 
 export class CreateUser implements ICreateUser {
   constructor(
     private readonly userRepository: IUserPort,
     private readonly bcryptAdapter: IBcryptProvider,
     private readonly credentialProvider: ICredentialProvider,
+    private readonly eventPublisher: IEventPublisher,
   ) {}
   async execute(request: CreateUserRequest): Promise<Credentials> {
     const identifier = await this.credentialProvider.generateIdentifier();
@@ -34,6 +36,8 @@ export class CreateUser implements ICreateUser {
       role: role,
     });
 
+    this.eventPublisher.publish(user.getDomainEvents());
+    user.clearEvents();
     await this.userRepository.save(user);
 
     return credentials;

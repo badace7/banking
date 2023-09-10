@@ -1,5 +1,6 @@
 import { AggregateRoot } from 'src/libs/domain/aggregate.root';
 import { Role } from './role';
+import { UserCreatedEvent } from './events/user-created.event';
 
 export enum RoleEnum {
   CUSTOMER = 1,
@@ -29,7 +30,7 @@ export class User extends AggregateRoot {
   }
 
   static create(data: User['data']) {
-    return new User(
+    const user = new User(
       data.id,
       data.identifier,
       data.password,
@@ -37,5 +38,7 @@ export class User extends AggregateRoot {
       data.lastName,
       data.role,
     );
+    user.addDomainEvent(new UserCreatedEvent(data.id, user));
+    return user;
   }
 }

@@ -15,7 +15,7 @@ import { WITHDRAW_PORT } from './core/_ports/usecases/withdraw.iport';
 import { GetBalance } from './core/queries/get-balance.usecase';
 import { GetOperationsByAccountNumber } from './core/queries/get-operations-by-account-number.usecase';
 
-import { EventEmitter2 } from '@nestjs/event-emitter';
+import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
 import { OPERATION_PORT } from '../operation/core/_ports/operation.iport';
 
 import { EventPublisher } from '../shared/event-publisher';
@@ -30,10 +30,12 @@ import { AccountEntity } from './adapters/secondary/entities/account.entity';
 import { AccountPostgresAdapter } from './adapters/secondary/postgres/account.postgres.adapter';
 import { BankingController } from './adapters/primary/banking.controller';
 import { ACCOUNT_PORT } from './core/_ports/repositories/account.iport';
+import { CREATE_ACCOUNT_PORT } from './core/_ports/usecases/create-account-when-user-is-created.iport';
+import { CreateAccountWhenUserIsCreated } from './core/events/create-account-when-user-is-created.event-handler';
 
 export const respositories = [
   {
-    provide: 'IEventPublisher',
+    provide: EVENT_PUBLISHER_PORT,
     useClass: EventPublisher,
   },
   {
@@ -65,6 +67,11 @@ export const usecases = [
     ACCOUNT_PORT,
     DATE_PORT,
   ]),
+  createInjectableProvider(
+    CREATE_ACCOUNT_PORT,
+    CreateAccountWhenUserIsCreated,
+    [ACCOUNT_PORT],
+  ),
 ];
 
 @Module({
@@ -77,7 +84,7 @@ export const usecases = [
     ]),
   ],
   controllers: [BankingController],
-  providers: [...usecases, ...respositories, EventEmitter2],
+  providers: [...usecases, ...respositories],
   exports: [...usecases, ...respositories, TypeOrmModule],
 })
 export class AccountModule {}
