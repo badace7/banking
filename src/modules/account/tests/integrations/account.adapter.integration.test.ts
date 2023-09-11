@@ -58,4 +58,18 @@ describe('account adapter', () => {
     );
     expect(isAccountUpdated).toBe(true);
   });
+
+  test('findAccountByUserId() should find user account by his id', async () => {
+    const account = AccountBuilder()
+      .withId('2')
+      .withAccountNumber('12312312312')
+      .withBalance(1000)
+      .withOverDraftFacility(null)
+      .ownerId('2')
+      .build();
+
+    const result = await accountAdapter.findAccountByUserId(account.data.id);
+
+    expect(result).toEqual(account);
+  });
 });

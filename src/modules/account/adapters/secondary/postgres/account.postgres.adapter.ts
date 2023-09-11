@@ -17,8 +17,9 @@ export class AccountPostgresAdapter implements IAccountPort {
 
     return AccountMapper.toDomain(account);
   }
-  saveBankAccount(account: Account): Promise<void> {
-    throw new Error('Method not implemented.');
+  async saveBankAccount(account: Account): Promise<void> {
+    const entity = AccountMapper.toEntity(account);
+    await this.manager.save(AccountEntity, entity);
   }
   async updateBankAccount(id: string, account: Account): Promise<boolean> {
     const entity = AccountMapper.toEntity(account);
@@ -26,5 +27,15 @@ export class AccountPostgresAdapter implements IAccountPort {
     const isUpdated = await this.manager.update(AccountEntity, id, entity);
 
     return isUpdated.affected === 1 ? true : false;
+  }
+
+  async findAccountByUserId(userId: string): Promise<Account> {
+    const account = await this.manager
+      .createQueryBuilder(AccountEntity, 'account')
+      .innerJoinAndSelect('account.user', 'user', 'user.id = :userId')
+      .where('account.userId = :userId', { userId })
+      .getOne();
+
+    return account ? AccountMapper.toDomain(account) : null;
   }
 }

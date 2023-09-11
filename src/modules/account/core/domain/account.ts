@@ -113,10 +113,16 @@ export default class Account extends AggregateRoot {
     super();
   }
 
-  static create(data: Account['data']): Account {
+  private static generateAccountNumber(): string {
+    return Math.random().toString().substring(2, 13);
+  }
+
+  static create(data: Partial<Account['data']>): Account {
+    const number = data.number ?? this.generateAccountNumber();
+
     return new Account(
       data.id,
-      data.number,
+      number,
       data.balance,
       data.user,
       data.overdraftFacility,

@@ -38,7 +38,7 @@ export class User extends AggregateRoot {
       data.lastName,
       data.role,
     );
-    user.addDomainEvent(new UserCreatedEvent(data.id, user));
+    user.addDomainEvent(new UserCreatedEvent(data.id, { id: data.id }));
     return user;
   }
 }

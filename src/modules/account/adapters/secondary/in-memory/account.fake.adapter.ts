@@ -2,6 +2,9 @@ import { IAccountPort } from '../../../core/_ports/repositories/account.iport';
 import Account from '../../../core/domain/account';
 
 class FakeAccountRepository implements IAccountPort {
+  findAccountByUserId(userId: string): Promise<Account> {
+    throw new Error('Method not implemented.');
+  }
   private fakeAccountEntityManager: Map<string, Account> = new Map();
 
   async updateBankAccount(id: string, account: Account): Promise<boolean> {
