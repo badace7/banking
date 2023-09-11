@@ -21,7 +21,6 @@ export class CreateOperationWhenDepositIsDone
 
   @OnEvent(DepositDoneEvent.name, { async: true, promisify: true })
   async execute(event: DepositDoneEvent): Promise<void> {
-    console.log('called');
     const operationType = await this.operationAdapter.getOperationTypeById(
       OperationTypeEnum.DEPOSIT,
     );
