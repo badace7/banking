@@ -19,8 +19,6 @@ export class CreateAccountWhenUserIsCreated
       overdraftFacility: 0,
     });
 
-    console.log(account);
-
     await this.accountAdapter.saveBankAccount(account);
   }
 }
