@@ -1,5 +1,5 @@
-import { GetOperationsByNumberQuery } from 'src/modules/operation/_read/get-operations-by-account-number.query';
-import { OperationReadModel } from '../../../operation/_read/operation.read-model';
+import { GetOperationsByNumberQuery } from './get-operations-by-account-number.query';
+import { OperationReadModel } from './operation.read-model';
 
 export const GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT =
   'IGetOperationByAccountNumber';

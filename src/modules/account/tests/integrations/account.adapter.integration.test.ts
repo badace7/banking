@@ -6,7 +6,7 @@ import {
   TestContainersType,
 } from '../../../shared/configs/test-containers.config';
 import { TestDatabaseModule } from '../../../shared/configs/test-database.module';
-import { createEntityManagerProvider } from 'src/config/postgres.config';
+import { EntityManagerProvider } from 'src/config/postgres.config';
 import { AccountPostgresAdapter } from '../../_write/adapters/secondary/postgres/account.postgres.adapter';
 
 describe('account adapter', () => {
@@ -18,7 +18,7 @@ describe('account adapter', () => {
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [TestDatabaseModule.forRoot(container)],
-      providers: [AccountPostgresAdapter, createEntityManagerProvider],
+      providers: [AccountPostgresAdapter, EntityManagerProvider],
     }).compile();
 
     accountAdapter = moduleFixture.get<AccountPostgresAdapter>(

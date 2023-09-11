@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { createEntityManagerProvider } from 'src/config/postgres.config';
+import { EntityManagerProvider } from 'src/config/postgres.config';
 
 import { EntityManager } from 'typeorm';
 import { User } from '../core/domain/user';
@@ -24,7 +24,7 @@ describe('user adapter', () => {
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [TestDatabaseModule.forRoot(container)],
-      providers: [UserPostgresAdapter, createEntityManagerProvider],
+      providers: [UserPostgresAdapter, EntityManagerProvider],
     }).compile();
 
     entityManager = moduleFixture.get<EntityManager>(EntityManager);

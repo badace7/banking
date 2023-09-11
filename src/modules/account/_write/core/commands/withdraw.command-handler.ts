@@ -1,6 +1,5 @@
 import { NotFoundException } from 'src/libs/exceptions/usecase.error';
 import Account from '../domain/account';
-import { ErrorMessage } from '../domain/error/operation-message-error';
 import { IEventPublisher } from '../_ports/repositories/event-publisher.iport';
 import { IAccountPort } from '../_ports/repositories/account.iport';
 import { WithdrawCommand } from './withdraw.command';
@@ -22,9 +21,7 @@ export class Withdraw {
     const account = await this.accountAdapter.findBankAccount(accountNumber);
 
     if (!account) {
-      throw new NotFoundException(
-        `${ErrorMessage.ACCOUNT_IS_NOT_FOUND} n° ${accountNumber}`,
-      );
+      throw new NotFoundException(`Account is not found n° ${accountNumber}`);
     }
     return account;
   }

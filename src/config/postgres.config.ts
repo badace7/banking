@@ -20,7 +20,7 @@ export default () => ({
   },
 });
 
-export const createEntityManagerProvider = {
+export const EntityManagerProvider = {
   provide: 'DATABASE_CONNECTION',
   useFactory: async (entityManager: EntityManager) => entityManager.connection,
   inject: [EntityManager],

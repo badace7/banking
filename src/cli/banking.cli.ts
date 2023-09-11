@@ -7,10 +7,7 @@ import {
   GET_BALANCE_PORT,
   IGetBalance,
 } from 'src/modules/account/_read/_ports/get-balance.iport';
-import {
-  GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT,
-  IGetOperationByAccountNumber,
-} from 'src/modules/account/_read/_ports/get-operations-by-account-number.iport';
+
 import { GetBalanceQuery } from 'src/modules/account/_read/core/queries/get-balance.query';
 
 import {
@@ -28,7 +25,12 @@ import {
 import { DepositCommand } from 'src/modules/account/_write/core/commands/deposit.command';
 import { MoneyTransferCommand } from 'src/modules/account/_write/core/commands/transfer.command';
 import { WithdrawCommand } from 'src/modules/account/_write/core/commands/withdraw.command';
-import { GetOperationsByNumberQuery } from 'src/modules/operation/_read/get-operations-by-account-number.query';
+
+import {
+  GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT,
+  IGetOperationByAccountNumber,
+} from 'src/modules/operation/_read/core/get-operations-by-account-number.iport';
+import { GetOperationsByNumberQuery } from 'src/modules/operation/_read/core/get-operations-by-account-number.query';
 
 enum Choice {
   transfer = 'transfer',
@@ -131,10 +133,10 @@ export class BankingCli extends CommandRunner {
           balanceData.data.accountNumber +
           '\n' +
           ' Balance : ' +
-          balanceData.data.balance +
-          '\n' +
-          ' Date : ' +
-          balanceData.data.date,
+          balanceData.data.balance,
+        // '\n' +
+        // ' Date : ' +
+        // balanceData.data.date,
       );
 
       this.logger.displayMessage('------------------------------');

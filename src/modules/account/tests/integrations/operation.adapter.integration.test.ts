@@ -7,7 +7,7 @@ import {
 } from '../../../shared/configs/test-containers.config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TestDatabaseModule } from '../../../shared/configs/test-database.module';
-import { createEntityManagerProvider } from 'src/config/postgres.config';
+import { EntityManagerProvider } from 'src/config/postgres.config';
 import { OperationEntity } from 'src/modules/operation/_write/adapters/operation.entity';
 import { OperationMapper } from 'src/modules/operation/_write/adapters/operation.mapper';
 import { OperationPostgresAdapter } from 'src/modules/operation/_write/adapters/operation.postgres.adapter';
@@ -28,7 +28,7 @@ describe('operation adapter', () => {
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [TestDatabaseModule.forRoot(container)],
-      providers: [OperationPostgresAdapter, createEntityManagerProvider],
+      providers: [OperationPostgresAdapter, EntityManagerProvider],
     }).compile();
 
     connection = moduleFixture.get<EntityManager>(EntityManager);

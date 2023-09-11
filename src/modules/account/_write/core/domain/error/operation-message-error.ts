@@ -1,5 +1,4 @@
 export enum ErrorMessage {
-  ACCOUNT_IS_NOT_FOUND = 'Account is not found',
   CANNOT_WITHDRAW_UNDER_10 = 'Cannot withdraw under 10',
   REQUESTED_AMOUNT_EXCEEDS_YOUR_BALANCE = 'Requested amount exceeds your balance',
   CANNOT_DEPOSIT_UNDER_5 = 'Cannot deposit under 5',

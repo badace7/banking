@@ -3,7 +3,6 @@ import Account from '../domain/account';
 import { MoneyTransferCommand } from './transfer.command';
 import { IMoneyTransfer } from '../_ports/usecases/money-transfer.iport';
 import { IAccountPort } from '../_ports/repositories/account.iport';
-import { ErrorMessage } from '../domain/error/operation-message-error';
 import { IEventPublisher } from '../_ports/repositories/event-publisher.iport';
 
 export class MoneyTransfer implements IMoneyTransfer {
@@ -31,9 +30,7 @@ export class MoneyTransfer implements IMoneyTransfer {
     const account = await this.accountAdapter.findBankAccount(accountNumber);
 
     if (!account) {
-      throw new NotFoundException(
-        `${ErrorMessage.ACCOUNT_IS_NOT_FOUND} n° ${accountNumber}`,
-      );
+      throw new NotFoundException(`Account is not found n° ${accountNumber}`);
     }
     return account;
   }

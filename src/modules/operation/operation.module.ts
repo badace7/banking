@@ -15,8 +15,14 @@ import { OPERATION_PORT } from './_write/core/_ports/operation.iport';
 import { CreateOperationWhenDepositIsDone } from './_write/core/create-operation-when-deposit-is-done.event-handler';
 import { CreateOperationWhenTransferIsDone } from './_write/core/create-operation-when-transfer-is-done.event-handler';
 import { CreateOperationWhenWithdrawIsDone } from './_write/core/create-operation-when-withdraw-is-done.event-handler';
+import { OperationReadController } from './_read/adapters/operation-read.controller';
+import { GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT } from './_read/core/get-operations-by-account-number.iport';
+
+import { EntityManagerProvider } from 'src/config/postgres.config';
+import { GetOperationsByAccountNumber } from './_read/core/get-operations-by-account-number.query-handler';
 
 const repositories = [
+  EntityManagerProvider,
   {
     provide: OPERATION_PORT,
     useClass: OperationPostgresAdapter,
@@ -44,6 +50,12 @@ const usecases = [
     CreateOperationWhenTransferIsDone,
     [OPERATION_PORT, DATE_PORT],
   ),
+
+  createInjectableProvider(
+    GET_OPERATIONS_BY_ACCOUNT_NUMBER_PORT,
+    GetOperationsByAccountNumber,
+    ['DATABASE_CONNECTION', DATE_PORT],
+  ),
 ];
 
 @Module({
@@ -55,6 +67,7 @@ const usecases = [
     ]),
     EventEmitterModule,
   ],
+  controllers: [OperationReadController],
   providers: [...usecases, ...repositories, TypeOrmModule],
 })
 export class OperationModule {}

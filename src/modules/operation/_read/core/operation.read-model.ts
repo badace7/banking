@@ -1,12 +1,10 @@
-import { FlowIndicatorEnum } from 'src/modules/operation/_write/core/domain/operation';
-
 export class OperationReadModel {
   private constructor(
     private readonly _id: string,
     private readonly _label: string,
     private readonly _debit: string,
     private readonly _credit: string,
-    private readonly _type: number,
+    private readonly _type: string,
     private readonly _date: string,
   ) {}
 
@@ -25,12 +23,12 @@ export class OperationReadModel {
     id: string;
     label: string;
     amount: number;
-    type: number;
-    flow: number;
+    type: string;
+    flow: string;
     date: string;
   }) {
     const ZERO = '0';
-    if (operation.flow === FlowIndicatorEnum.DEBIT) {
+    if (operation.flow === 'DEBIT') {
       return new OperationReadModel(
         operation.id,
         operation.label,
@@ -39,9 +37,7 @@ export class OperationReadModel {
         operation.type,
         operation.date,
       );
-    }
-
-    if (operation.flow === FlowIndicatorEnum.CREDIT) {
+    } else if (operation.flow === 'CREDIT') {
       return new OperationReadModel(
         operation.id,
         operation.label,

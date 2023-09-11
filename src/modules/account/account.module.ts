@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, Provider } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { EventPublisher } from '../shared/event-publisher';
@@ -19,7 +19,7 @@ import { Deposit } from './_write/core/commands/deposit.command-handler';
 import { MoneyTransfer } from './_write/core/commands/moneytransfer.command-handler';
 import { Withdraw } from './_write/core/commands/withdraw.command-handler';
 import { CreateAccountWhenUserIsCreated } from './_write/core/events/create-account-when-user-is-created.event-handler';
-import { GetBalance } from './_read/core/queries/get-balance.usecase';
+import { GetBalance } from './_read/core/queries/get-balance.query-handler';
 import { DATE_PORT } from './_write/core/_ports/repositories/date-provider.iport';
 import { DateProvider } from '../operation/_write/adapters/date-provider.adapter';
 import { FlowIndicatorEntity } from '../operation/_write/adapters/flow-indicator.entity';
@@ -27,8 +27,12 @@ import { OperationTypeEntity } from '../operation/_write/adapters/operation-type
 import { OperationEntity } from '../operation/_write/adapters/operation.entity';
 import { AccountWriteController } from './_write/adapters/primary/http/account-write.controller';
 import { AccountReadController } from './_read/adapters/primary/http/account-read.controller';
+import { EntityManagerProvider } from 'src/config/postgres.config';
 
-export const respositories = [
+const PORTS = [ACCOUNT_PORT, EVENT_PUBLISHER_PORT];
+
+export const gateways: Provider[] = [
+  EntityManagerProvider,
   {
     provide: EVENT_PUBLISHER_PORT,
     useClass: EventPublisher,
@@ -43,22 +47,28 @@ export const respositories = [
   },
 ];
 
-const PORTS = [ACCOUNT_PORT, EVENT_PUBLISHER_PORT];
-
-export const usecases = [
+const commandHandlers: Provider[] = [
   createInjectableProvider(MONEY_TRANSFER_PORT, MoneyTransfer, PORTS),
   createInjectableProvider(WITHDRAW_PORT, Withdraw, PORTS),
   createInjectableProvider(DEPOSIT_PORT, Deposit, PORTS),
-  createInjectableProvider(GET_BALANCE_PORT, GetBalance, [
-    ACCOUNT_PORT,
-    DATE_PORT,
-  ]),
+];
+
+const eventHandlers: Provider[] = [
   createInjectableProvider(
     CREATE_ACCOUNT_PORT,
     CreateAccountWhenUserIsCreated,
     [ACCOUNT_PORT],
   ),
 ];
+
+export const queryHandlers: Provider[] = [
+  createInjectableProvider(GET_BALANCE_PORT, GetBalance, [
+    'DATABASE_CONNECTION',
+    DATE_PORT,
+  ]),
+];
+
+export const controllers = [AccountReadController, AccountWriteController];
 
 @Module({
   imports: [
@@ -69,8 +79,13 @@ export const usecases = [
       FlowIndicatorEntity,
     ]),
   ],
-  controllers: [AccountWriteController, AccountReadController],
-  providers: [...usecases, ...respositories],
-  exports: [...usecases, ...respositories, TypeOrmModule],
+  controllers: [...controllers],
+  providers: [
+    ...commandHandlers,
+    ...eventHandlers,
+    ...queryHandlers,
+    ...gateways,
+  ],
+  exports: [...queryHandlers, ...gateways, TypeOrmModule],
 })
 export class AccountModule {}
