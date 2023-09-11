@@ -1,8 +1,8 @@
-import FakeAccountRepository from '../../adapters/secondary/in-memory/account.fake.adapter';
-import { FakeEventPublisher } from '../../adapters/secondary/in-memory/event-publisher.fake.adapter';
-import { WithdrawCommand } from '../../core/commands/withdraw.command';
-import { Withdraw } from '../../core/commands/withdraw.command-handler';
-import Account from '../../core/domain/account';
+import FakeAccountRepository from '../../_write/adapters/secondary/in-memory/account.fake.adapter';
+import { FakeEventPublisher } from '../../_write/adapters/secondary/in-memory/event-publisher.fake.adapter';
+import { WithdrawCommand } from '../../_write/core/commands/withdraw.command';
+import { Withdraw } from '../../_write/core/commands/withdraw.command-handler';
+import Account from '../../_write/core/domain/account';
 
 export const createWithdrawFixture = () => {
   const accountRepository = new FakeAccountRepository();

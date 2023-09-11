@@ -6,8 +6,8 @@ import { AuthenticationModule } from '../authentication.module';
 import {
   TestContainersType,
   CreateTestContainer,
-} from 'src/modules/account/tests/configs/test-containers.config';
-import { TestDatabaseModule } from 'src/modules/account/tests/configs/test-database.module';
+} from 'src/modules/shared/configs/test-containers.config';
+import { TestDatabaseModule } from 'src/modules/shared/configs/test-database.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 
 describe('Authentication Controller (e2e)', () => {

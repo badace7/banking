@@ -4,10 +4,10 @@ import { AccountBuilder } from '../builders/account.builder';
 import {
   CreateTestContainer,
   TestContainersType,
-} from '../configs/test-containers.config';
-import { TestDatabaseModule } from '../configs/test-database.module';
+} from '../../../shared/configs/test-containers.config';
+import { TestDatabaseModule } from '../../../shared/configs/test-database.module';
 import { createEntityManagerProvider } from 'src/config/postgres.config';
-import { AccountPostgresAdapter } from '../../adapters/secondary/postgres/account.postgres.adapter';
+import { AccountPostgresAdapter } from '../../_write/adapters/secondary/postgres/account.postgres.adapter';
 
 describe('account adapter', () => {
   let container: TestContainersType;

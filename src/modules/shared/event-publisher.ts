@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { IEvent } from 'src/libs/domain/aggregate.root';
-import { IEventPublisher } from '../account/core/_ports/repositories/event-publisher.iport';
+import { IEventPublisher } from '../account/_write/core/_ports/repositories/event-publisher.iport';
 
 @Injectable()
 export class EventPublisher implements IEventPublisher {

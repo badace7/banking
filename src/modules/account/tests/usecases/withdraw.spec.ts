@@ -3,8 +3,8 @@ import {
   createWithdrawFixture,
 } from '../fixtures/withdraw.fixture';
 import { AccountBuilder } from '../builders/account.builder';
-import { OperationRejectedError } from '../../core/domain/error/operation.error';
-import { WithdrawCommand } from '../../core/commands/withdraw.command';
+import { WithdrawCommand } from '../../_write/core/commands/withdraw.command';
+import { OperationRejectedError } from '../../_write/core/domain/error/operation.error';
 
 describe('Feature: Withdraw money', () => {
   let uat: WithdrawFixture;

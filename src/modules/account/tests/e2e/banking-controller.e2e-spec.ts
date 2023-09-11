@@ -5,8 +5,8 @@ import { AccountModule } from '../../account.module';
 import {
   CreateTestContainer,
   TestContainersType,
-} from '../configs/test-containers.config';
-import { TestDatabaseModule } from '../configs/test-database.module';
+} from '../../../shared/configs/test-containers.config';
+import { TestDatabaseModule } from '../../../shared/configs/test-database.module';
 import { JwtAuthGuard } from 'src/libs/guards/jwt.guard';
 import { RolesGuard } from 'src/libs/guards/roles.guard';
 import { RessourceOwnerGuard } from 'src/libs/guards/ressource-owner.guard';

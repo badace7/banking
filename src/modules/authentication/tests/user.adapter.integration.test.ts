@@ -8,8 +8,8 @@ import { Role } from '../core/domain/role';
 import {
   TestContainersType,
   CreateTestContainer,
-} from 'src/modules/account/tests/configs/test-containers.config';
-import { TestDatabaseModule } from 'src/modules/account/tests/configs/test-database.module';
+} from 'src/modules/shared/configs/test-containers.config';
+import { TestDatabaseModule } from 'src/modules/shared/configs/test-database.module';
 import { UserEntity } from '../adapters/secondary/entities/user.entity';
 import { UserMapper } from '../adapters/secondary/mappers/user.mapper';
 import { UserPostgresAdapter } from '../adapters/secondary/postgres/user.postgres.adapter';

@@ -1,10 +1,10 @@
-import { FlowIndicator } from 'src/modules/operation/core/domain/flow-indicator';
+import { FlowIndicator } from 'src/modules/operation/_write/core/domain/flow-indicator';
 import {
   OperationTypeEnum,
   FlowIndicatorEnum,
   Operation,
-} from 'src/modules/operation/core/domain/operation';
-import { OperationType } from 'src/modules/operation/core/domain/operation-type';
+} from 'src/modules/operation/_write/core/domain/operation';
+import { OperationType } from 'src/modules/operation/_write/core/domain/operation-type';
 
 export const OperationBuilder = ({
   id = 'operation-id',

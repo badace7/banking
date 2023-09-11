@@ -4,19 +4,19 @@ import { OperationBuilder } from '../builders/operation.builder';
 import {
   CreateTestContainer,
   TestContainersType,
-} from '../configs/test-containers.config';
+} from '../../../shared/configs/test-containers.config';
 import { Test, TestingModule } from '@nestjs/testing';
-import { TestDatabaseModule } from '../configs/test-database.module';
+import { TestDatabaseModule } from '../../../shared/configs/test-database.module';
 import { createEntityManagerProvider } from 'src/config/postgres.config';
-import { FlowIndicator } from 'src/modules/operation/core/domain/flow-indicator';
+import { OperationEntity } from 'src/modules/operation/_write/adapters/operation.entity';
+import { OperationMapper } from 'src/modules/operation/_write/adapters/operation.mapper';
+import { OperationPostgresAdapter } from 'src/modules/operation/_write/adapters/operation.postgres.adapter';
+import { FlowIndicator } from 'src/modules/operation/_write/core/domain/flow-indicator';
 import {
   OperationTypeEnum,
   FlowIndicatorEnum,
-} from 'src/modules/operation/core/domain/operation';
-import { OperationType } from 'src/modules/operation/core/domain/operation-type';
-import { OperationEntity } from 'src/modules/operation/adapters/operation.entity';
-import { OperationMapper } from 'src/modules/operation/adapters/operation.mapper';
-import { OperationPostgresAdapter } from 'src/modules/operation/adapters/operation.postgres.adapter';
+} from 'src/modules/operation/_write/core/domain/operation';
+import { OperationType } from 'src/modules/operation/_write/core/domain/operation-type';
 
 describe('operation adapter', () => {
   let container: TestContainersType;

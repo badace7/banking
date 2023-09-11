@@ -6,7 +6,7 @@ import { FakeCredientialProvider } from '../adapters/secondary/in-memory/crenden
 import { InMemoryUserAdapter } from '../adapters/secondary/in-memory/in-memory-user.adapter';
 import { BcryptProvider } from '../adapters/secondary/providers/bcrypt-provider.adapter';
 import { IEventPublisher } from '../core/_ports/repositories/event-publisher.iport';
-import { FakeEventPublisher } from 'src/modules/account/adapters/secondary/in-memory/event-publisher.fake.adapter';
+import { FakeEventPublisher } from 'src/modules/account/_write/adapters/secondary/in-memory/event-publisher.fake.adapter';
 
 describe('Feature: create a user', () => {
   let userRepository: InMemoryUserAdapter;

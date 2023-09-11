@@ -3,7 +3,7 @@ import {
   createDepositFixture,
 } from '../fixtures/deposit.fixture';
 import { AccountBuilder } from '../builders/account.builder';
-import { DepositCommand } from '../../core/commands/deposit.command';
+import { DepositCommand } from '../../_write/core/commands/deposit.command';
 
 describe('Feature: Deposit money', () => {
   let uat: DepositFixture;

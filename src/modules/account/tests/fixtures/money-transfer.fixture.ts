@@ -1,8 +1,8 @@
-import FakeAccountRepository from '../../adapters/secondary/in-memory/account.fake.adapter';
-import { FakeEventPublisher } from '../../adapters/secondary/in-memory/event-publisher.fake.adapter';
-import { MoneyTransfer } from '../../core/commands/moneytransfer.command-handler';
-import { MoneyTransferCommand } from '../../core/commands/transfer.command';
-import Account from '../../core/domain/account';
+import FakeAccountRepository from '../../_write/adapters/secondary/in-memory/account.fake.adapter';
+import { FakeEventPublisher } from '../../_write/adapters/secondary/in-memory/event-publisher.fake.adapter';
+import { MoneyTransfer } from '../../_write/core/commands/moneytransfer.command-handler';
+import { MoneyTransferCommand } from '../../_write/core/commands/transfer.command';
+import Account from '../../_write/core/domain/account';
 
 export const createTransferFixture = () => {
   const accountRepository = new FakeAccountRepository();
