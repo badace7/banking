@@ -21,9 +21,7 @@ describe('Feature: Withdraw money', () => {
           .ownerId('jack-id')
           .build(),
       );
-      await uat.whenJackMakesAWithdraw(
-        new WithdrawCommand('withdraw-id', '12312312312', 500),
-      );
+      await uat.whenJackMakesAWithdraw(new WithdrawCommand('12312312312', 500));
       uat.thenHisBalanceShouldBe(500);
     });
 
@@ -35,9 +33,7 @@ describe('Feature: Withdraw money', () => {
           .ownerId('jack-id')
           .build(),
       );
-      await uat.whenJackMakesAWithdraw(
-        new WithdrawCommand('withdraw-id', '12312312312', 600),
-      );
+      await uat.whenJackMakesAWithdraw(new WithdrawCommand('12312312312', 600));
       uat.thenErrorShouldBe(OperationRejectedError);
     });
   });
@@ -51,9 +47,7 @@ describe('Feature: Withdraw money', () => {
           .withOverDraftFacility(500)
           .build(),
       );
-      await uat.whenJackMakesAWithdraw(
-        new WithdrawCommand('withdraw-id', '12312312312', 700),
-      );
+      await uat.whenJackMakesAWithdraw(new WithdrawCommand('12312312312', 700));
       uat.thenHisBalanceShouldBe(-200);
     });
 
@@ -67,7 +61,7 @@ describe('Feature: Withdraw money', () => {
           .build(),
       );
       await uat.whenJackMakesAWithdraw(
-        new WithdrawCommand('withdraw-id', '12312312312', 1100),
+        new WithdrawCommand('12312312312', 1100),
       );
       uat.thenErrorShouldBe(OperationRejectedError);
     });

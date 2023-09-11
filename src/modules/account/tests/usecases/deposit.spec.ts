@@ -3,7 +3,7 @@ import {
   createDepositFixture,
 } from '../fixtures/deposit.fixture';
 import { AccountBuilder } from '../builders/account.builder';
-import { WithdrawCommand } from '../../core/commands/withdraw.command';
+import { DepositCommand } from '../../core/commands/deposit.command';
 
 describe('Feature: Deposit money', () => {
   let uat: DepositFixture;
@@ -20,9 +20,7 @@ describe('Feature: Deposit money', () => {
           .ownerId('jack-id')
           .build(),
       );
-      await uat.whenJackDepositMoney(
-        new WithdrawCommand('deposit-id', '12312312312', 500),
-      );
+      await uat.whenJackDepositMoney(new DepositCommand('12312312312', 500));
       uat.thenHisBalanceShouldBe(1500);
     });
   });

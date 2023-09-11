@@ -27,7 +27,6 @@ import { GetBalanceQuery } from 'src/modules/account/core/queries/get-balance.qu
 import { GetOperationsByNumberQuery } from 'src/modules/account/core/queries/get-operations-by-account-number.query';
 import { CustomConsoleLogger } from './custom.console.logger';
 import { CustomPrompt } from './custom.prompt';
-import { v4 as uuidv4 } from 'uuid';
 
 enum Choice {
   transfer = 'transfer',
@@ -75,7 +74,6 @@ export class BankingCli extends CommandRunner {
         await this.prompt.transferPrompt();
 
       const command = new MoneyTransferCommand(
-        uuidv4(),
         label,
         parseInt(amount),
         origin,
@@ -89,7 +87,7 @@ export class BankingCli extends CommandRunner {
 
     if (choice === Choice.deposit) {
       const { origin, amount } = await this.prompt.depositPrompt();
-      const command = new DepositCommand(uuidv4(), origin, parseInt(amount));
+      const command = new DepositCommand(origin, parseInt(amount));
 
       await this.depositUsecase.execute(command);
       this.logger.displaySuccess('Deposit was successful');
@@ -98,7 +96,7 @@ export class BankingCli extends CommandRunner {
 
     if (choice === Choice.withdraw) {
       const { origin, amount } = await this.prompt.withdrawPrompt();
-      const command = new WithdrawCommand(uuidv4(), origin, parseInt(amount));
+      const command = new WithdrawCommand(origin, parseInt(amount));
 
       await this.withdrawUsecase.execute(command);
       this.logger.displaySuccess('Withdraw was successful');

@@ -10,7 +10,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { v4 as uuidv4 } from 'uuid';
 import { DepositCommand } from '../../core/commands/deposit.command';
 import { MoneyTransferCommand } from '../../core/commands/transfer.command';
 import { WithdrawCommand } from '../../core/commands/withdraw.command';
@@ -101,7 +100,6 @@ export class BankingController {
   ) {
     try {
       const command = new MoneyTransferCommand(
-        uuidv4(),
         body.label,
         body.amount,
         body.origin,
@@ -117,7 +115,7 @@ export class BankingController {
   @Post(Banking.DEPOSIT)
   async depositMoney(@Body() body: DepositDTO, @Res() response: Response) {
     try {
-      const command = new DepositCommand(uuidv4(), body.origin, body.amount);
+      const command = new DepositCommand(body.origin, body.amount);
       await this.depositUsecase.execute(command);
       response.status(HttpStatus.CREATED).send('The deposit was successful');
     } catch (error) {
@@ -128,7 +126,7 @@ export class BankingController {
   @Post(Banking.WITHDRAW)
   async withdrawMoney(@Body() body: WithdrawDTO, @Res() response: Response) {
     try {
-      const command = new WithdrawCommand(uuidv4(), body.origin, body.amount);
+      const command = new WithdrawCommand(body.origin, body.amount);
       await this.withdrawUsecase.execute(command);
       response.status(HttpStatus.CREATED).send('The withdraw was successful');
     } catch (error) {

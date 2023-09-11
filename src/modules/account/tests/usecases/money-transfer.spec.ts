@@ -34,7 +34,6 @@ describe('Feature: Money transfer between two customers', () => {
 
       await uat.whenJackMakesAmoneyTransfer(
         new MoneyTransferCommand(
-          'transfer-id',
           "Participation in Anna's gift",
           1000,
           '12312312312',
@@ -66,7 +65,6 @@ describe('Feature: Money transfer between two customers', () => {
 
       await uat.whenJackMakesAmoneyTransfer(
         new MoneyTransferCommand(
-          'transfer-id',
           'Car accident',
           3000,
           '12312312312',
@@ -101,7 +99,6 @@ describe('Feature: Money transfer between two customers', () => {
 
       await uat.whenJackMakesAmoneyTransfer(
         new MoneyTransferCommand(
-          'transfer-id',
           'Spain holiday',
           2500,
           '12312312312',
@@ -134,7 +131,6 @@ describe('Feature: Money transfer between two customers', () => {
 
       await uat.whenJackMakesAmoneyTransfer(
         new MoneyTransferCommand(
-          'transfer-id',
           'Car accident',
           100,
           '12312312312',
