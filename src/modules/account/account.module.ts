@@ -71,14 +71,7 @@ export const queryHandlers: Provider[] = [
 export const controllers = [AccountReadController, AccountWriteController];
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      AccountEntity,
-      OperationEntity,
-      OperationTypeEntity,
-      FlowIndicatorEntity,
-    ]),
-  ],
+  imports: [TypeOrmModule.forFeature([AccountEntity])],
   controllers: [...controllers],
   providers: [
     ...commandHandlers,
