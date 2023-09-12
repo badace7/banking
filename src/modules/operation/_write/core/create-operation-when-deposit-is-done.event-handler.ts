@@ -24,6 +24,7 @@ export class CreateOperationWhenDepositIsDone
     const operationType = await this.operationAdapter.getOperationTypeById(
       OperationTypeEnum.DEPOSIT,
     );
+
     const flowIndicator = await this.operationAdapter.getFlowIndicatorById(
       FlowIndicatorEnum.CREDIT,
     );
