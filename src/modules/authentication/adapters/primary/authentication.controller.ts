@@ -24,6 +24,7 @@ import { ILogout, LOGOUT_PORT } from '../../core/_ports/usecases/logout.iport';
 import { LogoutRequest } from '../../core/usecases/logout.request';
 import { JwtAuthGuard } from 'src/libs/guards/jwt.guard';
 import { JwtPayload } from '../../core/_ports/repositories/jwt-provider.iport';
+import { RefreshJwtGuard } from 'src/libs/guards/refresh-jwt.guard';
 
 @Controller(Auth.ROOT)
 export class AuthenticationController {
@@ -61,12 +62,16 @@ export class AuthenticationController {
   }
 
   @UseGuards(JwtAuthGuard)
-  // @Roles(RoleEnum.CUSTOMER)
   @Post(Auth.LOGOUT)
   async logout(@Req() req: Request) {
     const { id } = req.user as JwtPayload;
     const request = new LogoutRequest(id);
-    console.log(request);
     await this.logoutUsecase.execute(request);
+  }
+
+  @UseGuards(RefreshJwtGuard)
+  @Post(Auth.REFRESH_ACCESS)
+  async refreshAccess(@Req() req: Request) {
+    return req.user;
   }
 }

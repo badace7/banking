@@ -7,7 +7,6 @@ import {
   NotValidException,
 } from 'src/libs/exceptions/usecase.error';
 import { IUserPort } from '../core/_ports/repositories/user.iport';
-import { ICookieProvider } from '../core/_ports/repositories/cookie-provider.iport';
 import { IBcryptProvider } from '../core/_ports/repositories/bcrypt-provider.iport';
 import { LoginRequest } from '../core/usecases/login.request';
 
@@ -15,26 +14,18 @@ import { Role } from '../core/domain/role';
 import { InMemoryUserAdapter } from '../adapters/secondary/in-memory/in-memory-user.adapter';
 import { FakeJwtProvider } from '../adapters/secondary/in-memory/jwt-provider.fake.adapter';
 import { BcryptProvider } from '../adapters/secondary/providers/bcrypt-provider.adapter';
-import { CookieProvider } from '../adapters/secondary/providers/cookie-provider.adapter';
 
 describe('Feature: user', () => {
   let userRepository: IUserPort;
   let bcryptProvider: IBcryptProvider;
   let jwtProvider: IJwtProvider;
-  let cookieProvider: ICookieProvider;
   let loginUsecase: Login;
 
   beforeEach(async () => {
     userRepository = new InMemoryUserAdapter();
     bcryptProvider = new BcryptProvider();
     jwtProvider = new FakeJwtProvider();
-    cookieProvider = new CookieProvider();
-    loginUsecase = new Login(
-      userRepository,
-      bcryptProvider,
-      jwtProvider,
-      cookieProvider,
-    );
+    loginUsecase = new Login(userRepository, bcryptProvider, jwtProvider);
   });
 
   describe('Rule: login is not authorized', () => {

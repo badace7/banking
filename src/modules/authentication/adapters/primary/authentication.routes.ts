@@ -3,4 +3,5 @@ export enum Auth {
   CREATE_USER = 'create-user',
   LOGIN = 'login',
   LOGOUT = 'logout',
+  REFRESH_ACCESS = 'refresh-access',
 }

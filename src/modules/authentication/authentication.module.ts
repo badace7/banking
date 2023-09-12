@@ -7,8 +7,6 @@ import { JWT_PROVIDER_PORT } from './core/_ports/repositories/jwt-provider.iport
 
 import { CREDENTIAL_PROVIDER_PORT } from './core/_ports/repositories/credential-provider.iport';
 
-import { COOKIE_PROVIDER_PORT } from './core/_ports/repositories/cookie-provider.iport';
-
 import { BCRYPT_PROVIDER_PORT } from './core/_ports/repositories/bcrypt-provider.iport';
 
 import { LOGIN_PORT } from './core/_ports/usecases/login.iport';
@@ -25,13 +23,13 @@ import { RoleEntity } from './adapters/secondary/entities/role.entity';
 import { UserEntity } from './adapters/secondary/entities/user.entity';
 import { UserPostgresAdapter } from './adapters/secondary/postgres/user.postgres.adapter';
 import { BcryptProvider } from './adapters/secondary/providers/bcrypt-provider.adapter';
-import { CookieProvider } from './adapters/secondary/providers/cookie-provider.adapter';
 import { CredentialProvider } from './adapters/secondary/providers/credential-provider.adapter';
 import { JwtProvider } from './adapters/secondary/providers/jwt-provider.adapter';
 import { EVENT_PUBLISHER_PORT } from './core/_ports/repositories/event-publisher.iport';
 import { EventPublisher } from '../shared/event-publisher';
 import { LOGOUT_PORT } from './core/_ports/usecases/logout.iport';
 import { Logout } from './core/usecases/logout.usecase';
+import { RefreshJwtStrategy } from 'src/libs/strategies/refresh-jwt.strategy';
 
 export const respositories = [
   {
@@ -51,10 +49,6 @@ export const respositories = [
     useClass: CredentialProvider,
   },
   {
-    provide: COOKIE_PROVIDER_PORT,
-    useClass: CookieProvider,
-  },
-  {
     provide: BCRYPT_PROVIDER_PORT,
     useClass: BcryptProvider,
   },
@@ -65,7 +59,6 @@ export const usecases = [
     USER_PORT,
     BCRYPT_PROVIDER_PORT,
     JWT_PROVIDER_PORT,
-    COOKIE_PROVIDER_PORT,
   ]),
 
   createInjectableProvider(LOGOUT_PORT, Logout, [USER_PORT]),
@@ -86,7 +79,13 @@ export const usecases = [
     }),
   ],
   controllers: [AuthenticationController],
-  providers: [...usecases, ...respositories, JwtStrategy, ConfigService],
+  providers: [
+    ...usecases,
+    ...respositories,
+    JwtStrategy,
+    RefreshJwtStrategy,
+    ConfigService,
+  ],
   exports: [...usecases, ...respositories, TypeOrmModule],
 })
 export class AuthenticationModule {}

@@ -29,6 +29,10 @@ export class JwtProvider implements IJwtProvider {
       throw new NotValidException('Token is not valid');
     }
   }
+
+  decodeToken(token: string) {
+    return this.jwtService.decode(token);
+  }
   createAccessToken(
     payload: JwtPayload,
     secret: string,

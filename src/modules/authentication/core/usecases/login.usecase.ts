@@ -2,7 +2,6 @@ import {
   NotFoundException,
   NotValidException,
 } from 'src/libs/exceptions/usecase.error';
-import { ICookieProvider } from '../_ports/repositories/cookie-provider.iport';
 import {
   IJwtProvider,
   JwtPayload,
@@ -11,14 +10,13 @@ import { IBcryptProvider } from '../_ports/repositories/bcrypt-provider.iport';
 import { IUserPort } from '../_ports/repositories/user.iport';
 import { ILogin } from '../_ports/usecases/login.iport';
 import { LoginRequest } from './login.request';
-import { LoginResult } from './login-response.dto';
+import { LoginResult } from './login.result';
 
 export class Login implements ILogin {
   constructor(
     private readonly userRepository: IUserPort,
     private readonly bcryptAdapter: IBcryptProvider,
     private readonly jwtProvider: IJwtProvider,
-    private readonly cookieProvider: ICookieProvider,
   ) {}
 
   async execute(request: LoginRequest): Promise<LoginResult> {
@@ -52,7 +50,7 @@ export class Login implements ILogin {
 
     const refreshToken = this.jwtProvider.createRefreshToken(payload, secret);
 
-    await this.userRepository.updateRefreshToken(user.data.id, refreshToken);
+    await this.userRepository.updateRefreshToken(payload.id, refreshToken);
 
     return new LoginResult(
       user.data.id,

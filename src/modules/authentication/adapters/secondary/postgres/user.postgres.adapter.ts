@@ -48,4 +48,14 @@ export class UserPostgresAdapter implements IUserPort {
   async updateRefreshToken(id: string, refreshToken: string): Promise<void> {
     await this.manager.update(UserEntity, id, { refreshToken });
   }
+
+  async findUserRefreshToken(id: string): Promise<string> {
+    const result = await this.manager
+      .createQueryBuilder(UserEntity, 'user')
+      .select('user.refreshToken')
+      .where('user.id = :id', { id })
+      .getRawOne();
+
+    return result.user_refreshToken;
+  }
 }
