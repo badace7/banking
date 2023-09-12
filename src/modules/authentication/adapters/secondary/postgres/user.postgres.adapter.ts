@@ -44,4 +44,8 @@ export class UserPostgresAdapter implements IUserPort {
     const entity = await this.manager.findOne(RoleEntity, { where: { id } });
     return RoleMapper.toDomain(entity);
   }
+
+  async updateRefreshToken(id: string, refreshToken: string): Promise<void> {
+    await this.manager.update(UserEntity, id, { refreshToken });
+  }
 }

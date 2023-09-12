@@ -39,7 +39,7 @@ describe('jwt-provider adapter', () => {
     const expiresIn = configService.get<string>('JWT_EXPIRATION_TIME');
 
     //Act
-    const token = provider.createToken(payload, secret, expiresIn);
+    const token = provider.createAccessToken(payload, secret, expiresIn);
 
     //Assert
     expect(typeof token).toBe('string');
@@ -53,7 +53,7 @@ describe('jwt-provider adapter', () => {
     const expiresIn = configService.get<string>('JWT_EXPIRATION_TIME');
 
     //Act
-    const token = provider.createToken(payload, secret, expiresIn);
+    const token = provider.createAccessToken(payload, secret, expiresIn);
 
     //Assert
     const verifiedPayload = await provider.checkToken(token);

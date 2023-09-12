@@ -5,6 +5,7 @@ import {
   Inject,
   Param,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
 import {
@@ -13,7 +14,14 @@ import {
 } from '../../../_ports/get-balance.iport';
 import { GetBalanceQuery } from '../../../core/queries/get-balance.query';
 import { AccountRead } from './account-read.routes';
+import { Roles } from 'src/libs/decorators/roles.decorator';
+import { JwtAuthGuard } from 'src/libs/guards/jwt.guard';
+import { RessourceOwnerGuard } from 'src/libs/guards/ressource-owner.guard';
+import { RolesGuard } from 'src/libs/guards/roles.guard';
+import { RoleEnum } from 'src/modules/authentication/core/domain/user';
 
+@UseGuards(JwtAuthGuard, RolesGuard, RessourceOwnerGuard)
+@Roles(RoleEnum.CUSTOMER)
 @Controller(AccountRead.ROOT)
 export class AccountReadController {
   constructor(

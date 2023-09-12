@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { Request } from 'express';
 
 import { USER_PORT } from 'src/modules/authentication/core/_ports/repositories/user.iport';
 import { JwtPayload } from 'src/modules/authentication/core/_ports/repositories/jwt-provider.iport';
@@ -13,11 +12,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     @Inject(USER_PORT) private readonly userAdapter: UserPostgresAdapter,
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromExtractors([
-        (request: Request) => {
-          return request?.cookies?.Authentication;
-        },
-      ]),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey: process.env.JWT_SECRET,
     });

@@ -8,5 +8,10 @@ export interface IJwtProvider {
   getJwtSecret(): string;
   getJwtExpirationTime(): string;
   checkToken(token: string): Promise<any>;
-  createToken(payload: JwtPayload, secret: string, expiresIn: string): string;
+  createAccessToken(
+    payload: JwtPayload,
+    secret: string,
+    expiresIn: string,
+  ): string;
+  createRefreshToken(payload: JwtPayload, secret: string): string;
 }

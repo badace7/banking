@@ -3,6 +3,12 @@ import { Role } from 'src/modules/authentication/core/domain/role';
 import { User } from 'src/modules/authentication/core/domain/user';
 
 export class InMemoryUserAdapter implements IUserPort {
+  deleteRefreshToken(id: string): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+  updateRefreshToken(id: string, refreshToken: string): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
   private users = new Map<string, User>();
   private roles = new Map<number, Role>([[1, new Role(1, 'CUSTOMER')]]);
 

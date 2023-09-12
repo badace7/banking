@@ -59,6 +59,16 @@ export class migrations1673536730377 implements MigrationInterface {
             type: 'varchar',
           },
           {
+            name: 'email',
+            type: 'varchar',
+            isUnique: true,
+          },
+          {
+            name: 'refreshToken',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
             name: 'roleId',
             type: 'integer',
           },
@@ -222,6 +232,8 @@ export class migrations1673536730377 implements MigrationInterface {
         password: await bcrypt.hash('978978', 12),
         firstName: 'Jack',
         lastName: 'Sparrow',
+        email: 'jack@email.com',
+        refreshToken: null,
         roleId: 1,
       }),
     );
@@ -233,6 +245,8 @@ export class migrations1673536730377 implements MigrationInterface {
         password: await bcrypt.hash('123123', 12),
         firstName: 'Bob',
         lastName: 'Dylan',
+        email: 'bob@email.com',
+        refreshToken: null,
         roleId: 1,
       }),
     );

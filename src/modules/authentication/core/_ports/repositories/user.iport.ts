@@ -8,4 +8,5 @@ export interface IUserPort {
   findById(id: string): Promise<User>;
   findByIdentifier(identifier: string): Promise<User>;
   findRoleById(id: number): Promise<Role>;
+  updateRefreshToken(id: string, refreshToken: string): Promise<void>;
 }

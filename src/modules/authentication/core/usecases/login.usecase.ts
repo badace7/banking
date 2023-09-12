@@ -11,6 +11,7 @@ import { IBcryptProvider } from '../_ports/repositories/bcrypt-provider.iport';
 import { IUserPort } from '../_ports/repositories/user.iport';
 import { ILogin } from '../_ports/usecases/login.iport';
 import { LoginRequest } from './login.request';
+import { LoginResult } from './login-response.dto';
 
 export class Login implements ILogin {
   constructor(
@@ -19,7 +20,8 @@ export class Login implements ILogin {
     private readonly jwtProvider: IJwtProvider,
     private readonly cookieProvider: ICookieProvider,
   ) {}
-  async execute(request: LoginRequest): Promise<string> {
+
+  async execute(request: LoginRequest): Promise<LoginResult> {
     const user = await this.userRepository.findByIdentifier(request.identifier);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -42,8 +44,23 @@ export class Login implements ILogin {
     const secret = this.jwtProvider.getJwtSecret();
     const expiresIn = this.jwtProvider.getJwtExpirationTime() + 's';
 
-    const token = this.jwtProvider.createToken(payload, secret, expiresIn);
+    const accessToken = this.jwtProvider.createAccessToken(
+      payload,
+      secret,
+      expiresIn,
+    );
 
-    return this.cookieProvider.createCookieWithToken(token, expiresIn);
+    const refreshToken = this.jwtProvider.createRefreshToken(payload, secret);
+
+    await this.userRepository.updateRefreshToken(user.data.id, refreshToken);
+
+    return new LoginResult(
+      user.data.id,
+      user.data.identifier,
+      user.data.firstName,
+      user.data.lastName,
+      user.data.role.data.role,
+      accessToken,
+    );
   }
 }

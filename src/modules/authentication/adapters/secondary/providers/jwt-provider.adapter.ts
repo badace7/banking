@@ -29,7 +29,15 @@ export class JwtProvider implements IJwtProvider {
       throw new NotValidException('Token is not valid');
     }
   }
-  createToken(payload: JwtPayload, secret: string, expiresIn: string): string {
+  createAccessToken(
+    payload: JwtPayload,
+    secret: string,
+    expiresIn: string,
+  ): string {
     return this.jwtService.sign(payload, { secret, expiresIn });
+  }
+
+  createRefreshToken(payload: JwtPayload, secret: string): string {
+    return this.jwtService.sign(payload, { secret, expiresIn: '1800s' });
   }
 }

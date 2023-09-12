@@ -30,6 +30,8 @@ import { CredentialProvider } from './adapters/secondary/providers/credential-pr
 import { JwtProvider } from './adapters/secondary/providers/jwt-provider.adapter';
 import { EVENT_PUBLISHER_PORT } from './core/_ports/repositories/event-publisher.iport';
 import { EventPublisher } from '../shared/event-publisher';
+import { LOGOUT_PORT } from './core/_ports/usecases/logout.iport';
+import { Logout } from './core/usecases/logout.usecase';
 
 export const respositories = [
   {
@@ -65,6 +67,8 @@ export const usecases = [
     JWT_PROVIDER_PORT,
     COOKIE_PROVIDER_PORT,
   ]),
+
+  createInjectableProvider(LOGOUT_PORT, Logout, [USER_PORT]),
   createInjectableProvider(CREATE_USER_PORT, CreateUser, [
     USER_PORT,
     BCRYPT_PROVIDER_PORT,
