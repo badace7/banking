@@ -1,5 +1,4 @@
 import { EntityManager } from 'typeorm';
-import { entities } from './injectable-entities';
 
 export const DB_DEV = 'development';
 
@@ -14,7 +13,7 @@ export default () => ({
     database: process.env.DB_NAME,
     synchronize: false,
     logging: false,
-    entities: entities,
+    entities: [process.env.DB_ENTITIES],
     migrations: [process.env.DB_MIGRATIONS],
     migrationTableName: process.env.DB_MIGRATION_TABLE_NAME,
     migrationsRun: true,
