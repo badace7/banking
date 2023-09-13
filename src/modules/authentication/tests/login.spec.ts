@@ -65,16 +65,15 @@ describe('Feature: user', () => {
     it('should return a cookie with valid token', async () => {
       //Arrange
       const password = await bcryptProvider.hash('123123');
-      userRepository.save(
-        User.create({
-          id: 'abc',
-          identifier: '12312312312',
-          password: password,
-          firstName: 'Jack',
-          lastName: 'Sparrow',
-          role: new Role(1, 'CUSTOMER'),
-        }),
-      );
+      const user = User.create({
+        id: 'abc',
+        identifier: '12312312312',
+        password: password,
+        firstName: 'Jack',
+        lastName: 'Sparrow',
+        role: new Role(1, 'CUSTOMER'),
+      });
+      userRepository.save(user);
       const credentials = new LoginRequest('12312312312', '123123');
 
       //Act
@@ -83,8 +82,15 @@ describe('Feature: user', () => {
       //Assert
       const token =
         'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiMSIsImlkIjoiYWJjIiwiaWF0IjoiMTUxNjIzOTAyMiJ9.mlW6UWzJLZO-KSDo4DYfwlUTUspRhgfT75QX88K_lZA';
-      const cookie = `Authentication=${token}; HttpOnly; Path=/; Max-Age=1800s`;
-      expect(expectedCookie).toEqual(cookie);
+
+      expect(expectedCookie).toEqual({
+        id: user.data.id,
+        identifier: user.data.identifier,
+        firstName: user.data.firstName,
+        lastName: user.data.lastName,
+        role: user.data.role.data.role,
+        accessToken: token,
+      });
     });
   });
 });

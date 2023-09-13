@@ -22,8 +22,6 @@ export class UserEntity {
   @Column()
   lastName: string;
   @Column()
-  email: string;
-  @Column()
   refreshToken: string;
   @Column()
   roleId: number;

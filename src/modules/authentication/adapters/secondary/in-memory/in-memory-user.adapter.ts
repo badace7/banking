@@ -37,6 +37,6 @@ export class InMemoryUserAdapter implements IUserPort {
     throw new Error('Method not implemented.');
   }
   updateRefreshToken(id: string, refreshToken: string): Promise<void> {
-    throw new Error('Method not implemented.');
+    return Promise.resolve();
   }
 }
