@@ -6,7 +6,7 @@ import { WithdrawDoneEvent } from './event/withdraw-done.event';
 import { TransferDoneEvent } from './event/transfer-done.event';
 
 export default class Account extends AggregateRoot {
-  private DEPOSIT_LIMIT = 5;
+  private DEPOSIT_LIMIT = 10;
   private WITHDRAW_LIMIT = 10;
 
   public creditBalance(amount: number) {
@@ -54,7 +54,7 @@ export default class Account extends AggregateRoot {
 
   public deposit(amount: number) {
     if (amount < this.DEPOSIT_LIMIT) {
-      throw new OperationRejectedError(ErrorMessage.CANNOT_DEPOSIT_UNDER_5);
+      throw new OperationRejectedError(ErrorMessage.CANNOT_DEPOSIT_UNDER_10);
     }
 
     this._balance += amount;

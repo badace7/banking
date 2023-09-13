@@ -12,19 +12,28 @@ export const createDepositFixture = () => {
 
   let accountToCredit: Account;
 
+  let thrownError: Error;
+
   return {
     givenJackHasABankAccount(account: Account) {
       accountToCredit = account;
       accountRepository.saveBankAccount(account);
     },
     async whenJackDepositMoney(command: DepositCommand) {
-      await depositUsecase.execute(command);
+      try {
+        await depositUsecase.execute(command);
+      } catch (err) {
+        thrownError = err;
+      }
     },
     async thenHisBalanceShouldBe(expectedBalance: number) {
       const account = await accountRepository.findBankAccount(
         accountToCredit.data.number,
       );
       expect(account.data.balance).toEqual(expectedBalance);
+    },
+    thenErrorShouldBe(expectedErrorClass: new () => Error) {
+      expect(thrownError).toBeInstanceOf(expectedErrorClass);
     },
   };
 };

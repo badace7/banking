@@ -74,6 +74,28 @@ describe('Feature: Money transfer between two customers', () => {
 
       uat.thenErrorShouldBe(OperationRejectedError);
     });
+
+    test('Jack is not authorized to make a money transfer to himself', async () => {
+      uat.givenJackHasABankAccount(
+        AccountBuilder()
+          .withId('jack-account-id')
+          .withAccountNumber('12312312312')
+          .withBalance(2500)
+          .ownerId('jack-id')
+          .build(),
+      );
+
+      await uat.whenJackMakesAmoneyTransfer(
+        new MoneyTransferCommand(
+          'Car accident',
+          3000,
+          '12312312312',
+          '12312312312',
+        ),
+      );
+
+      uat.thenErrorShouldBe(OperationRejectedError);
+    });
   });
 
   describe('Rule: An account with overdraft authorization is authorized to made a money transfer with sufficient balance', () => {
