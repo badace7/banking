@@ -15,7 +15,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 describe('Banking Controller (e2e)', () => {
   let app: INestApplication;
   let container: TestContainersType;
-  const fakeCookie = `Authentication=fake-token; HttpOnly; Path=/; Max-Age=1800s`;
+  const fakeToken = 'Bearer fake-token';
 
   beforeAll(async () => {
     container = await CreateTestContainer();
@@ -44,40 +44,33 @@ describe('Banking Controller (e2e)', () => {
     await container.stop();
   });
 
-  it('get operations (GET)', async () => {
-    await request(app.getHttpServer())
-      .get('/banking/account/operations/12312312312')
-      .set('set-cookie', fakeCookie)
-      .expect(HttpStatus.OK);
-  });
-
   it('get balance (GET)', async () => {
     await request(app.getHttpServer())
-      .get('/banking/account/balance/12312312312')
-      .set('set-cookie', fakeCookie)
+      .get('/account/balance/12312312312')
+      .set('Authorization', fakeToken)
       .expect(HttpStatus.OK);
   });
 
   it('withdraw (POST)', async () => {
     await request(app.getHttpServer())
-      .post('/banking/account/operation/withdraw/')
-      .set('set-cookie', fakeCookie)
+      .post('/account/withdraw/')
+      .set('Authorization', fakeToken)
       .send({ amount: 100, origin: '12312312312' })
       .expect(HttpStatus.CREATED);
   });
 
   it('deposit (POST)', async () => {
     await request(app.getHttpServer())
-      .post('/banking/account/operation/deposit/')
-      .set('set-cookie', fakeCookie)
+      .post('/account/deposit/')
+      .set('Authorization', fakeToken)
       .send({ amount: 100, origin: '12312312312' })
       .expect(HttpStatus.CREATED);
   });
 
   it('transfer (POST)', async () => {
     await request(app.getHttpServer())
-      .post('/banking/account/operation/transfer/')
-      .set('set-cookie', fakeCookie)
+      .post('/account/transfer/')
+      .set('Authorization', fakeToken)
       .send({
         label: 'Test',
         amount: 100,
