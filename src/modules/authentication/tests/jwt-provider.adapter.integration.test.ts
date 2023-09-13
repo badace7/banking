@@ -50,7 +50,7 @@ describe('jwt-provider adapter', () => {
     //Arrange
     const payload = { id: '1', role: RoleEnum.CUSTOMER };
     const secret = configService.get<string>('JWT_SECRET');
-    const expiresIn = configService.get<string>('JWT_EXPIRATION_TIME');
+    const expiresIn = configService.get<string>('JWT_EXPIRATION_TIME') + 's';
 
     //Act
     const token = provider.createAccessToken(payload, secret, expiresIn);

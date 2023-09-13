@@ -22,7 +22,7 @@ export class FakeJwtProvider implements IJwtProvider {
     throw new Error('Method not implemented.');
   }
   createRefreshToken(payload: JwtPayload, secret: string): string {
-    throw new Error('Method not implemented.');
+    return 'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiMSIsImlkIjoiYWJjIiwiaWF0IjoiMTUxNjIzOTAyMiJ9.mlW6UWzJLZO-KSDo4DYfwlUTUspRhgfT75QX88K_lZA';
   }
   checkToken(token: string): Promise<any> {
     throw new Error('Method not implemented.');
