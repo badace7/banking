@@ -35,8 +35,8 @@ export class AccountReadController {
     @Res() response: Response,
   ) {
     try {
-      const command = new GetBalanceQuery(accountNumber);
-      const balanceData = await this.getBalanceUsecase.execute(command);
+      const query = new GetBalanceQuery(accountNumber);
+      const balanceData = await this.getBalanceUsecase.execute(query);
       response.status(HttpStatus.OK).send(balanceData);
     } catch (error) {
       response.status(HttpStatus.NOT_FOUND).send(error.message);
